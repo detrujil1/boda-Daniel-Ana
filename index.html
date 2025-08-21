@@ -6,127 +6,154 @@
   <title>Invitación de Boda — Daniel & Ana</title>
   <!-- Fuentes elegantes -->
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Montserrat:wght@300;500;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <!-- Open Graph para vista previa en WhatsApp si lo publicas como link -->
+  <!-- Open Graph para vista previa en WhatsApp -->
   <meta property="og:title" content="Daniel & Ana — ¡Nos casamos!" />
   <meta property="og:description" content="Sábado, 20 de diciembre de 2025 · Hacienda El Encanto – Bogotá. Confirma por WhatsApp." />
   <meta property="og:type" content="website" />
   <style>
     :root{
-      --bg:#0D0D0D;          /* negro premium */
-      --ink:#F7F7F5;         /* texto claro */
-      --muted:#C8C8C8;       /* texto secundario */
-      --paper:#121212;       /* tarjetas */
-      --line:#2B2B2B;        /* bordes sutiles */
-      --gold:#D4AF37;        /* dorado principal */
-      --gold-2:#B8902E;      /* dorado profundo */
-      --accent:#E7C766;      /* brillo */
+      /* Paleta romántica mejorada */
+      --bg1:#24141f;         /* vino profundo */
+      --bg2:#0a0a0a;         /* negro elegante */
+      --ink:#FAF9F7;         /* texto claro */
+      --muted:#d9d3cd;       /* texto secundario */
+      --paper:#141016;       /* tarjetas */
+      --line:#2a2328;        /* bordes sutiles */
+      --gold:#E3C468;        /* dorado principal */
+      --gold-2:#B08A2B;      /* dorado profundo */
+      --accent:#F1DA8E;      /* brillo */
       --wa:#25D366;          /* WhatsApp */
+      --rose:#ff6b8a;        /* rosa suave */
     }
     *{box-sizing:border-box}
     html,body{margin:0}
-    body{font-family:'Montserrat',system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    body{font-family:'Montserrat',system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--ink)}
 
-    /* ===== Marco dorado metálico alrededor del lienzo ===== */
-    .frame{min-height:100dvh;padding:24px;background:
-      radial-gradient(1200px 700px at 0% 0%, rgba(212,175,55,.05), transparent 60%),
-      radial-gradient(1000px 600px at 100% 0%, rgba(184,144,46,.06), transparent 60%),
-      radial-gradient(800px 600px at 100% 100%, rgba(231,199,102,.05), transparent 60%),
-      var(--bg);
-      display:grid;place-items:center
+    /* ===== Accesibilidad: respetar reduce motion ===== */
+    @media (prefers-reduced-motion:reduce){
+      *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
     }
-    .canvas{
-      position:relative;width:100%;max-width:1160px;border-radius:22px;overflow:hidden;background:var(--paper);
-      border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.55)
+
+    /* ===== Fondo de pétalos animados ===== */
+    .petals{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .petal{position:absolute;width:22px;height:22px;background:radial-gradient(circle at 30% 30%, #ffd1dc 0 40%, #ff86a3 60% 100%);
+      border-radius:60% 40% 60% 40%/50% 60% 40% 50%;opacity:.42;filter:blur(.2px)}
+    @keyframes fall{
+      0%{transform:translate3d(var(--x),-10%,0) rotate(0)}
+      50%{transform:translate3d(calc(var(--x) + 20px),55vh,0) rotate(180deg)}
+      100%{transform:translate3d(calc(var(--x) - 10px),110vh,0) rotate(360deg)}
     }
-    .canvas::before{
-      content:"";position:absolute;inset:-2px;border-radius:24px;z-index:2;pointer-events:none;
-      background:conic-gradient(from 0deg, rgba(212,175,55,.35), rgba(184,144,46,.35), rgba(231,199,102,.35), rgba(212,175,55,.35));
-      filter:blur(8px);opacity:.55;animation:spin 22s linear infinite
-    }
+
+    /* ===== Contenedor con marco dorado animado ===== */
+    .frame{min-height:100dvh;padding:clamp(12px,2vw,28px);display:grid;place-items:center;position:relative;z-index:1}
+    .canvas{position:relative;width:min(1160px,100%);border-radius:22px;overflow:hidden;background:var(--paper);
+      border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+    .canvas::before{content:"";position:absolute;inset:-2px;border-radius:24px;z-index:2;pointer-events:none;
+      background:conic-gradient(from 0deg, rgba(227,196,104,.35), rgba(176,138,43,.35), rgba(241,218,142,.35), rgba(227,196,104,.35));
+      filter:blur(8px);opacity:.45;animation:spin 22s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ===== HERO fotográfico a pantalla ===== */
+    /* ===== HERO fotográfico (mejores imágenes + responsive) ===== */
     .hero{position:relative;min-height:92vh;display:grid;place-items:center;overflow:hidden}
-    .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.08) contrast(1.06) saturate(1.05)}
-    .veil{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.65) 100%)}
+    .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.03) contrast(1.08) saturate(1.08)}
+    .veil{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.68) 100%)}
     .hero-inner{position:relative;z-index:1;text-align:center;color:#fff;padding:24px}
     .over{letter-spacing:.28em;text-transform:uppercase;font-size:12px;opacity:.95}
-    .names{font-family:'Great Vibes',cursive;font-size:88px;line-height:1;margin:.2em 0 .15em;
-      background:linear-gradient(180deg,var(--gold),var(--accent),var(--gold-2));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 18px rgba(212,175,55,.25))}
+    .names{font-family:'Great Vibes',cursive;font-size:clamp(56px,8vw,96px);line-height:1;margin:.2em 0 .15em;
+      background:linear-gradient(110deg,var(--gold),var(--accent),var(--gold-2));-webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 8px 18px rgba(227,196,104,.28));
+      background-size:200% 200%;animation:shimmer 6s ease-in-out infinite}
+    @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
     .date{opacity:.95;font-weight:600}
 
     /* ===== Franja animada (marquee) ===== */
-    .marquee{overflow:hidden;white-space:nowrap;background:#0f0f0f;color:var(--ink);border-block:1px solid var(--line)}
-    .marquee span{display:inline-block;padding:10px 24px;animation:slide 18s linear infinite}
+    .marquee{overflow:hidden;white-space:nowrap;background:#120e11;color:var(--ink);border-block:1px solid var(--line)}
+    .marquee span{display:inline-block;padding:10px 24px;animation:slide 16s linear infinite}
     @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* ===== Sección principal: tarjeta + poster ===== */
-    .section{max-width:1100px;margin:56px auto;padding:0 20px}
-    .split{display:grid;grid-template-columns:1.1fr .9fr;gap:28px}
-    .card{background:linear-gradient(180deg,#141414 0%, #111 100%);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 28px rgba(0,0,0,.45)}
-    .card .inner{padding:26px}
-    .h{font-family:'Fraunces',serif;font-weight:700;font-size:28px;margin:0 0 8px;color:var(--ink)}
-    .lead{color:var(--muted)}
-    .poster{border-radius:18px;overflow:hidden;border:1px solid var(--line)}
-    .poster img{width:100%;height:100%;display:block;object-fit:cover;filter:contrast(1.05)}
+    /* ===== Sección principal (responsive mejorado) ===== */
+    .section{max-width:1100px;margin:56px auto;padding:0 clamp(12px,3vw,24px)}
+    .split{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(16px,3vw,28px)}
+    @media (max-width:900px){ .split{grid-template-columns:1fr} }
 
-    /* ===== Collage de galería ===== */
+    .card{background:linear-gradient(180deg,#1b1619 0%, #151114 100%);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 28px rgba(0,0,0,.55)}
+    .card .inner{padding:clamp(18px,3vw,26px)}
+    .h{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(22px,3.2vw,28px);margin:0 0 8px;color:var(--ink)}
+    .lead{color:var(--muted);font-size:clamp(14px,2.6vw,16px)}
+
+    /* ===== Poster y Galería (con aspect-ratio y lazy) ===== */
+    .poster{border-radius:18px;overflow:hidden;border:1px solid var(--line)}
+    .poster img{width:100%;height:100%;display:block;object-fit:cover;filter:contrast(1.08) saturate(1.05)}
+
     .gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:220px;gap:10px;margin-top:16px}
-    .gallery img{width:100%;height:100%;object-fit:cover;border-radius:14px;border:1px solid var(--line)}
-    .gallery .big{grid-row:span 2}
+    .gallery img{width:100%;height:100%;object-fit:cover;border-radius:14px;border:1px solid var(--line);aspect-ratio:4/3}
+    .gallery .big{grid-row:span 2;aspect-ratio:3/4}
+    @media (max-width:900px){ .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:180px} }
 
     /* ===== CTA ===== */
     .cta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+    @media (max-width:900px){ .cta{grid-template-columns:1fr} }
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:14px;
-      background:linear-gradient(180deg,var(--gold),var(--accent));color:#111;text-decoration:none;font-weight:800;border:1px solid rgba(231,199,102,.45);
+      background:linear-gradient(180deg,var(--gold),var(--accent));color:#111;text-decoration:none;font-weight:800;border:1px solid rgba(241,218,142,.45);
       text-transform:uppercase;letter-spacing:.03em;transition:transform .18s ease, box-shadow .18s ease, filter .18s ease}
-    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(231,199,102,.25);filter:saturate(1.1)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(241,218,142,.25);filter:saturate(1.1)}
     .btn--light{background:transparent;color:var(--ink);border:1px solid var(--line);text-transform:none;font-weight:700}
 
-    /* ===== Contador flip ===== */
+    /* ===== Contador flip con bounce ===== */
     .count{display:flex;gap:14px;flex-wrap:wrap}
-    .flip{position:relative;width:92px;height:110px;border-radius:14px;background:#0f0f0f;border:1px solid var(--line);box-shadow:0 6px 16px rgba(0,0,0,.45)}
+    .flip{position:relative;width:92px;height:110px;border-radius:14px;background:#100c0f;border:1px solid var(--line);box-shadow:0 6px 16px rgba(0,0,0,.55)}
     .digit,.digit-next{position:absolute;inset:0;display:grid;place-items:center;font-size:52px;font-weight:800;font-variant-numeric:tabular-nums;border-radius:14px;backface-visibility:hidden;
-      background:linear-gradient(180deg,#161616,#0f0f0f);color:var(--ink)}
+      background:linear-gradient(180deg,#181216,#120e11);color:var(--ink)}
     .digit-next{transform:rotateX(90deg);opacity:0}
-    .flip.animate .digit{animation:flipOut .6s ease forwards}
-    .flip.animate .digit-next{animation:flipIn .6s ease forwards}
-    @keyframes flipOut{to{transform:rotateX(-90deg);opacity:0}}
-    @keyframes flipIn{to{transform:rotateX(0);opacity:1}}
+    .flip.animate .digit{animation:flipOut .55s ease forwards}
+    .flip.animate .digit-next{animation:flipIn .55s ease forwards}
+    @keyframes flipOut{50%{transform:rotateX(-90deg);opacity:0}100%{opacity:0}}
+    @keyframes flipIn{0%{transform:rotateX(90deg);opacity:0}80%{transform:rotateX(0);opacity:1}100%{transform:rotateX(0) scale(1.05)}}
     .label{margin-top:6px;font-size:12px;color:var(--muted);text-align:center}
+
+    /* ===== Tiles extra (Itinerario, Dress code, Regalos) ===== */
+    .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+    @media (max-width:900px){ .tiles{grid-template-columns:1fr} }
+    .tile{padding:clamp(14px,3vw,18px);border-radius:16px;background:#100c0f;border:1px solid var(--line)}
+    .tile h3{margin:.2em 0 .4em;font-family:'Fraunces',serif;font-size:clamp(18px,3vw,20px)}
+    .tile p{margin:0;color:var(--muted);font-size:clamp(14px,2.6vw,15px)}
+
+    /* ===== Reveal con scroll ===== */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.in{opacity:1;transform:translateY(0)}
 
     /* ===== Botón WhatsApp flotante ===== */
     .wa{position:fixed;right:18px;bottom:18px;width:62px;height:62px;border-radius:999px;background:var(--wa);color:#fff;display:grid;place-items:center;font-size:30px;text-decoration:none;box-shadow:0 10px 22px rgba(0,0,0,.6);animation:pulse 2s infinite}
     @keyframes pulse{50%{transform:scale(1.07)}}
-
-    /* ===== Responsive ===== */
-    @media (max-width:900px){
-      .split{grid-template-columns:1fr}
-      .cta{grid-template-columns:1fr}
-      .names{font-size:64px}
-      .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
-    }
   </style>
 </head>
 <body>
+  <!-- Pétalos flotando -->
+  <div class="petals" id="petals"></div>
+
   <div class="frame">
     <div class="canvas">
-      <!-- HERO con imagen libre (sin subir al repo) -->
+      <!-- HERO con imágenes libres más románticas (srcset + lazy) -->
       <header class="hero">
-        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=2000&q=80" alt="Pareja feliz" />
+        <picture>
+          <source srcset="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=2400&q=80 2400w,
+                          https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80 1600w,
+                          https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1200&q=80 1200w" sizes="100vw">
+          <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80" alt="Pareja romántica" loading="eager" decoding="async"/>
+        </picture>
         <div class="veil"></div>
-        <div class="hero-inner">
+        <div class="hero-inner reveal">
           <div class="over">SAVE THE DATE</div>
           <div class="names">Daniel & Ana</div>
           <div class="date">Sábado, 20 de diciembre de 2025 · Bogotá</div>
         </div>
       </header>
 
-      <div class="marquee"><span>Nos casamos ✦ Acompáñanos ✦ Celebremos juntos ✦ Amor ✦ Felicidad ✦ </span><span>Nos casamos ✦ Acompáñanos ✦ Celebremos juntos ✦ Amor ✦ Felicidad ✦ </span></div>
+      <div class="marquee"><span>Amor ✦ Siempre juntos ✦ Nuestra historia ✦ Brindemos ✦ Baile ✦ </span><span>Amor ✦ Siempre juntos ✦ Nuestra historia ✦ Brindemos ✦ Baile ✦ </span></div>
 
       <main class="section">
         <div class="split">
-          <article class="card">
+          <article class="card reveal">
             <div class="inner">
               <h2 class="h">La celebración</h2>
               <p class="lead">Ceremonia y fiesta en <strong style="color:var(--accent)">Hacienda El Encanto</strong>. Vístete elegante, ven con ganas de brindar y bailar.</p>
@@ -145,21 +172,32 @@
                 <a class="btn btn--light" id="btnCalendar" href="#">Agregar al calendario</a>
                 <a class="btn" id="btnRSVP" href="https://wa.me/573001112233?text=Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Daniel%20y%20Ana" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
               </div>
+
+              <!-- Extras reestablecidos -->
+              <div class="tiles">
+                <div class="tile"><h3>Itinerario</h3><p>3:00 p.m. Ceremonia · 4:00 p.m. Recepción · 6:00 p.m. Brindis · 7:00 p.m. Baile</p></div>
+                <div class="tile"><h3>Dress code</h3><p>Formal romántico · tonos vino / neutros claros</p></div>
+                <div class="tile"><h3>Regalos</h3><p>Nuestra mejor regalo es tu presencia. (Opcional: enlace a mesa de regalos)</p></div>
+              </div>
             </div>
           </article>
 
-          <aside class="poster card">
-            <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80" alt="Poster" />
+          <aside class="poster card reveal">
+            <picture>
+              <source srcset="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80 1200w,
+                              https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80 800w" sizes="(max-width:900px) 100vw, 40vw">
+              <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80" alt="Rosas rojas" loading="lazy" decoding="async"/>
+            </picture>
           </aside>
         </div>
 
-        <!-- Collage de inspiración Canva con imágenes libres -->
-        <section class="gallery">
-          <img class="big" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80" alt="Collage 1" />
-          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Collage 2" />
-          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Collage 3" />
-          <img src="https://images.unsplash.com/photo-1528977695568-b5a5d1d4a0da?auto=format&fit=crop&w=800&q=80" alt="Collage 4" />
-          <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80" alt="Collage 5" />
+        <!-- Galería romántica (mejor selección + lazy + responsive) -->
+        <section class="gallery reveal">
+          <img class="big" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1200&q=80" alt="Velas y flores" loading="lazy" decoding="async"/>
+          <img src="https://images.unsplash.com/photo-1514512364185-4c85787172e7?auto=format&fit=crop&w=800&q=80" alt="Ramo de novia" loading="lazy" decoding="async"/>
+          <img src="https://images.unsplash.com/photo-1520975618313-6c55e28708a5?auto=format&fit=crop&w=800&q=80" alt="Mesa elegante" loading="lazy" decoding="async"/>
+          <img src="https://images.unsplash.com/photo-1460364157752-926555421a7e?auto=format&fit=crop&w=800&q=80" alt="Torta nupcial" loading="lazy" decoding="async"/>
+          <img src="https://images.unsplash.com/photo-1484327973588-c31f829103fe?auto=format&fit=crop&w=800&q=80" alt="Luces cálidas" loading="lazy" decoding="async"/>
         </section>
       </main>
     </div>
@@ -169,14 +207,37 @@
   <a class="wa" id="waFloat" href="https://wa.me/573001112233?text=Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Daniel%20y%20Ana" aria-label="Confirmar por WhatsApp">💬</a>
 
   <script>
+    // ====== PÉTALOS FLOTANDO ======
+    const petals = document.getElementById('petals');
+    const PETALS = 40; // cantidad de pétalos
+    for(let i=0;i<PETALS;i++){
+      const p=document.createElement('div');
+      p.className='petal';
+      const x=Math.random()*100+"%";
+      const delay=(Math.random()*6).toFixed(2)+'s';
+      const dur= (10+Math.random()*14).toFixed(2)+'s';
+      p.style.left=Math.random()*100+'%';
+      p.style.setProperty('--x', x);
+      p.style.animation=`fall ${dur} linear ${delay} infinite`;
+      p.style.transform=`rotate(${Math.random()*360}deg)`;
+      p.style.opacity=(0.25+Math.random()*0.45).toFixed(2);
+      petals.appendChild(p);
+    }
+
     // ====== FECHA DEL EVENTO (hora local) ======
     const EVENT_ISO_LOCAL = '2025-12-20T15:00';
     const DURACION_HORAS = 5;
 
     // ====== CONTADOR FLIP ======
     const tD=document.querySelector('#d'), tH=document.querySelector('#h'), tM=document.querySelector('#m'), tS=document.querySelector('#s');
-    function setFlip(el,val){const cur=el.querySelector('.digit').textContent;const next=String(val).padStart(2,'0');if(cur===next) return;el.classList.remove('animate');el.querySelector('.digit-next').textContent=next;void el.offsetWidth;el.classList.add('animate');setTimeout(()=>{el.querySelector('.digit').textContent=next;},580)}
+    function setFlip(el,val){const cur=el.querySelector('.digit').textContent;const next=String(val).padStart(2,'0');if(cur===next) return;el.classList.remove('animate');el.querySelector('.digit-next').textContent=next;void el.offsetWidth;el.classList.add('animate');setTimeout(()=>{el.querySelector('.digit').textContent=next;},520)}
     function tick(){const now=new Date();const eventDate=new Date(EVENT_ISO_LOCAL);let diff=Math.max(0,eventDate-now);const d=Math.floor(diff/86400000);diff%=86400000;const h=Math.floor(diff/3600000);diff%=3600000;const m=Math.floor(diff/60000);diff%=60000;const s=Math.floor(diff/1000);setFlip(tD,d);setFlip(tH,h);setFlip(tM,m);setFlip(tS,s);}tick();setInterval(tick,1000);
+
+    // ====== Reveal con IntersectionObserver ======
+    const io=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{threshold:.2});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
     // ====== CALENDARIO (.ics) ======
     function pad(n){return String(n).padStart(2,'0')}
@@ -191,8 +252,7 @@
         'DTSTART:'+toICS(start),'DTEND:'+toICS(end),
         'SUMMARY:Boda de Daniel & Ana','LOCATION:Hacienda El Encanto – Bogotá',
         'DESCRIPTION:¡Celebremos juntos!','END:VEVENT','END:VCALENDAR'
-      ].join('
-');
+      ].join('\r\n');
       const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');
