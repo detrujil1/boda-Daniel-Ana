@@ -1,186 +1,289 @@
 <!DOCTYPE html>
-<html lang="es" class="no-js">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Invitación de Boda — Daniel & Ana</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#d7b4ff" />
+  <title>Daniel & Ana — Invitación</title>
+  <meta name="description" content="Invitación de boda digital animada para compartir por WhatsApp. RSVP por WhatsApp, mapa y cuenta regresiva." />
+  <!-- Tipografías (puedes quitar estas líneas si no quieres depender de Internet) -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Montserrat:wght@300;500;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0a0a0a; --ink:#fff; --muted:#d8d8d8;
-      --gold:#E3C468; --gold2:#B08A2B; --rose:#ff6b8a; --wa:#25D366;
+      --bg: #fff9ff;
+      --ink: #2b2540;
+      --muted: #6b6385;
+      --brand: #b589ff;
+      --brand-2: #ffb3c1;
+      --accent: #57d3c6;
+      --radius: 20px;
+      --shadow: 0 10px 30px rgba(30,10,60,.12);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:'Montserrat',system-ui}
+    html,body{height:100%;}
+    body{
+      margin:0; font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      color:var(--ink); background: radial-gradient(1600px 900px at 10% -10%, #f8e9ff 0%, transparent 60%),
+      radial-gradient(1000px 600px at 110% 0%, #ffe9f0 0%, transparent 60%),
+      linear-gradient(180deg, #ffffff 0%, #fff6ff 100%);
+      overflow-x:hidden;
+    }
 
-    /* ===== TikTok style: vertical 9:16, secciones a pantalla completa con scroll-snap ===== */
-    .app{height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}
-    section{position:relative;height:100dvh;width:100%;scroll-snap-align:start;display:grid;place-items:center;overflow:hidden}
+    /* Contenedor principal tipo "story" (estilo vertical tipo TikTok) */
+    .wrapper{
+      min-height:100dvh; /* soporta iOS/Android */
+      display:grid; place-items:center; padding:16px; padding-bottom:calc(16px + env(safe-area-inset-bottom));
+    }
+    .card{ width: min(780px, 92vw); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); overflow:hidden; position:relative }
 
-    /* Safe area para texto centrado */
-    .inner{position:relative;z-index:2;max-width:min(92vw,720px);padding:24px;text-align:center}
+    /* Fondo animado con pétalos */
+    .bg{
+      position:absolute; inset:0; pointer-events:none; overflow:hidden;
+      background:
+        radial-gradient(800px 600px at 50% -20%, rgba(181,137,255,.18), transparent 60%),
+        radial-gradient(700px 500px at -10% 120%, rgba(255,179,193,.18), transparent 60%);
+    }
+    .petal{ position:absolute; top:-10vh; width:18px; height:18px; opacity:.8; filter:blur(.2px);
+      background: radial-gradient(circle at 30% 30%, #fff 0 35%, #ffd6e2 36% 100%);
+      transform: rotate(45deg); border-radius: 4px 16px 16px 16px; animation: fall linear infinite; }
+    @keyframes fall{
+      to{ transform:translateY(120vh) rotate(405deg) }
+    }
 
-    /* Fondo video/imagen */
-    .bg{position:absolute;inset:0;z-index:0}
-    .bg img, .bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.05) saturate(1.05)}
-    .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.65))}
+    /* HERO */
+    .hero{ position:relative; display:grid; place-items:center; padding: clamp(40px, 10vw, 80px); background: linear-gradient(180deg, #fff, #fff9ff 60%, #ffffff 100%);}    
+    .crest{ position:absolute; inset:auto 20px 20px auto; opacity:.9; }
+    .crest svg{ width:68px; height:68px; filter: drop-shadow(0 4px 10px rgba(181,137,255,.25)); }
 
-    /* Tipografía */
-    h1.names{font-family:'Great Vibes',cursive;font-size:clamp(54px,12vw,110px);line-height:1;margin:.1em 0 .05em;
-      background:linear-gradient(110deg,var(--gold),#fff,var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 8px 26px rgba(227,196,104,.18)}
-    .over{letter-spacing:.3em;text-transform:uppercase;font-size:12px;opacity:.92}
-    .date{opacity:.95;font-weight:600}
+    .subtitle{ letter-spacing:.3em; text-transform:uppercase; color:var(--muted); font-weight:600; font-size: .9rem; }
+    .names{ font-family: "Great Vibes", cursive; font-size: clamp(44px, 9vw, 88px); line-height:1; margin:.15em 0 .1em; text-align:center; }
+    .amp{ color:var(--brand); font-family: "Fraunces", serif; font-weight:700; font-size: clamp(30px, 4.5vw, 48px); margin: 0 .2em; vertical-align: .05em; }
+    .date{ font-family: "Fraunces", serif; font-weight:700; font-size: clamp(16px, 2.6vw, 20px); color:#3b2d61; }
 
-    /* Botones estilo TikTok */
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 18px;border-radius:999px;border:1px solid rgba(227,196,104,.5);
-      background:linear-gradient(180deg,var(--gold),var(--gold2));color:#111;text-decoration:none;font-weight:800;letter-spacing:.02em;margin-top:14px}
-    .btn-outline{background:transparent;color:#fff;border-color:#fff}
+    /* Cuenta regresiva */
+    .countdown{ display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; justify-content:center; }
+    .dd{ min-width:84px; padding:10px 12px; border-radius:14px; background:linear-gradient(180deg,#ffffff, #f7f0ff); border:1px solid #efe6ff; text-align:center; }
+    .dd strong{ display:block; font-size: clamp(18px, 3vw, 24px); font-weight:700; font-family:"Fraunces", serif; }
+    .dd span{ font-size:12px; color:var(--muted) }
 
-    /* Corazones flotando */
-    .hearts{position:absolute;inset:0;pointer-events:none;z-index:1}
-    .heart{position:absolute;width:18px;height:18px;background:radial-gradient(circle at 30% 30%, #ff9fb4 0 45%, #ff5a7a 60%);
-      transform:rotate(45deg);border-radius:2px;opacity:.55;filter:blur(.2px)}
-    .heart::before,.heart::after{content:"";position:absolute;width:100%;height:100%;background:inherit;border-radius:50%}
-    .heart::before{top:-50%}
-    .heart::after{left:-50%}
-    @keyframes rise{0%{transform:translate3d(var(--x),110%,0) rotate(45deg)}100%{transform:translate3d(calc(var(--x) + 20px),-10%,0) rotate(45deg)}}
+    /* Detalles */
+    .section{ padding: 28px clamp(18px, 5vw, 46px); border-top:1px dashed #efe6ff; }
+    .section h2{ font-family: "Fraunces", serif; font-size: clamp(22px, 4vw, 28px); margin:0 0 12px }
+    .grid{ display:grid; grid-template-columns: 1fr; gap:16px; }
+    @media (min-width: 720px){ .grid{ grid-template-columns: repeat(3, 1fr); } }
 
-    /* Slide 2: tarjeta con glass */
-    .card{background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:22px}
-    .h{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,28px);margin:.2em 0;color:#fff}
-    .lead{color:var(--muted)}
+    .tile{ background:linear-gradient(180deg,#ffffff,#fbf7ff); border:1px solid #efe6ff; border-radius:16px; padding:16px; }
+    .tile h3{ margin:0 0 6px; font-size: 16px; color:#3b2d61 }
+    .tile p{ margin:0; color:#5d5678; font-size: 14px; }
 
-    /* Gallery estilo TikTok (pegajosa en vertical) */
-    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
-    .gallery img{width:100%;height:28vh;object-fit:cover;border-radius:12px}
-    @media (max-width:720px){.gallery img{height:22vh}}
+    .actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:16px }
+    .btn{ appearance:none; border:none; cursor:pointer; padding:12px 16px; border-radius:999px; font-weight:600; font-size:14px; box-shadow: 0 6px 18px rgba(181,137,255,.22); transition: transform .15s ease, box-shadow .15s ease; }
+    .btn:active{ transform: translateY(1px) }
+    .btn--brand{ background-image: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#2b2342 }
+    .btn--ghost{ background:#fff; color:#3b2d61; border:1px solid #efe6ff }
 
-    /* Sticky CTA inferior como apps */
-    .ctaBar{position:fixed;left:0;right:0;bottom:14px;display:flex;gap:10px;justify-content:center;z-index:99}
+    /* Galería (opcional) */
+    .gallery{ display:grid; grid-template-columns: repeat(2,1fr); gap:10px; margin-top:8px }
+    .gallery img{ width:100%; height:180px; object-fit:cover; border-radius:14px; border:1px solid #efe6ff }
 
-    /* Mapa/acciones */
-    .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+    /* Footer */
+    .footer{ text-align:center; color:#7b6f9b; font-size:12px; padding:14px; background:linear-gradient(180deg,#fff, #f9f2ff) }
 
-    /* Reveal en scroll (con fallback) */
-    .reveal{opacity:1;transform:none;transition:opacity .6s ease, transform .6s ease}
-    .js .reveal{opacity:0;transform:translateY(16px)}
-    .js .reveal.in{opacity:1;transform:translateY(0)}
-
-    /* Prevención de saltos de teclado móvil */
-    @supports (height: 100svh){ section{height:100svh} }
+    /* Accesibilidad: menos movimiento */
+    @media (prefers-reduced-motion: reduce){
+      .petal{ animation: none; }
+    }
   </style>
 </head>
 <body>
-  <div class="app" id="app">
+  <div class="wrapper">
+    <article class="card" role="article" aria-label="Invitación de boda">
+      <!-- Fondo animado -->
+      <div class="bg" aria-hidden="true" id="bg"></div>
 
-    <!-- SLIDE 1 · HERO FULL -->
-    <section id="s1">
-      <div class="bg">
-        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1600&q=80" alt="Pareja" />
-        <div class="overlay"></div>
-      </div>
-      <div class="hearts" id="hearts"></div>
-      <div class="inner reveal">
-        <div class="over">SAVE THE DATE</div>
-        <h1 class="names">Daniel & Ana</h1>
-        <div class="date">Sábado · 20 de diciembre de 2025 · Bogotá</div>
-        <div>
-          <a class="btn" href="#s2">Ver detalles</a>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="crest" aria-hidden="true">
+          <!-- Monograma floral minimalista en SVG -->
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0%" stop-color="#b589ff"/>
+                <stop offset="100%" stop-color="#ffb3c1"/>
+              </linearGradient>
+            </defs>
+            <circle cx="60" cy="60" r="54" fill="url(#g)" opacity=".2"/>
+            <path d="M25,70 C30,45 55,30 80,40" fill="none" stroke="url(#g)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M80,40 q-8,10 -2,20 q12,16 -6,26" fill="none" stroke="url(#g)" stroke-width="3" stroke-linecap="round"/>
+            <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-family="Fraunces, serif" font-weight="700" font-size="28" fill="#3b2d61">D♥A</text>
+          </svg>
         </div>
-      </div>
-    </section>
 
-    <!-- SLIDE 2 · DETALLES con glass y galería -->
-    <section id="s2">
-      <div class="bg">
-        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1600&q=80" alt="Velas" />
-        <div class="overlay"></div>
-      </div>
-      <div class="inner reveal">
-        <div class="card">
-          <h2 class="h">La celebración</h2>
-          <p class="lead">Ceremonia y fiesta en <strong>Hacienda El Encanto – Bogotá</strong>. Ven con tu mejor sonrisa y ganas de bailar ✨</p>
-          <div class="actions">
-            <a class="btn" href="https://maps.app.goo.gl/xxxxxxxx" target="_blank" rel="noopener">Ubicación</a>
-            <a class="btn btn-outline" id="btnCalendar" href="#">Añadir al calendario</a>
+        <div class="subtitle">¡Nos casamos!</div>
+        <h1 class="names">Daniel <span class="amp">&</span> Ana</h1>
+        <div class="date" id="date-text">Sábado, 20 de diciembre de 2025 · 4:00 p.m.</div>
+        <div class="countdown" aria-live="polite" id="countdown">
+          <div class="dd"><strong id="d">0</strong><span>días</span></div>
+          <div class="dd"><strong id="h">0</strong><span>horas</span></div>
+          <div class="dd"><strong id="m">0</strong><span>min</span></div>
+          <div class="dd"><strong id="s">0</strong><span>seg</span></div>
+        </div>
+        <div class="actions" style="margin-top:18px">
+          <a id="btn-maps" class="btn btn--ghost" target="_blank" rel="noopener" href="https://maps.app.goo.gl/XXXXXXXX">Ver ubicación</a>
+          <a id="btn-rsvp" class="btn btn--brand" target="_blank" rel="noopener" href="#">Confirmar por WhatsApp</a>
+        </div>
+      </section>
+
+      <!-- DETALLES -->
+      <section class="section">
+        <h2>Detalles del día</h2>
+        <div class="grid">
+          <div class="tile">
+            <h3>Ceremonia</h3>
+            <p>Parroquia Nuestra Señora del Amor · 4:00 p.m.</p>
           </div>
-          <div class="gallery">
-            <img src="https://images.unsplash.com/photo-1514512364185-4c85787172e7?auto=format&fit=crop&w=800&q=80" alt="Ramo" loading="lazy"/>
-            <img src="https://images.unsplash.com/photo-1460364157752-926555421a7e?auto=format&fit=crop&w=800&q=80" alt="Torta" loading="lazy"/>
-            <img src="https://images.unsplash.com/photo-1484327973588-c31f829103fe?auto=format&fit=crop&w=800&q=80" alt="Luces" loading="lazy"/>
+          <div class="tile">
+            <h3>Recepción</h3>
+            <p>Hacienda Los Jazmines · 6:00 p.m. · Código de vestuario: <strong>Formal</strong></p>
+          </div>
+          <div class="tile">
+            <h3>Regalos</h3>
+            <p>Tu presencia es nuestro mejor regalo. Si deseas, puedes aportar a nuestra <a href="#" id="gift-link">lluvia de sobres</a> 💌</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 3 · CONTADOR y CTA -->
-    <section id="s3">
-      <div class="bg">
-        <img src="https://images.unsplash.com/photo-1520975618313-6c55e28708a5?auto=format&fit=crop&w=1600&q=80" alt="Mesa" />
-        <div class="overlay"></div>
-      </div>
-      <div class="inner reveal">
-        <h2 class="h">Cuenta regresiva</h2>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
-          <div class="card" style="min-width:88px"><div id="d" style="font-weight:800;font-size:32px">00</div><div class="lead">días</div></div>
-          <div class="card" style="min-width:88px"><div id="h" style="font-weight:800;font-size:32px">00</div><div class="lead">horas</div></div>
-          <div class="card" style="min-width:88px"><div id="m" style="font-weight:800;font-size:32px">00</div><div class="lead">min</div></div>
-          <div class="card" style="min-width:88px"><div id="s" style="font-weight:800;font-size:32px">00</div><div class="lead">seg</div></div>
+        <div class="actions">
+          <button id="btn-ics" class="btn btn--ghost" type="button">Agregar al calendario</button>
+          <button id="btn-share" class="btn btn--ghost" type="button">Compartir</button>
         </div>
-        <p class="lead" style="margin-top:10px">¡No podemos esperar para celebrarlo contigo!</p>
-      </div>
-    </section>
 
-  </div>
+        <!-- Galería opcional: reemplaza los src por tus fotos o elimina esta sección -->
+        <div class="gallery" aria-label="Galería de la pareja">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop" alt="Pareja feliz" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1485875437342-9b39470b3d95?q=80&w=1200&auto=format&fit=crop" alt="Flores y anillos" loading="lazy">
+        </div>
+      </section>
 
-  <!-- CTA FLOTANTE tipo app -->
-  <div class="ctaBar">
-    <a class="btn" id="btnRSVP" href="https://wa.me/573001112233?text=Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Daniel%20y%20Ana" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+      <footer class="footer">
+        Hecho con ♥ por los novios · #BodaDanielAna · <span id="year"></span>
+      </footer>
+    </article>
   </div>
 
   <script>
-    document.documentElement.classList.remove('no-js');
-    document.documentElement.classList.add('js');
+    /* ==================
+       CONFIGURACIÓN RÁPIDA (edita solo aquí)
+       ================== */
+    const INVITE = {
+      couple: { him: "Daniel", her: "Ana" },
+      // Usa tu fecha y hora local (Bogotá por defecto)
+      weddingISO: "2025-12-20T16:00:00-05:00",
+      place: {
+        label: "Parroquia Nuestra Señora del Amor",
+        maps: "https://maps.app.goo.gl/XXXXXXXX"
+      },
+      reception: { label: "Hacienda Los Jazmines", hour: "6:00 p.m." },
+      whatsapp: {
+        // Reemplaza con tu número en formato internacional sin signos (+57xxxxxxxxxx)
+        phone: "573001234567",
+        // Mensaje editable
+        text: "Hola, confirmo mi asistencia a la boda de Daniel & Ana. Somos ___ adultos y ___ niños."
+      },
+      hashtag: "#BodaDanielAna"
+    };
 
-    // ===== Corazones flotando (estilo TikTok) =====
-    const hearts = document.getElementById('hearts');
-    for(let i=0;i<30;i++){
-      const h=document.createElement('div');
-      h.className='heart';
-      const delay=(Math.random()*4).toFixed(2)+'s';
-      const dur=(10+Math.random()*10).toFixed(2)+'s';
-      h.style.left=Math.random()*100+'%';
-      h.style.setProperty('--x', Math.random()*100+'%');
-      h.style.animation=`rise ${dur} linear ${delay} infinite`;
-      h.style.opacity=(0.25+Math.random()*0.45).toFixed(2);
-      hearts.appendChild(h);
+    /* ==================
+       LÓGICA
+       ================== */
+    const $ = (sel) => document.querySelector(sel);
+
+    // Fecha visible
+    const date = new Date(INVITE.weddingISO);
+    const dateText = date.toLocaleDateString('es-CO', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    const timeText = date.toLocaleTimeString('es-CO', { hour:'numeric', minute:'2-digit' });
+    $('#date-text').textContent = `${capitalize(dateText)} · ${timeText}`;
+    function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+    // Cuenta regresiva
+    const refs = {d: $('#d'), h: $('#h'), m: $('#m'), s: $('#s')};
+    const tick = ()=>{
+      const now = new Date();
+      const diff = Math.max(0, date - now);
+      const sec = Math.floor(diff/1000);
+      const d = Math.floor(sec/86400);
+      const h = Math.floor((sec%86400)/3600);
+      const m = Math.floor((sec%3600)/60);
+      const s = Math.floor(sec%60);
+      refs.d.textContent = d; refs.h.textContent = h.toString().padStart(2,'0');
+      refs.m.textContent = m.toString().padStart(2,'0'); refs.s.textContent = s.toString().padStart(2,'0');
+    };
+    tick(); setInterval(tick, 1000);
+
+    // WhatsApp RSVP
+    const wa = (p, t) => `https://wa.me/${encodeURIComponent(p)}?text=${encodeURIComponent(t)}`;
+    $('#btn-rsvp').href = wa(INVITE.whatsapp.phone, INVITE.whatsapp.text);
+    $('#btn-maps').href = INVITE.place.maps;
+
+    // ICS (Agregar al calendario)
+    function pad(n){ return n.toString().padStart(2,'0'); }
+    function toICSDate(d){
+      // convierte a UTC YYYYMMDDTHHMMSSZ
+      const y = d.getUTCFullYear();
+      const mo = pad(d.getUTCMonth()+1);
+      const da = pad(d.getUTCDate());
+      const h = pad(d.getUTCHours());
+      const mi = pad(d.getUTCMinutes());
+      const s = pad(d.getUTCSeconds());
+      return `${y}${mo}${da}T${h}${mi}${s}Z`;
     }
-
-    // ===== Reveal simple =====
-    const io = 'IntersectionObserver' in window ? new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.2}) : null;
-    document.querySelectorAll('.reveal').forEach(el=> io?io.observe(el):el.classList.add('in'));
-
-    // ===== Contador =====
-    const EVENT_ISO_LOCAL='2025-12-20T15:00';
-    function update(){
-      const now=new Date(); const event=new Date(EVENT_ISO_LOCAL); let d=Math.max(0,event-now);
-      const days=Math.floor(d/86400000); d%=86400000; const hours=Math.floor(d/3600000); d%=3600000; const mins=Math.floor(d/60000); d%=60000; const secs=Math.floor(d/1000);
-      (document.getElementById('d')||{}).textContent=String(days).padStart(2,'0');
-      (document.getElementById('h')||{}).textContent=String(hours).padStart(2,'0');
-      (document.getElementById('m')||{}).textContent=String(mins).padStart(2,'0');
-      (document.getElementById('s')||{}).textContent=String(secs).padStart(2,'0');
-    } update(); setInterval(update,1000);
-
-    // ===== Calendario (.ics) =====
-    function pad(n){return String(n).padStart(2,'0')} function toICS(dt){return dt.getFullYear()+pad(dt.getMonth()+1)+pad(dt.getDate())+'T'+pad(dt.getHours())+pad(dt.getMinutes())+'00'}
-    document.getElementById('btnCalendar').addEventListener('click', (e)=>{
-      e.preventDefault(); const start=new Date(EVENT_ISO_LOCAL); const end=new Date(start.getTime()+5*3600000);
-      const ics=['BEGIN:VCALENDAR','VERSION:2.0','CALSCALE:GREGORIAN','PRODID:-//Invitacion Boda//ES','BEGIN:VEVENT','DTSTAMP:'+toICS(new Date()),'DTSTART:'+toICS(start),'DTEND:'+toICS(end),'SUMMARY:Boda de Daniel & Ana','LOCATION:Hacienda El Encanto – Bogotá','DESCRIPTION:¡Celebremos juntos!','END:VEVENT','END:VCALENDAR'].join('\r\n');
-      const url=URL.createObjectURL(new Blob([ics],{type:'text/calendar;charset=utf-8'})); const a=document.createElement('a'); a.href=url; a.download='Boda-Daniel-Ana.ics'; a.click(); setTimeout(()=>URL.revokeObjectURL(url),0);
+    $('#btn-ics').addEventListener('click',()=>{
+      const start = new Date(INVITE.weddingISO);
+      const end = new Date(start.getTime() + 4*60*60*1000); // +4h
+      const ICS = [
+        'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Invitacion Boda//ES','CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH','BEGIN:VEVENT',
+        `DTSTART:${toICSDate(start)}`,
+        `DTEND:${toICSDate(end)}`,
+        `SUMMARY:Boda de ${INVITE.couple.him} & ${INVITE.couple.her}`,
+        `LOCATION:${INVITE.place.label}`,
+        `DESCRIPTION:${INVITE.hashtag} — ${INVITE.place.label}`,
+        'END:VEVENT','END:VCALENDAR' 
+      ].join('\r\n');
+      const blob = new Blob([ICS], {type:'text/calendar'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'boda.ics'; a.click();
+      URL.revokeObjectURL(url);
     });
+
+    // Web Share API
+    $('#btn-share').addEventListener('click', async ()=>{
+      try{
+        if(navigator.share){
+          await navigator.share({title: document.title, text:`Te invitamos a nuestra boda ${INVITE.hashtag}`});
+        }else{
+          alert('Comparte este archivo por WhatsApp como documento para que conserve las animaciones.');
+        }
+      }catch(e){ console.log(e) }
+    });
+
+    // Año footer
+    $('#year').textContent = new Date().getFullYear();
+
+    // Genera pétalos animados (ligero)
+    const P = 18; // cantidad
+    const bg = document.getElementById('bg');
+    for(let i=0;i<P;i++){
+      const s = document.createElement('span');
+      s.className = 'petal';
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.animationDuration = (12 + Math.random()*10) + 's';
+      s.style.animationDelay = (Math.random()*-10) + 's';
+      s.style.opacity = (0.5 + Math.random()*0.4);
+      s.style.width = s.style.height = (12 + Math.random()*16) + 'px';
+      bg.appendChild(s);
+    }
   </script>
 </body>
 </html>
