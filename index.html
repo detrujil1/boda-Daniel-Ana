@@ -252,7 +252,8 @@
         'DTSTART:'+toICS(start),'DTEND:'+toICS(end),
         'SUMMARY:Boda de Daniel & Ana','LOCATION:Hacienda El Encanto – Bogotá',
         'DESCRIPTION:¡Celebremos juntos!','END:VEVENT','END:VCALENDAR'
-      ].join('\r\n');
+      ].join('
+');
       const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');
