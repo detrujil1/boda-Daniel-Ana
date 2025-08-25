@@ -1,147 +1,438 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invitación Daniel & Ana</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: url('https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-    /* Pantalla inicial */
-    #start-screen {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(255, 255, 255, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-    #play-btn {
-      background: #ffffffcc;
-      border: 2px solid #a67bd8;
-      color: #a67bd8;
-      font-size: 2rem;
-      padding: 20px 40px;
-      border-radius: 50px;
-      cursor: pointer;
-      font-family: 'Great Vibes', cursive;
-      transition: all 0.3s ease;
-    }
-    #play-btn:hover {
-      background: #a67bd8;
-      color: white;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boda — Invitación estilo TikTok (claro + música)</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fraunces:wght@600;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#faf7ff">
+<style>
+  :root{
+    /* Paleta clara */
+    --ink:#2a2440;
+    --muted:#6d6587;
+    --brand:#a77bff;
+    --brand2:#ffb3c1;
+    --panel:rgba(255,255,255,.65);
+    --card:rgba(255,255,255,.90);
+    --line:rgba(165,150,220,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:#faf7ff;
+    overflow:hidden; /* evitar rebotes en iOS */
+  }
 
-    /* Contenido invitación */
-    #invitation {
-      display: none;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.85);
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3rem;
-      margin: 0;
-      color: #a67bd8;
-    }
-    h2 {
-      margin: 10px 0;
-      color: #444;
-    }
-    .countdown {
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
-      gap: 15px;
-    }
-    .time-box {
-      background: #f5f0ff;
-      padding: 15px;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      color: #333;
-      min-width: 70px;
-    }
-    button {
-      margin-top: 15px;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px;
-      background: #a67bd8;
-      color: white;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #8a5fc7;
-    }
-  </style>
+  /* Estructura tipo TikTok: pantallas a 100dvh con scroll-snap */
+  .reel{
+    height:100dvh;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+  section.story{
+    position:relative;
+    height:100dvh;
+    width:100%;
+    scroll-snap-align:start;
+    display:grid;
+    place-items:center;
+    padding:20px;
+    isolation:isolate;
+  }
+
+  /* Fondo con imagen (se cambia en CONFIG) */
+  .bg{
+    position:absolute; inset:0;
+    background-position:center;
+    background-size:cover;
+    z-index:-2;
+    transform:scale(1.02);
+    will-change:transform;
+    filter:saturate(1.04) contrast(1.02);
+  }
+  /* Overlay aclarado para fotos */
+  .overlay{
+    position:absolute; inset:0; z-index:-1;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.60) 0%, rgba(255,255,255,.78) 55%, rgba(255,255,255,.92) 100%),
+      radial-gradient(60% 60% at 50% 20%, rgba(167,123,255,.16), transparent 60%);
+  }
+
+  /* Contenido central tipo “card” translúcida */
+  .card{
+    width:min(800px, 92vw);
+    border-radius:24px;
+    padding:clamp(16px, 3vw, 28px);
+    background:var(--card);
+    border:1px solid var(--line);
+    backdrop-filter:blur(8px);
+    box-shadow:0 20px 60px rgba(40,20,70,.10);
+    text-align:center;
+    animation:pop .6s ease both;
+  }
+  @keyframes pop{ from{transform:translateY(10px) scale(.98);opacity:.0} to{transform:none;opacity:1} }
+
+  .subtitle{ letter-spacing:.35em; text-transform:uppercase; color:var(--muted); font-weight:700; font-size:.8rem; }
+  .names{ font-family:"Great Vibes",cursive; font-size: clamp(42px, 8.5vw, 92px); line-height:1; margin:.2em 0 .1em; color:#2a2440 }
+  .amp{ font-family:"Fraunces",serif; color:var(--brand) }
+  .date{ font-family:"Fraunces",serif; font-weight:700; font-size: clamp(16px, 2.8vw, 22px); color:#3b2d61 }
+
+  /* Countdown */
+  .countdown{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; justify-content:center }
+  .dd{ min-width:78px; padding:10px 12px; border-radius:14px; background:#fff; border:1px solid var(--line) }
+  .dd strong{ display:block; font-size: clamp(18px, 3vw, 24px); font-weight:800; font-family:"Fraunces",serif; color:#2a2440 }
+  .dd span{ font-size:12px; color:var(--muted) }
+
+  /* Botones principales */
+  .actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:16px }
+  .btn{ appearance:none; border:none; cursor:pointer; padding:12px 16px; border-radius:999px; font-weight:700; font-size:14px; text-decoration:none; display:inline-flex; align-items:center; gap:8px }
+  .btn--brand{ background-image:linear-gradient(135deg,var(--brand),var(--brand2)); color:#2b2342 }
+  .btn--ghost{ background:#fff; color:#3b2d61; border:1px solid var(--line) }
+
+  /* Barra lateral estilo TikTok */
+  .sidebar{
+    position:absolute; right:10px; bottom:90px; display:flex; flex-direction:column; gap:14px; z-index:3;
+  }
+  .fab{
+    width:54px; height:54px; border-radius:50%;
+    display:grid; place-items:center; background:#fff;
+    border:1px solid var(--line);
+    cursor:pointer; user-select:none;
+    backdrop-filter:blur(6px);
+    transition:transform .15s ease, background .2s ease;
+    box-shadow:0 8px 20px rgba(40,20,70,.12)
+  }
+  .fab:active{ transform:scale(.97) }
+  .fab svg{ width:26px; height:26px; fill:#5a4f82 }
+
+  /* Disco musical girando cuando hay música */
+  .disc{
+    position:absolute; right:12px; bottom:270px;
+    width:46px; height:46px; border-radius:50%;
+    border:3px solid var(--line);
+    background:radial-gradient(circle at 40% 40%, #fff 0 12px, #ffdbe5 13px 20px, #ffffff 21px 22px, #ffffff00 23px);
+    filter:drop-shadow(0 6px 12px rgba(40,20,70,.10));
+    animation:spin 5s linear infinite;
+    display:none;
+  }
+  .disc.on{ display:block }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+
+  /* Etiquetas superiores (tipo “username / música”) */
+  .topbar{
+    position:absolute; left:14px; top:14px; right:14px; display:flex; justify-content:space-between; align-items:center; gap:10px;
+    color:#4c426c; font-size:12px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+    background:var(--panel); border:1px solid var(--line); backdrop-filter:blur(6px);
+  }
+  .avatar{ width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,var(--brand),var(--brand2)); display:inline-block }
+
+  /* Siguientes secciones */
+  .grid{ display:grid; gap:16px; grid-template-columns:1fr; }
+  @media(min-width:760px){ .grid{ grid-template-columns:repeat(3,1fr);} }
+  .tile{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px; padding:16px; text-align:left;
+  }
+  .tile h3{ margin:0 0 6px; font-size:16px; color:#3b2d61 }
+  .tile p{ margin:0; color:#5d5678; font-size:14px }
+
+  .footer{
+    position:absolute; bottom:10px; left:0; right:0; text-align:center; font-size:12px; color:#6c628b;
+  }
+
+  /* Pétalos sutiles */
+  .petal{ position:absolute; top:-10vh; width:14px; height:14px; opacity:.6; filter:blur(.2px);
+    background: radial-gradient(circle at 30% 30%, #fff 0 40%, #ffd6e2 41% 100%);
+    transform: rotate(45deg); border-radius: 4px 16px 16px 16px; animation: fall linear infinite;
+    z-index:0;
+  }
+  @keyframes fall{ to{ transform:translateY(120vh) rotate(405deg) } }
+
+  /* “Páginas” (si agregas s3, hereda estilos) */
+  .s2 .card, .s3 .card{ background:var(--card); }
+</style>
 </head>
 <body>
-  <!-- Pantalla inicial -->
-  <div id="start-screen">
-    <button id="play-btn">▶ Iniciar</button>
-  </div>
+  <main class="reel" id="reel">
+    <!-- ====== PANTALLA 1 (Hero) ====== -->
+    <section class="story s1">
+      <div class="bg" id="bg1"></div>
+      <div class="overlay"></div>
 
-  <!-- Invitación -->
-  <div id="invitation">
-    <h2>¡Nos Casamos!</h2>
-    <h1>Daniel & Ana</h1>
-    <h2>Sábado, 20 de diciembre de 2025 - 4:00 p.m.</h2>
+      <div class="topbar">
+        <span class="badge"><span class="avatar"></span> @Daniel&Ana · Invitación</span>
+        <span class="badge">♪ Love Theme · Piano</span>
+      </div>
 
-    <div class="countdown">
-      <div class="time-box"><span id="days">0</span><br>días</div>
-      <div class="time-box"><span id="hours">0</span><br>horas</div>
-      <div class="time-box"><span id="minutes">0</span><br>min</div>
-      <div class="time-box"><span id="seconds">0</span><br>seg</div>
-    </div>
+      <!-- Barra lateral: música (play/pausa + mute), RSVP ÚNICO, compartir -->
+      <aside class="sidebar">
+        <button class="fab" id="fab-music" title="Reproducir/Pausar música" aria-label="Reproducir o pausar música">
+          <!-- icono play por defecto -->
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="fab" id="fab-mute" title="Silenciar/Restaurar" aria-label="Silenciar o restaurar volumen">
+          <!-- icono volumen on -->
+          <svg viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12zm0-8a8.5 8.5 0 010 17v-2a6.5 6.5 0 000-13V4z"/></svg>
+        </button>
+        <a class="fab" id="fab-rsvp" href="#" target="_blank" rel="noopener" title="Confirmar asistencia" aria-label="Confirmar asistencia">
+          <!-- único botón de confirmación -->
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5z"/></svg>
+        </a>
+        <button class="fab" id="fab-share" title="Compartir" aria-label="Compartir">
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.05-4.11A2.99 2.99 0 0018 7.91c1.66 0 3-1.35 3-3.01A3 3 0 0018 2a3 3 0 00-3 2.9L7.95 9.02a3 3 0 100 5.96l7.05 4.11A3 3 0 0018 22a3 3 0 000-5.92z"/></svg>
+        </button>
+      </aside>
+      <div class="disc" id="disc" aria-hidden="true"></div>
 
-    <button onclick="window.open('https://maps.google.com','_blank')">📍 Ver ubicación</button>
-    <button onclick="alert('¡Gracias por confirmar tu asistencia!')">✔ Confirmar</button>
-  </div>
+      <div class="card">
+        <div class="subtitle">¡Nos casamos!</div>
+        <h1 class="names" id="names">Daniel <span class="amp">&</span> Ana</h1>
+        <div class="date" id="date-text">Sábado, 20 de diciembre de 2025 · 4:00 p.m.</div>
+        <div class="countdown" aria-live="polite" id="countdown">
+          <div class="dd"><strong id="d">0</strong><span>días</span></div>
+          <div class="dd"><strong id="h">0</strong><span>horas</span></div>
+          <div class="dd"><strong id="m">0</strong><span>min</span></div>
+          <div class="dd"><strong id="s">0</strong><span>seg</span></div>
+        </div>
+        <div class="actions" style="margin-top:16px">
+          <a id="btn-maps" class="btn btn--ghost" target="_blank" rel="noopener" href="https://maps.app.goo.gl/XXXXXXXX">Ver ubicación</a>
+          <!-- Eliminado: botón duplicado de RSVP en la card -->
+        </div>
+      </div>
 
-  <audio id="bg-music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7cfec7bfc4.mp3?filename=romantic-piano-112191.mp3" type="audio/mpeg">
-  </audio>
+      <div id="petals"></div>
+      <div class="footer">Desliza hacia arriba ↑</div>
+    </section>
 
-  <script>
-    const playBtn = document.getElementById('play-btn');
-    const startScreen = document.getElementById('start-screen');
-    const invitation = document.getElementById('invitation');
-    const music = document.getElementById('bg-music');
+    <!-- ====== PANTALLA 2 (Detalles) ====== -->
+    <section class="story s2">
+      <div class="bg" id="bg2"></div>
+      <div class="overlay"></div>
 
-    playBtn.addEventListener('click', () => {
-      music.play();
-      startScreen.style.display = 'none';
-      invitation.style.display = 'block';
-    });
+      <div class="card">
+        <h2 class="names" style="font-size:clamp(28px,6vw,54px);margin:.1em 0 .4em">Detalles del día</h2>
+        <div class="grid">
+          <div class="tile">
+            <h3>Ceremonia</h3>
+            <p id="ceremony">Parroquia Nuestra Señora del Amor · 4:00 p.m.</p>
+          </div>
+          <div class="tile">
+            <h3>Recepción</h3>
+            <p id="reception">Hacienda Los Jazmines · 6:00 p.m. · <strong>Código: Formal</strong></p>
+          </div>
+          <div class="tile">
+            <h3>Regalos</h3>
+            <p>Tu presencia es nuestro mejor regalo. Si deseas, puedes aportar a nuestra <em>lluvia de sobres</em> 💌</p>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:18px">
+          <button id="btn-ics" class="btn btn--ghost" type="button">Agregar al calendario</button>
+          <button id="btn-share2" class="btn btn--ghost" type="button">Compartir</button>
+        </div>
+      </div>
+      <div class="footer">Hecho con ♥ — #BodaDanielAna</div>
+    </section>
+  </main>
 
-    // Contador regresivo
-    const eventDate = new Date("Dec 20, 2025 16:00:00").getTime();
-    setInterval(() => {
-      const now = new Date().getTime();
-      const distance = eventDate - now;
+<!-- Audio controlado por los botones -->
 
-      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
-    }, 1000);
-  </script>
+<!-- Audio controlado por los botones -->
+<audio id="bg-music" preload="auto" loop>
+  <source src="il divo hasta mi final VIDEO OFICIAL HD - Machisga.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Pantalla de bienvenida para reproducir la música -->
+<div id="welcome-overlay" style="position:fixed;z-index:9999;inset:0;background:rgba(255,255,255,0.98);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+  <h2 style="font-family:'Great Vibes',cursive;font-size:2.5em;color:#a77bff;margin-bottom:0.5em;">¡Bienvenido!</h2>
+  <p style="font-size:1.2em;color:#2a2440;margin-bottom:1.5em;max-width:400px;">Para vivir la experiencia completa, por favor reproduce la canción antes de ver la invitación.</p>
+  <button id="start-music-btn" style="background:linear-gradient(135deg,#a77bff,#ffb3c1);color:#fff;font-size:1.1em;padding:0.8em 2em;border:none;border-radius:999px;cursor:pointer;font-family:Montserrat,sans-serif;font-weight:700;box-shadow:0 4px 16px rgba(167,123,255,0.12);margin-bottom:1.2em;">Reproducir canción y ver invitación</button>
+  <div style="font-size:0.95em;color:#6d6587;">Canción: Hasta mi final — Il Divo</div>
+</div>
+
+<script>
+// Pantalla de bienvenida y control de inicio de música
+const welcomeOverlay = document.getElementById('welcome-overlay');
+const startMusicBtn = document.getElementById('start-music-btn');
+const audio = document.getElementById('bg-music');
+if (welcomeOverlay && startMusicBtn && audio) {
+  document.body.style.overflow = 'hidden';
+  startMusicBtn.addEventListener('click', async () => {
+    try {
+      await audio.play();
+    } catch (e) {}
+    welcomeOverlay.style.display = 'none';
+    document.body.style.overflow = '';
+    // Si tienes un control visual de play, actualízalo:
+    if (typeof iconPause === 'function') iconPause();
+    if (typeof disc !== 'undefined') disc.classList.add('on');
+    window.playing = true;
+  });
+}
+  /* ========== CONFIG (edita aquí) ========== */
+  const INVITE = {
+    couple: { him: "Daniel", her: "Ana" },
+    weddingISO: "2025-12-20T16:00:00-05:00",
+    place: {
+      label: "Parroquia Nuestra Señora del Amor",
+      maps: "https://maps.app.goo.gl/XXXXXXXX"
+    },
+    reception: { label: "Hacienda Los Jazmines", hour: "6:00 p.m.", dress: "Formal" },
+    whatsapp: {
+      phone: "573001234567", // +57xxxxxxxxxx
+      text: "Hola, confirmo mi asistencia a la boda de Daniel & Ana. Somos ___ adultos y ___ niños."
+    },
+    /* Imágenes de fondo por sección (puedes cambiarlas por las tuyas) */
+    backgrounds: [
+      "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1600&auto=format&fit=crop", // hero romántico
+      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop"  // flores/anillos
+    ],
+    hashtag: "#BodaDanielAna"
+  };
+
+  /* ======== Setup fondos ======== */
+  document.getElementById("bg1").style.backgroundImage = `url('${INVITE.backgrounds[0]}')`;
+  document.getElementById("bg2").style.backgroundImage = `url('${INVITE.backgrounds[1]}')`;
+
+  /* ======== Texto y enlaces ======== */
+  const date = new Date(INVITE.weddingISO);
+  const dText = date.toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const tText = date.toLocaleTimeString('es-CO',{hour:'numeric',minute:'2-digit'});
+  document.getElementById("date-text").textContent = cap(dText) + " · " + tText;
+
+  const wa = (p,t)=>`https://wa.me/${encodeURIComponent(p)}?text=${encodeURIComponent(t)}`;
+  const rsvpLink = wa(INVITE.whatsapp.phone, INVITE.whatsapp.text);
+
+  // ÚNICO botón de confirmación
+  document.getElementById("fab-rsvp").href = rsvpLink;
+
+  // Mapa
+  document.getElementById("btn-maps").href = INVITE.place.maps;
+
+  // Detalles
+  document.getElementById("ceremony").textContent = `${INVITE.place.label} · ${tText}`;
+  document.getElementById("reception").innerHTML = `${INVITE.reception.label} · ${INVITE.reception.hour} · <strong>Código: ${INVITE.reception.dress}</strong>`;
+
+  function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+  function $(s){ return document.querySelector(s); }
+
+  /* ======== Countdown ======== */
+  const refs = {d:$("#d"),h:$("#h"),m:$("#m"),s:$("#s")};
+  function tick(){
+    const now=new Date();
+    const diff=Math.max(0,date-now);
+    const sec=Math.floor(diff/1000);
+    const d=Math.floor(sec/86400);
+    const h=Math.floor((sec%86400)/3600);
+    const m=Math.floor((sec%3600)/60);
+    const s=Math.floor(sec%60);
+    refs.d.textContent=d;
+    refs.h.textContent=h.toString().padStart(2,'0');
+    refs.m.textContent=m.toString().padStart(2,'0');
+    refs.s.textContent=s.toString().padStart(2,'0');
+  }
+  tick(); setInterval(tick,1000);
+
+  /* ======== Compartir (Web Share) ======== */
+  function handleShare(){
+    if(navigator.share){
+      navigator.share({title:document.title, text:`Te invitamos a nuestra boda ${INVITE.hashtag}`});
+    }else{
+      alert("Comparte este archivo por WhatsApp como Documento para conservar animaciones.");
+    }
+  }
+  $("#fab-share").addEventListener("click", handleShare);
+  $("#btn-share2").addEventListener("click", handleShare);
+
+  /* ======== ICS (Agregar al calendario) ======== */
+  $("#btn-ics").addEventListener("click",()=>{
+    const start = new Date(INVITE.weddingISO);
+    const end   = new Date(start.getTime()+4*60*60*1000);
+    const ICS = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Invitacion Boda//ES','CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH','BEGIN:VEVENT',
+      `DTSTART:${toICS(start)}`,
+      `DTEND:${toICS(end)}`,
+      `SUMMARY:Boda de ${INVITE.couple.him} & ${INVITE.couple.her}`,
+      `LOCATION:${INVITE.place.label}`,
+      `DESCRIPTION:${INVITE.hashtag} — ${INVITE.place.label}`,
+      'END:VEVENT','END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ICS],{type:'text/calendar'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='boda.ics'; a.click();
+    URL.revokeObjectURL(url);
+  });
+  function toICS(d){
+    const pad=n=>n.toString().padStart(2,'0');
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
+  }
+
+  /* ======== Música (play/pausa + mute con disco) ======== */
+  // const audio = $("#bg-music"); // Ya está arriba para el overlay
+  const fabPlay = $("#fab-music");
+  const fabMute = $("#fab-mute");
+  const disc = $("#disc");
+  let playing = typeof window.playing !== 'undefined' ? window.playing : false, muted = false;
+
+  function iconPlay(){ fabPlay.innerHTML='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'; }
+  function iconPause(){ fabPlay.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>'; }
+  function iconVolOn(){ fabMute.innerHTML='<svg viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 00-2.5-4.03v8.06A4.5 4.5 0 0016.5 12zm0-8a8.5 8.5 0 010 17v-2a6.5 6.5 0 000-13V4z"/></svg>'; }
+  function iconVolOff(){ fabMute.innerHTML='<svg viewBox="0 0 24 24"><path d="M16.5 12a4.5 4.5 0 01-2.5 4.03V7.97A4.5 4.5 0 0116.5 12zM3 10v4h4l5 5V5L7 10H3zm13.59-6L12 8.59 9.41 6 8 7.41 10.59 10 8 12.59 9.41 14 12 11.41 14.59 14 16 12.59 13.41 10 16 7.41 14.59 6z"/></svg>'; }
+
+  iconPlay(); iconVolOn();
+
+  fabPlay.addEventListener('click', async ()=>{
+    try{
+      if(!playing){
+        await audio.play();
+        playing = true;
+        disc.classList.add('on');
+        iconPause();
+      }else{
+        audio.pause();
+        playing = false;
+        disc.classList.remove('on');
+        iconPlay();
+      }
+    }catch(e){
+      alert('Toca de nuevo para activar el audio.');
+    }
+  });
+
+  fabMute.addEventListener('click', ()=>{
+    muted = !muted;
+    audio.muted = muted;
+    muted ? iconVolOff() : iconVolOn();
+  });
+
+  /* ======== Pétalos ======== */
+  const petals = document.getElementById("petals");
+  for(let i=0;i<18;i++){
+    const p=document.createElement('span');
+    p.className='petal';
+    p.style.left = Math.random()*100+'vw';
+    p.style.animationDuration=(12+Math.random()*10)+'s';
+    p.style.animationDelay=(Math.random()*-10)+'s';
+    p.style.width = p.style.height = (10+Math.random()*16)+'px';
+    petals.appendChild(p);
+  }
+
+  /* ======== Suavidad scroll ======== */
+  const reel=document.getElementById('reel');
+  let locked=false;
+  reel.addEventListener('wheel',e=>{
+    if(locked) return;
+    locked=true;
+    setTimeout(()=>locked=false,350);
+  }, {passive:true});
+</script>
 </body>
 </html>
