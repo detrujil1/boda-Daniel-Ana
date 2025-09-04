@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boda — Invitación estilo TikTok</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fraunces:wght@600;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0d0b12">
+<style>
+  :root{
+    --ink:#f8f7ff;
+    --muted:#cfc7ff;
+    --brand:#b589ff;
+    --brand2:#ffb3c1;
+    --panel:rgba(0,0,0,.35);
+    --card:rgba(255,255,255,.1);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:#0d0b12;
+    overflow: hidden; /* evitamos rebotes en iOS */
+  }
+
+  /* Estructura tipo TikTok: pantallas a 100dvh con scroll-snap */
+  .reel{
+    height:100dvh;
+    overflow-y:auto;
+    scroll-snap-type:y mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+  section.story{
+    position:relative;
+    height:100dvh;
+    width:100%;
+    scroll-snap-align:start;
+    display:grid;
+    place-items:center;
+    padding:20px;
+    isolation:isolate;
+  }
+
+  /* Fondo con imagen (se cambia en CONFIG) */
+  .bg{
+    position:absolute; inset:0;
+    background-position:center;
+    background-size:cover;
+    z-index:-2;
+    transform:scale(1.02);
+    will-change:transform;
+    filter:saturate(1.05) contrast(1.02);
+  }
+  .overlay{
+    position:absolute; inset:0; z-index:-1;
+    background:
+      linear-gradient(180deg, rgba(13,11,18,.25) 0%, rgba(13,11,18,.55) 55%, rgba(13,11,18,.85) 100%),
+      radial-gradient(60% 60% at 50% 20%, rgba(181,137,255,.30), transparent 60%);
+  }
+
+  /* Contenido central tipo “card” translúcida */
+  .card{
+    width:min(800px, 92vw);
+    border-radius:24px;
+    padding:clamp(16px, 3vw, 28px);
+    background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(8px);
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    text-align:center;
+    animation:pop .6s ease both;
+  }
+  @keyframes pop{ from{transform:translateY(10px) scale(.98);opacity:.0} to{transform:none;opacity:1} }
+
+  .subtitle{ letter-spacing:.35em; text-transform:uppercase; color:var(--muted); font-weight:700; font-size:.8rem; }
+  .names{ font-family:"Great Vibes",cursive; font-size: clamp(42px, 8.5vw, 92px); line-height:1; margin:.2em 0 .1em }
+  .amp{ font-family:"Fraunces",serif; color:var(--brand2) }
+  .date{ font-family:"Fraunces",serif; font-weight:700; font-size: clamp(16px, 2.8vw, 22px); color:#efe9ff }
+
+  /* Countdown */
+  .countdown{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; justify-content:center }
+  .dd{ min-width:78px; padding:10px 12px; border-radius:14px; background:var(--card); border:1px solid rgba(255,255,255,.18) }
+  .dd strong{ display:block; font-size: clamp(18px, 3vw, 24px); font-weight:800; font-family:"Fraunces",serif }
+  .dd span{ font-size:12px; color:#ddd5ff }
+
+  /* Botones principales */
+  .actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:16px }
+  .btn{ appearance:none; border:none; cursor:pointer; padding:12px 16px; border-radius:999px; font-weight:700; font-size:14px; text-decoration:none; display:inline-flex; align-items:center; gap:8px }
+  .btn--brand{ background-image:linear-gradient(135deg,var(--brand),var(--brand2)); color:#2b2342 }
+  .btn--ghost{ background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.2) }
+
+  /* Barra lateral estilo TikTok */
+  .sidebar{
+    position:absolute; right:10px; bottom:90px; display:flex; flex-direction:column; gap:14px; z-index:3;
+  }
+  .fab{
+    width:54px; height:54px; border-radius:50%;
+    display:grid; place-items:center; background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.25);
+    cursor:pointer; user-select:none;
+    backdrop-filter:blur(6px);
+    transition:transform .15s ease;
+  }
+  .fab:active{ transform:scale(.97) }
+  .fab svg{ width:26px; height:26px; fill:#fff }
+
+  /* Etiquetas superiores (tipo “username / música”) */
+  .topbar{
+    position:absolute; left:14px; top:14px; right:14px; display:flex; justify-content:space-between; align-items:center; gap:10px;
+    color:#fff; font-size:12px; text-shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+    background:var(--panel); border:1px solid rgba(255,255,255,.2); backdrop-filter:blur(6px);
+  }
+  .avatar{ width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,var(--brand),var(--brand2)); display:inline-block }
+
+  /* Siguientes secciones */
+  .grid{
+    display:grid; gap:16px;
+    grid-template-columns:1fr;
+  }
+  @media(min-width:760px){ .grid{ grid-template-columns:repeat(3,1fr);} }
+
+  .tile{
+    background:var(--card);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:18px; padding:16px; text-align:left;
+  }
+  .tile h3{ margin:0 0 6px; font-size:16px; color:#f3ecff }
+  .tile p{ margin:0; color:#dbd3ff; font-size:14px }
+
+  .footer{
+    position:absolute; bottom:10px; left:0; right:0; text-align:center; font-size:12px; color:#d9d2ff80;
+  }
+
+  /* Pétalos sutiles */
+  .petal{ position:absolute; top:-10vh; width:14px; height:14px; opacity:.6; filter:blur(.2px);
+    background: radial-gradient(circle at 30% 30%, #fff 0 40%, #ffd6e2 41% 100%);
+    transform: rotate(45deg); border-radius: 4px 16px 16px 16px; animation: fall linear infinite;
+    z-index:0;
+  }
+  @keyframes fall{ to{ transform:translateY(120vh) rotate(405deg) } }
+
+  /* “Páginas” */
+  .s2 .card, .s3 .card{ background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.08)); }
+</style>
+</head>
+<body>
+  <main class="reel" id="reel">
+    <!-- ====== PANTALLA 1 (Hero) ====== -->
+    <section class="story s1">
+      <div class="bg" id="bg1"></div>
+      <div class="overlay"></div>
+
+      <div class="topbar">
+        <span class="badge"><span class="avatar"></span> @Daniel&Ana · Invitación</span>
+        <span class="badge">♪ Love Theme · Piano</span>
+      </div>
+
+      <!-- Barra lateral estilo TikTok -->
+      <aside class="sidebar">
+        <button class="fab" title="Me gusta" aria-label="Me gusta">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-6.716-4.27-9.333-7.2C.758 11.64.5 8.7 2.4 6.8c1.9-1.9 4.6-1.3 6 0C9.8 5.5 12 5.3 13.6 6.8c1.6 1.5 1.9 4.3-.6 7-2.5 2.7-1 1-1 1z"/></svg>
+        </button>
+        <a class="fab" id="fab-rsvp" href="#" target="_blank" rel="noopener" title="RSVP WhatsApp" aria-label="RSVP WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.94 14.49L2 22l5.7-1.99A10 10 0 1012 2zm-1.07 5.7c.2-.45.33-.46.64-.46h.54c.17 0 .44.06.66.32.22.25.85.83.85 2s-.88 2.3-1 .49c-.12-.2-.24-.2-.44-.2s-.45.06-.7.29c-.25.22-.86.84-.86 2 0 1.17.87 2.3 1 2.46.12.16 1.72 2.73 4.24 3.72 2.1.83 2.53.74 2.98.69.46-.04 1.48-.6 1.69-1.18.2-.58.2-1.08.14-1.18-.07-.1-.22-.16-.46-.28-.24-.12-1.48-.73-1.71-.82-.24-.08-.41-.12-.59.12-.17.24-.68.82-.84.99-.17.16-.31.18-.57.06-1.56-.64-2.55-1.98-2.7-2.19-.15-.22-.03-.34.1-.46.14-.12.32-.34.47-.52.16-.18.21-.28.31-.48.1-.2.05-.37-.02-.52-.07-.16-.59-1.39-.83-1.9-.22-.5-.48-.43-.66-.43h-.56c-.18 0-.44.06-.66.32-.22.25-.86.84-.86 2 0 1.17.87 2.3 1 2.46"/></svg>
+        </a>
+        <button class="fab" id="fab-share" title="Compartir" aria-label="Compartir">
+          <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.05-4.11A2.99 2.99 0 0018 7.91c1.66 0 3-1.35 3-3.01A3 3 0 0018 2a3 3 0 00-3 2.9L7.95 9.02a3 3 0 100 5.96l7.05 4.11A3 3 0 0018 22a3 3 0 000-5.92z"/></svg>
+        </button>
+      </aside>
+
+      <div class="card">
+        <div class="subtitle">¡Nos casamos!</div>
+        <h1 class="names" id="names">Daniel <span class="amp">&</span> Ana</h1>
+        <div class="date" id="date-text">Sábado, 20 de diciembre de 2025 · 4:00 p.m.</div>
+        <div class="countdown" aria-live="polite" id="countdown">
+          <div class="dd"><strong id="d">0</strong><span>días</span></div>
+          <div class="dd"><strong id="h">0</strong><span>horas</span></div>
+          <div class="dd"><strong id="m">0</strong><span>min</span></div>
+          <div class="dd"><strong id="s">0</strong><span>seg</span></div>
+        </div>
+        <div class="actions" style="margin-top:16px">
+          <a id="btn-maps" class="btn btn--ghost" target="_blank" rel="noopener" href="https://maps.app.goo.gl/XXXXXXXX">Ver ubicación</a>
+          <a id="btn-rsvp" class="btn btn--brand" target="_blank" rel="noopener" href="#">Confirmar por WhatsApp</a>
+        </div>
+      </div>
+
+      <div id="petals"></div>
+      <div class="footer">Desliza hacia arriba ↑</div>
+    </section>
+
+    <!-- ====== PANTALLA 2 (Detalles) ====== -->
+    <section class="story s2">
+      <div class="bg" id="bg2"></div>
+      <div class="overlay"></div>
+
+      <div class="card">
+        <h2 class="names" style="font-size:clamp(28px,6vw,54px);margin:.1em 0 .4em">Detalles del día</h2>
+        <div class="grid">
+          <div class="tile">
+            <h3>Ceremonia</h3>
+            <p id="ceremony">Parroquia Nuestra Señora del Amor · 4:00 p.m.</p>
+          </div>
+          <div class="tile">
+            <h3>Recepción</h3>
+            <p id="reception">Hacienda Los Jazmines · 6:00 p.m. · <strong>Código: Formal</strong></p>
+          </div>
+          <div class="tile">
+            <h3>Regalos</h3>
+            <p>Tu presencia es nuestro mejor regalo. Si deseas, puedes aportar a nuestra <em>lluvia de sobres</em> 💌</p>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:18px">
+          <button id="btn-ics" class="btn btn--ghost" type="button">Agregar al calendario</button>
+          <button id="btn-share2" class="btn btn--ghost" type="button">Compartir</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== PANTALLA 3 (Mapa y cierre) ====== -->
+    <section class="story s3">
+      <div class="bg" id="bg3"></div>
+      <div class="overlay"></div>
+
+      <div class="card">
+        <h2 class="names" style="font-size:clamp(28px,6vw,54px);margin:.1em 0 .4em">¡Te esperamos!</h2>
+        <p style="color:#efe9ff;max-width:740px;margin:0 auto 12px">Confirma tu asistencia para organizarlo todo con amor. Si necesitas alojamiento o taxi, cuéntanos por WhatsApp.</p>
+        <div class="actions">
+          <a id="btn-maps2" class="btn btn--ghost" target="_blank" rel="noopener" href="#">Cómo llegar</a>
+          <a id="btn-rsvp2" class="btn btn--brand" target="_blank" rel="noopener" href="#">Confirmar por WhatsApp</a>
+        </div>
+      </div>
+      <div class="footer">Hecho con ♥ — #BodaDanielAna</div>
+    </section>
+  </main>
+
+<script>
+  /* ========== CONFIG (edita aquí) ========== */
+  const INVITE = {
+    couple: { him: "Daniel", her: "Ana" },
+    weddingISO: "2025-12-20T16:00:00-05:00",
+    place: {
+      label: "Parroquia Nuestra Señora del Amor",
+      maps: "https://maps.app.goo.gl/XXXXXXXX"
+    },
+    reception: { label: "Hacienda Los Jazmines", hour: "6:00 p.m.", dress: "Formal" },
+    whatsapp: {
+      phone: "573001234567", // +57xxxxxxxxxx
+      text: "Hola, confirmo mi asistencia a la boda de Daniel & Ana. Somos ___ adultos y ___ niños."
+    },
+    /* Imágenes de fondo por sección (puedes cambiarlas por las tuyas) */
+    backgrounds: [
+      "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1600&auto=format&fit=crop", // hero romántico
+      "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop", // flores/anillos
+      "https://images.unsplash.com/photo-1497302347632-904729bc24aa?q=80&w=1600&auto=format&fit=crop"  // atardecer
+    ],
+    hashtag: "#BodaDanielAna"
+  };
+
+  /* ======== Setup fondos ======== */
+  document.getElementById("bg1").style.backgroundImage = `url('${INVITE.backgrounds[0]}')`;
+  document.getElementById("bg2").style.backgroundImage = `url('${INVITE.backgrounds[1]}')`;
+  document.getElementById("bg3").style.backgroundImage = `url('${INVITE.backgrounds[2]}')`;
+
+  /* ======== Texto y enlaces ======== */
+  const date = new Date(INVITE.weddingISO);
+  const dText = date.toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const tText = date.toLocaleTimeString('es-CO',{hour:'numeric',minute:'2-digit'});
+  document.getElementById("date-text").textContent = cap(dText) + " · " + tText;
+
+  const wa = (p,t)=>`https://wa.me/${encodeURIComponent(p)}?text=${encodeURIComponent(t)}`;
+  const rsvpLink = wa(INVITE.whatsapp.phone, INVITE.whatsapp.text);
+
+  document.getElementById("btn-rsvp").href = rsvpLink;
+  document.getElementById("btn-maps").href = INVITE.place.maps;
+
+  document.getElementById("btn-rsvp2").href = rsvpLink;
+  document.getElementById("btn-maps2").href = INVITE.place.maps;
+
+  document.getElementById("fab-rsvp").href = rsvpLink;
+
+  document.getElementById("ceremony").textContent = `${INVITE.place.label} · ${tText}`;
+  document.getElementById("reception").innerHTML = `${INVITE.reception.label} · ${INVITE.reception.hour} · <strong>Código: ${INVITE.reception.dress}</strong>`;
+
+  function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+
+  /* ======== Countdown ======== */
+  const refs = {d:$("#d"),h:$("#h"),m:$("#m"),s:$("#s")};
+  function tick(){
+    const now=new Date();
+    const diff=Math.max(0,date-now);
+    const sec=Math.floor(diff/1000);
+    const d=Math.floor(sec/86400);
+    const h=Math.floor((sec%86400)/3600);
+    const m=Math.floor((sec%3600)/60);
+    const s=Math.floor(sec%60);
+    refs.d.textContent=d;
+    refs.h.textContent=h.toString().padStart(2,'0');
+    refs.m.textContent=m.toString().padStart(2,'0');
+    refs.s.textContent=s.toString().padStart(2,'0');
+  }
+  tick(); setInterval(tick,1000);
+
+  /* ======== Compartir (Web Share) ======== */
+  function handleShare(){
+    if(navigator.share){
+      navigator.share({title:document.title, text:`Te invitamos a nuestra boda ${INVITE.hashtag}`});
+    }else{
+      alert("Comparte este archivo por WhatsApp como Documento para conservar animaciones.");
+    }
+  }
+  $("#fab-share").addEventListener("click", handleShare);
+  $("#btn-share2").addEventListener("click", handleShare);
+
+  /* ======== ICS (Agregar al calendario) ======== */
+  $("#btn-ics").addEventListener("click",()=>{
+    const start = new Date(INVITE.weddingISO);
+    const end   = new Date(start.getTime()+4*60*60*1000);
+    const ICS = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Invitacion Boda//ES','CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH','BEGIN:VEVENT',
+      `DTSTART:${toICS(start)}`,
+      `DTEND:${toICS(end)}`,
+      `SUMMARY:Boda de ${INVITE.couple.him} & ${INVITE.couple.her}`,
+      `LOCATION:${INVITE.place.label}`,
+      `DESCRIPTION:${INVITE.hashtag} — ${INVITE.place.label}`,
+      'END:VEVENT','END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ICS],{type:'text/calendar'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='boda.ics'; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  function toICS(d){
+    const pad=n=>n.toString().padStart(2,'0');
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
+  }
+  function $(s){ return document.querySelector(s); }
+
+  /* ======== Pétalos ======== */
+  const petals = document.getElementById("petals");
+  for(let i=0;i<18;i++){
+    const p=document.createElement('span');
+    p.className='petal';
+    p.style.left = Math.random()*100+'vw';
+    p.style.animationDuration=(12+Math.random()*10)+'s';
+    p.style.animationDelay=(Math.random()*-10)+'s';
+    p.style.width = p.style.height = (10+Math.random()*16)+'px';
+    petals.appendChild(p);
+  }
+
+  /* ======== Suavidad scroll ======== */
+  const reel=document.getElementById('reel');
+  let locked=false;
+  reel.addEventListener('wheel',e=>{
+    if(locked) return;
+    locked=true;
+    setTimeout(()=>locked=false,350);
+  }, {passive:true});
+</script>
+</body>
+</html>

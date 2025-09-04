@@ -41,10 +41,13 @@
 		animateWords('.subtitle');
 		animateWords('.names');
 		animateWords('#date-text');
-		// animate the invitation lines word-by-word
-		// animate the invitation lines word-by-word in cascade (invite-note after invite-text completes)
+		// animate the invitation lines word-by-word (invite-note after invite-text completes)
 		const inviteCount = animateWords('.invite-text', 600) || 0;
-		setTimeout(()=> animateWords('.invite-note', 600), (inviteCount * 600) + 300);
+		setTimeout(()=>{
+			// animate invite-note with a slightly faster cadence for readability
+			const noteWords = animateWords('.invite-note', 380) || 0;
+			const noteEl = document.querySelector('.invite-note'); if(noteEl) noteEl.classList.add('invite-animated');
+		}, (inviteCount * 600) + 300);
 		const title = hero.querySelector('.names'); title?.classList.add('animated');
 		try{ spawnRings(); }catch(e){}
 		const card = hero.querySelector('.card'); if(card){ card.classList.add('fade-up'); setTimeout(()=>card.classList.add('is-visible'),80); }
@@ -168,6 +171,34 @@
 	}
 })();
 
+// When the whole details section (.story.s2) becomes visible, stagger reveal its diary entries
+(function(){
+	try{
+		const details = document.querySelector('.story.s2');
+		if(!details) return;
+		const entries = Array.from(details.querySelectorAll('.diary-entry'));
+		if(!entries.length) return;
+		const staggerReveal = ()=>{
+			entries.forEach((el,i)=>{
+				if(!el.classList.contains('is-visible')){
+					setTimeout(()=> el.classList.add('is-visible'), i * 180 + 120);
+				}
+			});
+		};
+		if('IntersectionObserver' in window){
+			const s2io = new IntersectionObserver((items)=>{
+				items.forEach(it=>{
+					if(it.isIntersecting){ staggerReveal(); s2io.unobserve(it.target); }
+				});
+			}, {root:null,rootMargin:'0px 0px -16% 0px',threshold:0.12});
+			s2io.observe(details);
+		}else{
+			// fallback: reveal after small delay
+			setTimeout(staggerReveal, 600);
+		}
+	}catch(e){console.warn(e)}
+})();
+
 // Petal animation generator (non-blocking, tasteful)
 (function(){
 	const container = document.getElementById('petals');
@@ -223,6 +254,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
 		const hero = document.querySelector('.story.s1');
 		const bg = hero?.querySelector('.bg');
 		const src = hero?.getAttribute('data-bg');
+		// If page provides a global INVITE.backgrounds array (like index2 pattern), apply to bg1/bg2/bg3
+		try{
+			if(window.INVITE && Array.isArray(window.INVITE.backgrounds)){
+				const bgs = window.INVITE.backgrounds;
+				if(bgs[0]){ const el = document.getElementById('bg1'); if(el) el.style.backgroundImage = `url('${bgs[0]}')`; }
+				if(bgs[1]){ const el = document.getElementById('bg2'); if(el) el.style.backgroundImage = `url('${bgs[1]}')`; }
+				if(bgs[2]){ const el = document.getElementById('bg3'); if(el) el.style.backgroundImage = `url('${bgs[2]}')`; }
+			}
+		}catch(e){/* ignore */}
 		if(bg && src){
 			const img = new Image(); img.src = src;
 			img.onload = ()=>{
@@ -249,10 +289,12 @@ function stagedReveal(){
 		document.body.classList.add('body-init');
 		// ensure words are wrapped
 		animateWords('.subtitle'); animateWords('.names'); animateWords('#date-text');
-		// invite lines (slower for readability)
-		// invite lines (slower for readability) with cascade
+		// invite lines (slower for readability) with cascade; invite-note gets a slightly faster cadence
 		const ic = animateWords('.invite-text', 600) || 0;
-		setTimeout(()=> animateWords('.invite-note', 600), (ic * 600) + 300);
+		setTimeout(()=>{
+			const noteCount = animateWords('.invite-note', 380) || 0;
+			const noteEl = document.querySelector('.invite-note'); if(noteEl) noteEl.classList.add('invite-animated');
+		}, (ic * 600) + 300);
 		// sequence timings
 	// sequence timings (much slower for visibility)
 const delays = [3200, 6200, 9200, 12200, 15200];
@@ -292,16 +334,24 @@ function animateWords(selector, perWordDelay = 400){
 		if(!el) return;
 		// Avoid re-wrapping
 		if(el.dataset.animated) return;
-	// normalize spaces (collapse multiple spaces and non-breaking spaces) so words separate correctly
-	const raw = el.textContent || '';
-	const text = raw.replace(/\u00A0/g, ' ').trim().replace(/\s+/g, ' ');
-	const words = text.split(/\s+/).filter(Boolean);
+		// preserve original text for aria-label (avoid trimming quotes that may be intentional)
+		const raw = el.textContent || '';
+		const normalized = raw.replace(/\u00A0/g, ' ').replace(/\s+/g, ' ');
+		const words = normalized.trim().split(/\s+/).filter(Boolean);
+		// set accessible label with original punctuation
+		el.setAttribute('aria-label', raw.trim());
 		el.textContent = '';
 		words.forEach((w,i)=>{
 			const span = document.createElement('span');
 			span.className = 'word';
 			span.textContent = w + (i<words.length-1? ' ':'');
 			span.style.animationDelay = (i * perWordDelay) + 'ms';
+			// if this is the last word, listen for animationend to emit a custom event
+			if(i === words.length - 1){
+				span.addEventListener('animationend', ()=>{
+					try{ el.dispatchEvent(new CustomEvent('words:done', {bubbles:true})); }catch(e){}
+				});
+			}
 			el.appendChild(span);
 		});
 		el.dataset.animated = '1';
@@ -332,6 +382,26 @@ function spawnRings(){
 		setTimeout(()=>{ try{ wrapper.remove(); }catch(e){} }, 12000);
 	}catch(e){console.warn(e)}
 }
+
+// Reveal diary entries as they scroll into view
+(function(){
+	try{
+		const entries = document.querySelectorAll('.diary-entry');
+		if(!entries || entries.length===0) return;
+		const reveal = (el)=> el.classList.add('is-visible');
+		if('IntersectionObserver' in window){
+			const io = new IntersectionObserver((items)=>{
+				items.forEach(i=>{
+					if(i.isIntersecting){ reveal(i.target); io.unobserve(i.target); }
+				});
+			}, {root:null,rootMargin:'0px 0px -8% 0px',threshold:0.12});
+			entries.forEach(e=>{ e.classList.add('fade-up'); io.observe(e); });
+		}else{
+			// fallback: reveal all after small timeout
+			entries.forEach((e,i)=> setTimeout(()=> reveal(e), 200 + (i*120)));
+		}
+	}catch(e){ console.warn(e); }
+})();
 
 // Generate Instagram Story PNG (canvas) and download
 function generateStoryPNG(){
