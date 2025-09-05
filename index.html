@@ -330,16 +330,15 @@
 
                   <div class="rsvp-content">
                     <h2 id="rsvp-title" class="rsvp-title">Confírmanos antes del <span class="rsvp-deadline">20 de octubre del 2025</span></h2>
-                    <p class="rsvp-copy">Únete a nuestro grupo de WhatsApp para confirmar tu asistencia y recibir todas las actualizaciones de la boda.</p>
+                    <p class="rsvp-copy">Envíanos un mensaje por WhatsApp para confirmar tu asistencia y recibir todas las actualizaciones de la boda.</p>
                     
-                    <a href="https://chat.whatsapp.com/C51Sn86QH92LALdgOq3NZ7" target="_blank" class="link-rsvp whatsapp-btn" onclick="this.href='https://chat.whatsapp.com/C51Sn86QH92LALdgOq3NZ7'; setTimeout(() => { window.open('https://wa.me/573192672619?text=' + encodeURIComponent('¡Hola Daniel y Ana! 👰🤵\n\n✨ Confirmo mi asistencia a su boda el 8 de noviembre de 2025 ✨\n\n👥 Número de personas que asistirán: [Por favor especifica]\n🎉 ¡Estoy muy emocionado/a de celebrar este día tan especial con ustedes!\n\n¡Nos vemos en la iglesia! 💒💕'), '_blank'); }, 1000);">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.109"/>
-                      </svg>
-                      Confirmar por WhatsApp
-                    </a>
+                   <a href="#" class="link-rsvp whatsapp-btn"
+   onclick="openWhatsAppMessage('573192672199'); return false;">
+  Confirmar por WhatsApp
+</a>
 
-                    <p class="rsvp-contact">Teléfono: <span id="phoneDisplay">+57 319267219</span></p>
+
+                    <p class="rsvp-contact">Teléfono: <span id="phoneDisplay">+57 3192672199</span></p>
                   </div>
                 </div>
               </div>
@@ -468,6 +467,29 @@
   </script>
   <script src="js/app.js" defer></script>
   <script src="js/dress-code.js" defer></script>
+
+<script>
+  // Construye los emojis por código y arma el mensaje (sin depender del encoding del archivo)
+  function e(cp){ return String.fromCodePoint(cp); }
+
+  function buildRSVPMessage(){
+    const L1 = `¡Hola Daniel y Ana! ${e(0x1F470)} ${e(0x1F935)}`;
+    const L2 = `${e(0x2728)} Confirmo mi asistencia a su boda el 8 de noviembre de 2025 ${e(0x2728)}`;
+    const L4 = `${e(0x1F389)} ¡Estoy muy emocionado/a de celebrar este día con ustedes!`;
+    const L5 = `${e(0x26EA)}\uFE0F ¡Nos vemos en la iglesia! ${e(0x1F495)}`;
+    return [L1,'',L2,'',L3,L4,'',L5].join('\n');
+  }
+
+  function openWhatsAppMessage(phone){
+    const text = encodeURIComponent(buildRSVPMessage());
+    const url1 = `https://wa.me/${phone}?text=${text}`;
+    const url2 = `https://api.whatsapp.com/send?phone=${phone}&text=${text}`; // fallback
+    const w = window.open(url1, '_blank');
+    setTimeout(()=>{ try{ if(!w || w.closed) window.open(url2,'_blank'); }catch(e){ window.open(url2,'_blank'); } }, 400);
+  }
+</script>
+
+
 </body>
 
 </html>

@@ -926,3 +926,4 @@ nodes.querySelectorAll('.panel.panel--media img').forEach(img => {
     grad.appendChild(stop);
   });
 })();
+
