@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Boda — Invitación estilo TikTok (claro + música)</title>
   <meta name="description" content="Invitación de boda de Daniel  &  Ana — detalles, galería y confirmación.">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fraunces:wght@600;700&family=Montserrat:wght@300;500;700&display=swap"
-    rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fraunces:wght@600;700&family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <meta name="theme-color" content="#fffaf2">
+  <link rel="icon" href="videoframe_11125.png" type="image/png">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/print.css" media="print">
   <!-- Estilos críticos pequeños para accesibilidad/skip-link -->
   <style>
     .skip-link {
@@ -116,7 +115,7 @@
         <p class="invite-text">y tenemos el honor de invitarte a celebrar nuestro matrimonio</p>
         <div class="decor-line" aria-hidden="true"></div>
         <p class="invite-note">Hay momentos en la vida que son especiales por sí solos, pero al compartirlos se
-          convierten en inolvidables.</p> 
+          convierten en inolvidables.</p>
 
       </div>
 
@@ -125,22 +124,43 @@
     </section>
 
     <!-- ====== PANTALLA 2 (Detalles - estilo diario) ====== -->
-  <section class="story s2" role="region" aria-label="Detalles del día" tabindex="0" data-bg="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop">
-      <div class="bg" id="bg2" style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop');"></div>
+    <section class="story s2" role="region" aria-label="Detalles del día" tabindex="0"
+      data-bg="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop">
+      <div class="bg" id="bg2"
+        style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop');">
+      </div>
       <div class="overlay"></div>
 
       <div class="card" aria-live="polite">
-        <h2 class="names" style="font-size:clamp(28px,6vw,54px);margin:.1em 0 .4em;text-align:center">Detalles del día</h2>
-        <p class="invite-note" style="text-align:center;max-width:720px;margin:0.2em auto 1em">"El amor es la fuerza mas humilde pero la mas poderosa de que dispone el mundo." Fuiste parte de nuestra historia, y por eso queremos compartir este gran día junto a ustedes.</p>
-         <h3 class="names" style="font-size:clamp(28px,6vw,54px);margin:.1em 0 .4em;text-align:center">Faltan</h3>
+        <h2 class="names" style="font-size:clamp(28px,6vw,54px);margin:.1em 0 .4em;text-align:center">Detalles del día
+        </h2>
+        <p class="invite-note" style="text-align:center;max-width:720px;margin:0.2em auto 1em">"El amor es la fuerza mas
+          humilde pero la mas poderosa de que dispone el mundo." Fuiste parte de nuestra historia, y por eso queremos
+          compartir este gran día junto a ustedes.</p>
+        <h3 class="names" style="font-size:clamp(28px,6vw,54px);margin:.1em 0 .4em;text-align:center">Faltan</h3>
         <!-- Countdown (se mantiene para la lógica existente) -->
         <div style="text-align:center;margin:8px 0 14px">
-          <div class="countdown" id="countdown" aria-hidden="false">
-            <div class="dd"><strong id="d">0</strong><span>días</span></div>
-            <div class="dd"><strong id="h">0</strong><span>horas</span></div>
-            <div class="dd"><strong id="m">0</strong><span>min</span></div>
-            <div class="dd"><strong id="s">0</strong><span>seg</span></div>
+          <div class="countdown cd-flat" id="countdown" aria-live="polite">
+            <div class="unit">
+              <strong id="d">0</strong>
+              <span>DÍAS</span>
+            </div>
+            <div class="unit">
+              <strong id="h">0</strong>
+              <span>HORAS</span>
+            </div>
+            <div class="unit">
+              <strong id="m">0</strong>
+              <span>MINUTOS</span>
+            </div>
+            <div class="unit">
+              <strong id="s">0</strong>
+              <span>SEGUNDOS</span>
+            </div>
           </div>
+
+
+
         </div>
 
         <!-- Grid de detalles similar a index2 -->
@@ -148,7 +168,66 @@
       </div>
       <div class="footer">Hecho con ♥ — #BodaDanielAna</div>
     </section>
-  
+
+
+
+    <!-- ====== PANTALLA 3 (Línea de tiempo) ====== -->
+    <section id="timeline" class="story s3" role="region" aria-label="Línea de tiempo" tabindex="0">
+      <div class="bg" id="timeline-bg"></div>
+      <div class="overlay"></div>
+
+      <div class="timeline-container" id="timeline-container">
+        <header>
+          <div class="names" aria-label="Daniel y Ana">Daniel &amp; Ana</div>
+          <svg class="flourish" viewBox="0 0 200 24" aria-hidden="true" focusable="false">
+            <path d="M2 12 C 34 2, 66 2, 98 12 S 162 22, 198 12" fill="none" stroke="url(#fGrad)" stroke-width="1.8"
+              stroke-linecap="round" />
+            <defs>
+              <linearGradient id="fGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--brand)" />
+                <stop offset="60%" stop-color="var(--gold-300)" />
+                <stop offset="100%" stop-color="var(--gold-500)" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="date" aria-label="8 de noviembre de 2025">8 de noviembre de 2025</div>
+          <div class="place">Iglesia Inmaculada Concepción de Suba, Bogotá</div>
+        </header>
+
+        <div class="fireflies" id="timeline-fireflies" aria-hidden="true"></div>
+
+        <section class="timeline" aria-labelledby="tl-title">
+          <h2 id="tl-title" class="visually-hidden">Línea de tiempo</h2>
+          <div class="path-wrap" id="timeline-pathWrap">
+            <svg id="timeline-tl-svg" role="img" aria-label="Línea del tiempo">
+              <defs>
+                <linearGradient id="brandGoldGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#f4d17c" />
+                  <stop offset="100%" stop-color="#d4a017" />
+                </linearGradient>
+
+                <filter id="tlGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <!-- La curva se recalcula por JS para que nunca se salga -->
+              <path id="timeline-tl-path" class="path" d="M 0 0 C 200 80, 60 180, 320 260 S 140 420, 480 520" />
+              <path id="timeline-tl-shimmer" class="shimmer" d="M 0 0 C 200 80, 60 180, 320 260 S 140 420, 480 520" />
+              <circle id="timeline-glint" class="glint" r="4.5" cx="0" cy="0"></circle>
+            </svg>
+
+            <ol class="nodes" id="timeline-nodes"></ol>
+          </div>
+        </section>
+      </div>
+    </section>
+
+
 
     <!-- ====== PANTALLA 4 (Galería de Recuerdos) ====== -->
     <section class="story s3" role="region" aria-label="Galería de recuerdos" tabindex="0">
@@ -234,22 +313,25 @@
   </audio>
 
   <!-- Pantalla de bienvenida para reproducir la música -->
-  <div id="welcome-overlay"
-    style="position:fixed;z-index:9999;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background: linear-gradient(rgba(255,255,255,0.45), rgba(255,255,255,0.45)), url('https://i.pinimg.com/736x/b8/04/67/b80467e5bb96bcc38f2c72a676bf1914.jpg'); background-size:cover;background-position:center center;background-repeat:no-repeat;">
-    <h2 style="font-family:'Great Vibes',cursive;font-size:2.5em;color:var(--accent);margin-bottom:0.5em;">¡Bienvenido!
-    </h2>
-    <p style="font-size:1.2em;color:var(--muted);margin-bottom:1.5em;max-width:400px;">Para vivir la experiencia
-      completa, por favor reproduce la canción antes de ver la invitación.</p>
-    <button id="start-music-btn" class="btn-play"
-      style="background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:1.1em;padding:0.8em 1.05em;border:none;border-radius:999px;cursor:pointer;font-family:Montserrat,sans-serif;font-weight:700;box-shadow:0 4px 16px rgba(42,157,91,0.08);margin-bottom:1.2em;"
-      aria-label="Reproducir canción y ver invitación" title="Reproducir canción y ver invitación">
-      <svg class="play-icon" width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <path d="M5 3v18l15-9L5 3z" fill="currentColor" />
-      </svg>
-      <span class="visually-hidden">Reproducir canción y ver invitación</span>
-    </button>
-    <div style="font-size:0.95em;color:var(--muted);">Canción: Hasta mi final — Il Divo</div>
+  <!-- Pantalla de bienvenida para reproducir la música -->
+  <div id="welcome-overlay" class="welcome">
+    <div class="welcome__panel">
+      <h2>¡Bienvenido!</h2>
+      <p>Para vivir la experiencia completa, por favor reproduce la canción antes de ver la invitación.</p>
+
+      <button id="start-music-btn" class="btn-play" aria-label="Reproducir canción y ver invitación"
+        title="Reproducir canción y ver invitación">
+        <svg class="play-icon" width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true" focusable="false">
+          <path d="M5 3v18l15-9L5 3z" fill="currentColor" />
+        </svg>
+        <span class="visually-hidden">Reproducir canción y ver invitación</span>
+      </button>
+
+      <div class="welcome__song">Canción: Hasta mi final — Il Divo</div>
+    </div>
   </div>
+
 
   <!-- Cargamos la lógica separada para mantener index.html limpio -->
   <!-- Optional backgrounds config (pattern taken from index2) -->

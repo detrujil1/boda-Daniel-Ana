@@ -1,324 +1,983 @@
-/* Minimal styles for the invitation - responsive and accessible */
+	/* Minimal styles for the invitation - responsive and accessible */
+	:root{
+		--bg: linear-gradient(180deg,#f3fff6,#f7fff9);
+		--accent:#2a9d5b; /* verde principal */
+		--accent-2:#7ed8a1; /* verde claro */
+		--sunflower:#f6c84c;
+		--sunflower-center:#8a5a28;
+		--muted:#1f4f2e; /* texto/tonalidad oscura */
+		--card-bg:rgba(255,255,255,0.96);
+		--glass:rgba(255,255,255,0.78);
+		font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+	}
+	*{box-sizing:border-box}
+	html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#fff);color:#221b2b}
+	main.reel{min-height:100vh}
+	.story{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;position:relative}
+
+	/* For the hero (first story) stack content vertically so the names card appears above the details card */
+	.story.s1{flex-direction:column;gap:14px}
+	.story .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(6px) saturate(0.95);opacity:0.9}
+	/* Fallback and prefer local 'fondo.jpg' for the main hero when available */
+	.story.s1 .bg{background-image:linear-gradient(rgba(255,255,255,0.02),rgba(255,255,255,0.02)), url("../fondo.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat}
+	.story .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.18))}
+	.card{position:relative;z-index:3;max-width:920px;width:100%;padding:2rem;border-radius:16px;background:var(--card-bg);box-shadow:0 10px 30px rgba(32,20,60,0.06);}
+	.topbar{position:absolute;top:18px;left:18px;display:flex;gap:8px;z-index:6}
+	.badge{background:rgba(255,255,255,0.85);padding:.35rem .6rem;border-radius:999px;font-size:.85rem;color:var(--muted);display:inline-flex;align-items:center;gap:.45rem}
+	.names{font-family:Fraunces,serif;margin:.1rem 0 0;text-align:center}
+	.names.custom-script{font-family:'Great Vibes',cursive;font-size:calc(28px + 3.6vw);line-height:1;margin:.05em 0}
+	.subtitle{font-family:Montserrat,sans-serif;color:var(--muted);text-align:center}
+	.invite-text{margin-top:10px;text-align:center;color:var(--muted);font-size:1rem;font-weight:600}
+	.decor-line{height:2px;width:60px;background:linear-gradient(90deg,var(--sunflower),var(--accent));margin:12px auto;border-radius:4px;opacity:0.95}
+	.invite-note{margin-top:8px;text-align:center;color:var(--muted);font-size:0.98rem;max-width:720px;margin-left:auto;margin-right:auto}
+
+	/* Ensure words inside the invite lines keep proper spacing when wrapped by JS */
+	.invite-text .word, .invite-note .word{display:inline-block;white-space:normal;margin-right:0.28em}
+	.invite-text .word:last-child, .invite-note .word:last-child{margin-right:0}
+
+	/* Invite-note: polished word-by-word entrance + decorative underline and heart */
+	.invite-note{position:relative;overflow:visible}
+	.invite-note.invite-animated::after{content:'';display:block;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:6px;margin:10px auto 0;animation:invite-underline 1100ms cubic-bezier(.2,.9,.2,1) forwards}
+	.invite-note::before{content:'❤';position:absolute;left:50%;top:-18px;transform:translateX(-50%) scale(.92);font-size:1rem;color:var(--accent);opacity:0;pointer-events:none;animation:heart-pop 900ms cubic-bezier(.2,.9,.2,1) 300ms forwards}
+
+	.invite-note .word{display:inline-block;opacity:0;transform:translateY(12px) scale(.996);animation-name:invite-word-pop;animation-duration:760ms;animation-fill-mode:both;animation-timing-function:cubic-bezier(.2,.9,.2,1)}
+	.invite-note .word:last-child{margin-right:0}
+
+	@keyframes invite-word-pop{0%{opacity:0;transform:translateY(18px) scale(.992)}60%{opacity:0.96;transform:translateY(-4px) scale(1.02)}100%{opacity:1;transform:none}}
+	@keyframes invite-underline{0%{width:0}100%{width:60%}}
+	@keyframes heart-pop{0%{opacity:0;transform:translateX(-50%) scale(.6)}60%{opacity:1;transform:translateX(-50%) scale(1.06)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+
+	/* Respect reduced motion preferences */
+	@media (prefers-reduced-motion: reduce){
+		.invite-note.invite-animated::after{animation:none;width:60%}
+		.invite-note::before{animation:none;opacity:1;transform:translateX(-50%) scale(1)}
+		.invite-note .word{animation:none;opacity:1;transform:none}
+	}
+	.date{color:var(--muted);text-align:center;margin-top:.4rem}
+	.countdown{display:flex;flex-direction:row;gap:12px;align-items:center;justify-content:center;margin-top:12px}
+	.countdown .dd{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:88px;background:var(--accent);color:#fff;padding:.8rem 1rem;border-radius:12px;text-align:center;box-shadow:0 8px 18px rgba(42,157,91,0.12)}
+	.btn{border:1px solid rgba(34,27,43,0.06);background:#fff;padding:.6rem .9rem;border-radius:10px;text-decoration:none;color:inherit;cursor:pointer}
+	.btn--ghost{background:transparent}
+	.btn--brand{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none}
+
+	/* Play button used on the welcome overlay */
+	.btn-play{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0.6rem 0.9rem;border-radius:999px;border:none}
+	.btn-play .play-icon{width:26px;height:26px;display:block}
+	.visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px}
+
+	/* RSVP micro-button */
+	.link-rsvp{appearance:none;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:.6rem 1rem;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(34,79,46,0.08);transition:transform .18s cubic-bezier(.2,.9,.2,1),box-shadow .18s,opacity .12s}
+	.link-rsvp:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 28px rgba(34,79,46,0.12)}
+	.link-rsvp:active{transform:translateY(-1px) scale(.99);box-shadow:0 6px 14px rgba(34,79,46,0.06);opacity:.98}
+	.link-rsvp:focus{outline:3px solid rgba(46,160,90,0.16);outline-offset:4px}
+	.sidebar{display:none} /* ocultar controles para experiencia más romántica */
+	.fab{display:none}
+	.footer{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.95rem}
+	/* Make the footer on screen 2 (Detalles) white for better contrast against the photo background */
+	.story.s2 .footer{color:#ffffff;text-shadow:0 1px 3px rgba(0,0,0,0.45)}
+	.disc{position:absolute;left:18px;bottom:18px;width:72px;height:72px;border-radius:999px;background:radial-gradient(circle at 30% 30%,#fff,#d8c8ff);box-shadow:inset 0 -6px 18px rgba(0,0,0,0.03)}
+	/* Removed right-side image decorations to keep UI clean */
+
+	/* Background: soft layered gradients + subtle moving wave */
+	html,body{height:100%;margin:0;background:var(--bg);color:#221b2b}
+	main.reel{background: radial-gradient(ellipse at 10% 10%, rgba(46,160,90,0.04) 0%, transparent 20%), linear-gradient(180deg, rgba(42,157,91,0.02), rgba(126,216,161,0.01));}
+
+	/* animated decorative waves */
+	.overlay::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.02));mix-blend-mode:soft-light;pointer-events:none}
+
+	/* Petals container (animated via JS) */
+	#petals{position:absolute;left:0;right:0;bottom:0;top:0;pointer-events:none;overflow:hidden;z-index:2}
+	.petal{position:absolute;width:28px;height:28px;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.0) 60%), linear-gradient(180deg,#c8f7d8,#7ed8a1);border-radius:14px;opacity:0.95;transform-origin:center;filter:drop-shadow(0 6px 12px rgba(32,80,40,0.06));animation:petal-fall linear infinite}
+	.flower{animation:petal-fall linear infinite;transform-origin:center;filter:drop-shadow(0 6px 18px rgba(32,80,40,0.06));}
+	/* ensure svg shapes can use CSS variables for fill */
+	.flower circle, .flower ellipse, .flower path{vector-effect:non-scaling-stroke}
+	/* Micro-animations and utility classes */
+	.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.2,1)}
+	.fade-up.is-visible{opacity:1;transform:none}
+	.hover-lift{transition:transform .18s cubic-bezier(.2,.9,.2,1),box-shadow .18s}
+	.hover-lift:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(31,122,72,0.12)}
+
+	/* Diary (timeline) styles */
+	.diary{display:flex;flex-direction:column;gap:18px;margin-top:18px}
+	.diary-entry{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.96));box-shadow:0 8px 22px rgba(18,28,20,0.03);border:1px solid rgba(34,27,43,0.03)}
+	.diary-entry:focus{outline:3px solid rgba(46,160,90,0.08);outline-offset:4px}
+	.entry-date{min-width:120px;color:var(--muted);font-weight:700;font-size:.95rem}
+	.entry-content h3{margin:0 0 6px 0;font-size:1.05rem}
+	.entry-content p{margin:0;color:#374a3a}
+
+	/* Timeline accent line on larger screens */
+	@media(min-width:720px){
+		.diary{position:relative;padding-left:36px}
+		.diary::before{content:"";position:absolute;left:18px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent-2));opacity:0.12;border-radius:2px}
+		.diary-entry{padding-left:18px}
+		.entry-date{min-width:100px;text-align:right;margin-right:18px}
+	}
+
+	/* Newspaper / periódico look */
+	.diary-entry{font-family:Fraunces, Georgia, 'Times New Roman', serif;border-radius:6px;padding:18px}
+	.entry-date{font-family:Fraunces, Georgia, 'Times New Roman', serif;color:#222;letter-spacing:0.6px;font-size:0.95rem}
+	.entry-content h3{font-family:Fraunces,serif;font-weight:700;color:#111;margin-bottom:6px}
+	.entry-content p{color:#2f3b33;line-height:1.45}
+	.diary-entry:nth-child(odd){background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98));border-left:4px solid rgba(34,27,43,0.03)}
+	.diary-entry:nth-child(even){background:linear-gradient(180deg,rgba(250,250,250,0.98),rgba(245,245,245,0.98));border-left:4px solid rgba(34,27,43,0.02)}
+
+	/* Prominent date badge for mobile & desktop */
+	.entry-date{background:transparent;padding:4px 6px;border-radius:6px}
+	.diary-entry .entry-date::after{content:"";display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;margin-left:10px;vertical-align:middle;opacity:0.9}
+
+	/* Entrance: subtle horizontal offset + paper tilt for the newspaper feel */
+	.diary-entry.fade-up{opacity:0;transform:translateY(10px) translateX(-10px) rotate(-0.4deg);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.9,.2,1)}
+	.diary-entry.fade-up.is-visible{opacity:1;transform:none}
+
+	/* Slight typographic tuning */
+	.diary{max-width:920px;margin-left:auto;margin-right:auto}
+
+	@media(max-width:720px){
+		.entry-date{min-width:92px;text-align:left;margin-right:10px}
+		.diary::before{display:none}
+	}
+
+	/* entry icon */
+	.entry-icon{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(46,160,90,0.06);margin-right:10px;flex:0 0 34px}
+	.entry-icon svg{display:block}
+
+	/* small paper tilt when revealed */
+	.diary-entry.is-visible{box-shadow:0 18px 40px rgba(18,28,20,0.06);transform:none}
+	.diary-entry.is-visible .entry-icon{transform:translateY(-2px)}
+
+	/* Hero background blur & overlay */
+	.story .bg{transition:filter .9s ease,transform .9s ease,opacity .6s}
+	.story.hero-loaded .bg{filter:blur(4px) saturate(1.05) contrast(1.02);transform:scale(1.02)}
+	.story .bg{filter:blur(8px) saturate(0.95);transform:scale(1.03);opacity:1}
+	.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(247,255,246,0.22), rgba(255,255,255,0.06));pointer-events:none}
+
+	/* ring photo (anillos) overlay with gentle opacity animation */
+	.ring-photo{position:absolute;right:18px;top:18px;width:140px;height:140px;border-radius:10px;background-image:url('../videoframe_11125.png');background-size:cover;background-position:center;opacity:0;transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.12);transition:opacity .9s ease,transform .6s cubic-bezier(.2,.9,.2,1);z-index:4}
+	.story.hero-loaded .ring-photo{opacity:0.96;transform:none}
+
+	/* Make the heading use the script font and scale nicely */
+	.names{font-family:'Great Vibes',cursive;font-size:clamp(36px,6vw,84px);letter-spacing:0.5px;color:var(--muted);}
+	.names .amp{font-family:Fraunces,serif;font-weight:700;margin:0 .15em}
+
+	/* Separate names card above the main card */
+	.names-card{position:relative;z-index:6;margin:0 auto 12px;max-width:760px;background:var(--card-bg);padding:10px 18px;border-radius:14px;box-shadow:0 12px 30px rgba(18,28,20,0.04);text-align:center}
+	.names-card .names{margin:0;font-size:clamp(36px,5.6vw,64px);line-height:1}
+
+	/* Wedding rings positioning and animation */
+	.wedding-rings{position:absolute;left:50%;bottom:18px;width:160px;height:160px;z-index:6;pointer-events:none;opacity:0;transform:translateX(-50%) translateY(8px) scale(.98);transition:opacity .9s ease,transform .9s ease}
+	.wedding-rings-svg{width:100%;height:100%;display:block}
+	.wedding-rings .ring{transform-origin:60px 60px}
+	.wedding-rings .ring-1{animation: ring-rotate 9s linear infinite}
+	.wedding-rings .ring-2{animation: ring-rotate 6.4s linear reverse infinite}
+	.wedding-rings .sparkle{opacity:0;transform-origin:center;animation: sparkle 2.8s ease-in-out infinite}
+
+	@keyframes sparkle{0%{opacity:0;transform:scale(.6) translateY(2px)}40%{opacity:1;transform:scale(1.08) translateY(-2px)}100%{opacity:0;transform:scale(.8) translateY(0)}}
+
+	/* Activate rings when hero is loaded */
+	.story.hero-loaded .wedding-rings{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+
+	/* Initial blank entrance: start with white page and hide elements */
+	.body-init{background:#ffffff !important}
+	.body-init .reel, .body-init .story{background:#ffffff !important}
+	.body-init .card,
+	.body-init .wedding-rings,
+	.body-init .ring-photo,
+	.body-init .subtitle,
+	.body-init .names,
+	.body-init .countdown,
+	.body-init .link-rsvp{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.2,1)}
+
+	/* reveal class used by JS to show items in sequence */
+	.reveal{opacity:1!important;transform:none!important}
+	.countdown .dd{transition:opacity .5s ease, transform .5s ease}
+
+	/* Adjust size on small screens so rings remain visible but unobtrusive */
+	@media (max-width:520px){
+		.wedding-rings{width:110px;height:110px;bottom:14px}
+	}
+	@keyframes petal-fall{
+		0%{transform:translateY(-10vh) rotate(0deg) translateX(0);opacity:0}
+		10%{opacity:1}
+		50%{transform:translateY(40vh) rotate(180deg) translateX(6vw)}
+		100%{transform:translateY(110vh) rotate(360deg) translateX(-3vw);opacity:0.9}
+	}
+
+	/* Rings animation keyframes and styles */
+	@keyframes ring-rotate{
+		0%{transform:rotate(0) scale(1)}
+		50%{transform:rotate(180deg) scale(1.02)}
+		100%{transform:rotate(360deg) scale(1)}
+	}
+	@keyframes ring-bob{
+		0%{transform:translateY(0)}
+		50%{transform:translateY(6px)}
+		100%{transform:translateY(0)}
+	}
+	.ring-svg{width:100%;height:100%;display:block}
+	.ring{transform-origin:60px 60px;opacity:0.95;animation: ring-rotate 8s linear infinite, ring-bob 3.6s ease-in-out infinite}
+	.ring.small{animation-duration:5.2s,3.6s;opacity:0.95}
+
+	/* Text animation */
+	@keyframes text-fade-up{0%{opacity:0;transform:translateY(18px) scale(.992)}60%{opacity:0.9;transform:translateY(6px) scale(.998)}100%{opacity:1;transform:none}}
+	.names.animated{animation:text-fade-up 2.2s cubic-bezier(.2,.9,.2,1) both}
+
+	/* Word-level stagger animation (slower for readability) */
+	.word{display:inline-block;opacity:0;transform:translateY(12px);animation:text-fade-up 2s cubic-bezier(.2,.9,.2,1) both}
+	.subtitle .word{font-weight:600;color:var(--muted)}
+	.names .word{font-family:'Great Vibes',cursive;letter-spacing:0.4px;white-space:normal;display:inline-block;margin-right:0.28em;/* keep words separated */font-variant-ligatures:none;}
+	.names .word:last-child{margin-right:0}
+	.date .word, #date-text .word{font-size:0.98rem;color:var(--muted)}
+
+	/* Subtitle: stronger spacing + distinct pop animation */
+	.wedding-rings .ring-1{animation: ring-rotate 14s linear infinite}
+	.wedding-rings .ring-2{animation: ring-rotate 10s linear reverse infinite}
+	.wedding-rings .sparkle{opacity:0;transform-origin:center;animation: sparkle 4.2s ease-in-out infinite}
+	@keyframes subtitle-pop{0%{opacity:0;transform:translateY(10px) scale(.98)}60%{opacity:1;transform:translateY(-4px) scale(1.04)}100%{opacity:1;transform:none}}
+	.subtitle{font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif;font-weight:600;letter-spacing:0.2px}
+	.subtitle .word{display:inline-block;margin-right:0.32em;white-space:normal;font-variant-ligatures:none;animation-name:subtitle-pop;animation-duration:2s;animation-fill-mode:both}
+	.subtitle .word:last-child{margin-right:0}
+
+	/* Card item staggered animation */
+	.card .card-item{opacity:0;transform:translateY(12px) scale(.996);display:block}
+	.card .card-item.animate{animation:card-pop 1.6s cubic-bezier(.2,.9,.2,1) both}
+	@keyframes card-pop{0%{opacity:0;transform:translateY(14px) scale(.996)}60%{opacity:0.92;transform:translateY(6px) scale(1.006)}100%{opacity:1;transform:none}}
+
+	/* fine-grain interactive states for card controls */
+	.card .actions{transition:transform .22s,opacity .18s}
+	.card .actions .btn{transition:transform .18s,box-shadow .18s}
+	.card .link-rsvp{transition:transform .18s,box-shadow .18s,opacity .12s}
+	.card .link-rsvp:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 18px 38px rgba(34,79,46,0.12)}
+	.card .link-rsvp:focus{outline:3px solid rgba(46,160,90,0.12);outline-offset:4px}
+
+	/* Slight delay for children when reduced motion is requested */
+	@media (prefers-reduced-motion: reduce){
+		.card .card-item{transition:none;animation:none;opacity:1;transform:none}
+	}
+
+	/* Countdown: horizontal green pill blocks (restored visual) */
+	.countdown{width:100%;max-width:720px;margin:0 auto;display:flex;gap:14px;justify-content:center;align-items:center}
+	.countdown .dd{background:var(--card-bg);color:var(--muted);padding:.9rem 1.1rem;border-radius:14px;text-align:center;display:flex;flex-direction:column;align-items:center;min-width:110px;box-shadow:0 10px 30px rgba(18,28,20,0.04)}
+	.countdown .dd strong{display:inline-block;background:var(--accent);color:#fff;padding:.6rem 1.1rem;border-radius:10px;font-size:clamp(1.1rem,4vw,1.8rem);line-height:1;font-weight:800;box-shadow:0 8px 22px rgba(42,157,91,0.12)}
+	.countdown .dd span{font-size:.95rem;color:var(--muted);margin-top:8px}
+
+	/* Countdown layout: horizontal on wider viewports but wrap on narrow screens to avoid overflow */
+	.countdown{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px}
+	.countdown .dd{flex:1 1 120px;min-width:64px;box-sizing:border-box}
+
+	/* Slightly smaller on narrow screens to avoid overflow */
+	@media (max-width:420px){
+		/* keep pills horizontal but smaller and allow wrapping to multiple rows if needed */
+		.countdown{gap:10px;justify-content:center}
+		.countdown .dd{width:auto;max-width:140px;min-width:64px;padding:.6rem .8rem}
+		.countdown .dd strong{font-size:1.4rem;padding:.45rem .8rem}
+	}
+
+	@media (max-width:360px){
+		/* very small phones: reduce pill density and allow wrapping (still row-based) */
+		.countdown{gap:8px}
+		.countdown .dd{min-width:56px;max-width:110px;padding:.45rem .6rem}
+		.countdown .dd strong{font-size:1.1rem;padding:.35rem .6rem}
+		.countdown .dd span{font-size:0.85rem}
+	}
+
+	/* hide ring photo on small screens to keep layout clean */
+	@media (max-width:520px){
+		.ring-photo{display:none}
+	}
+	/* Gallery */
+	.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+	.gallery-item{position:relative;border-radius:10px;overflow:hidden;background:#fff}
+	.gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
+	.caption{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,0.45);color:#fff;padding:6px 8px;border-radius:8px;font-size:.9rem}
+	.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999}
+	.lightbox[aria-hidden="false"]{display:flex}
+	.lightbox-img{max-width:92vw;max-height:82vh;border-radius:8px}
+	.lightbox-close{position:fixed;right:20px;top:18px;background:transparent;border:0;color:#fff;font-size:1.6rem;cursor:pointer}
+	/* RSVP modal */
+	.rsvp-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:10000;padding:1rem}
+	.rsvp-modal[aria-hidden="false"]{display:flex}
+	.rsvp-panel{background:#fff;padding:1rem;border-radius:12px;max-width:420px;width:100%}
+	.rsvp-panel input,.rsvp-panel textarea{width:100%;padding:.5rem;border-radius:8px;border:1px solid #eee;margin-top:6px}
+	.rsvp-panel label{display:block;margin-top:8px;font-size:.95rem;color:var(--muted)}
+	.rsvp-close{position:absolute;right:18px;top:12px;background:#fff;border:0;border-radius:6px;padding:.3rem .5rem;cursor:pointer}
+	/* Responsive tweaks */
+	@media (max-width:720px){
+		.card{padding:1.2rem;border-radius:12px}
+		/* decor removed for cleaner mobile view */
+		.topbar{display:none}
+	}
+
+	/* Ensure background covers safe areas on modern phones and remains sharp */
+	@media (max-width:420px){
+		.story .bg{background-position:top center;filter:blur(6px) saturate(0.98)}
+		.card{padding:1rem;margin:0 0.6rem}
+	}
+
+	/* Mobile title fixes: avoid 'remontada' (overlap) and preserve layout while animating words */
+	@media (max-width:520px){
+		.names{font-size:clamp(28px,8vw,44px);line-height:1.05;margin-top:0.05rem;margin-bottom:0.2rem;word-break:break-word;}
+		.names .word{display:inline-block;vertical-align:middle;white-space:normal}
+		.card{padding-bottom:2.4rem}
+		/* ensure countdown doesn't overlap title */
+		.countdown{margin-top:8px}
+	}
+
+	/* ===== Countdown plano: 4 columnas iguales, sin montarse ===== */
+	.countdown.cd-flat{
+	--cd-scale: 1;
+	--cd-sep-opacity: .28;
+	--cd-ls: .14em;
+
+	display: grid !important;
+	grid-template-columns: repeat(4, minmax(0, 1fr)); /* columnas iguales */
+	justify-items: center;
+	align-items: start;
+	gap: clamp(10px, 2.2vw, 18px);
+
+	max-width: 100%;
+	margin: 0 auto 8px;
+	padding-inline: clamp(10px, 3vw, 16px); /* colchón lateral anti-corte */
+	overflow: visible !important;
+	}
+
+	.countdown.cd-flat .unit{
+	width: 100%;
+	min-width: 0;              /* permite encoger contenido */
+	text-align: center;
+	position: relative;
+	padding-inline: clamp(6px, 1.8vw, 12px);
+	background: transparent; border: 0; box-shadow: none;
+	}
+
+	.countdown.cd-flat .unit:not(:last-child)::after{
+	content:"";
+	position:absolute; top:18%; bottom:18%; right:0; width:1px;
+	background: linear-gradient(180deg, rgba(0,0,0,var(--cd-sep-opacity)), rgba(0,0,0,0.06));
+	}
+
+	.countdown.cd-flat .unit strong{
+	display:block;
+	font-family: Fraunces, serif; font-weight:800;
+	font-variant-numeric: tabular-nums;
+	line-height:1; color:#111; letter-spacing:.5px; white-space:nowrap;
+	margin-bottom: 2px;
+	font-size: calc(44px * var(--cd-scale));
+	}
+
+	.countdown.cd-flat .unit span{
+	display:block; margin-top:6px; white-space:nowrap;
+	text-transform:uppercase; font-weight:600; color:#444;
+	letter-spacing: var(--cd-ls);
+	font-size: calc(0.95rem * var(--cd-scale));
+	}
+
+	.countdown.cd-flat .unit strong::after{
+	content:""; display:block; height:2px; margin:8px auto 0;
+	width: calc(34% * var(--cd-scale));
+	background: linear-gradient(90deg, var(--accent), var(--accent-2));
+	border-radius:2px; opacity:.18;
+	}
+
+	.countdown.cd-flat .unit strong.tick{
+	animation: cd-pop 340ms cubic-bezier(.2,.9,.2,1);
+	}
+	@keyframes cd-pop{
+	0%{transform:translateY(12%) scale(.96); opacity:.85}
+	60%{transform:translateY(-4%) scale(1.04); opacity:1}
+	100%{transform:none}
+	}
+
+	@media (prefers-reduced-motion: reduce){
+	.countdown.cd-flat .unit strong.tick{ animation:none; }
+	}
+
+	/* === Perfil compacto específico para anchos ~390px === */
+	@media (max-width: 400px){
+	.countdown.cd-flat{
+		gap: 10px;                   /* menos separación horizontal */
+		padding-inline: 12px;        /* colchón lateral anti-corte */
+		--cd-ls: .06em;              /* menos tracking en etiquetas */
+	}
+	.countdown.cd-flat .unit{
+		padding-inline: 8px;         /* aire interno justo */
+	}
+	.countdown.cd-flat .unit strong{
+		font-size: calc(38px * var(--cd-scale)); /* número un poco menor */
+		margin-bottom: 1px;
+	}
+	.countdown.cd-flat .unit strong::after{
+		width: calc(24% * var(--cd-scale));      /* subrayado más corto */
+		opacity: .14;
+	}
+	.countdown.cd-flat .unit span{
+		font-size: calc(.90rem * var(--cd-scale));
+	}
+	}
+
+	/* Ultra compacto opcional (teléfonos <360px) */
+	@media (max-width: 360px){
+	.countdown.cd-flat{ gap: 8px; padding-inline: 10px; --cd-ls: .04em; }
+	.countdown.cd-flat .unit strong{ font-size: calc(34px * var(--cd-scale)); }
+	.countdown.cd-flat .unit strong::after{ width: calc(20% * var(--cd-scale)); }
+	.countdown.cd-flat .unit span{ font-size: calc(.86rem * var(--cd-scale)); }
+	}
+
+	/* Fijar números/tablas y eliminar cualquier “brinco” visual */
+	.countdown.cd-flat .unit strong{
+	font-variant-numeric: tabular-nums lining-nums;
+	font-feature-settings: "tnum" 1, "lnum" 1;
+	}
+
+	/* Desactivar animación al cambiar de valor (que no se mueva) */
+	.countdown.cd-flat .unit strong.tick{
+	animation: none !important;
+	transform: none !important;
+	}
+
+	/* === Timeline (estilo glass + dorado) — SOLO “paneles hermanos” === */
+	#timeline .timeline-container *{box-sizing:border-box}
+	#timeline .timeline-container{position:relative; max-width:1100px; margin-inline:auto; padding:clamp(12px, 3vw, 36px); z-index:2}
+	#timeline header{display:grid; gap:8px; place-items:center; text-align:center}
+
+	/* tipografía / paleta */
+	#timeline { --brand:#7ed8a1; --brand2:#2a9d5b; --gold-100:#fff6db; --gold-300:#f4d17c; --gold-500:#d4a017; }
+	#timeline .names{font-family:'Great Vibes',cursive; font-size:clamp(36px,8vw,88px); line-height:1; color:var(--muted); text-shadow:0 2px 0 rgba(255,255,255,.25), 0 10px 30px rgba(0,0,0,.08)}
+	#timeline .flourish{width:180px; height:26px; opacity:.95; filter:drop-shadow(0 2px 8px rgba(0,0,0,.12))}
+	#timeline .date{font-weight:700; letter-spacing:.3px; color:#2b2342; background:linear-gradient(180deg,#fff,var(--gold-100)); border:1px solid var(--gold-300); padding:6px 10px; border-radius:999px; box-shadow:0 6px 18px rgba(212,160,23,.20)}
+	#timeline .place{font-weight:500; color:var(--muted); font-size:.95rem}
+
+	/* fondo + path */
+	#timeline .bg{position:absolute; inset:0; background-position:center; background-size:cover; z-index:0; filter:saturate(1.02) contrast(1.01)}
+	#timeline .overlay{position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.18) 55%, rgba(255,255,255,.24) 100%)}
+	#timeline .timeline{margin-top:12px; position:relative; z-index:2}
+/* DESPUÉS */
+#timeline .path-wrap{
+  position:relative;
+  width:100%;
+  min-height:420px;       /* sin height fijo */
+}
+
+	#timeline .path-wrap svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
+	#timeline .path{fill:none; stroke: var(--accent)!important; stroke-width:6; stroke-linecap:round; filter:none}
+	#timeline .path[data-length]{stroke-dasharray: var(--dash, 1000) var(--dash-gap, 1000); stroke-dashoffset: var(--dash, 1000); animation: tl-draw 2.2s ease-out forwards, tl-breathe 8s ease-in-out infinite 2.2s}
+	@keyframes tl-draw{from{stroke-dashoffset:var(--dash)} to{stroke-dashoffset:0}}
+	@keyframes tl-breathe{0%,100%{transform:none}50%{transform:translateY(-1.5px)}}
+
+	/* lista y ancla */
+	#timeline .nodes{list-style:none; margin:0; padding:0}
+	#timeline .node{
+	position:absolute;
+	top: var(--y, 0);
+	left: var(--x, 50%);
+	--gap: 18px;
+	transform: none !important; /* <- sin translate(-50%,-50%) */
+	width: auto; max-width: none;
+	}
+	#timeline .node.reveal{opacity:0}
+	#timeline .node.reveal.show{opacity:1; transition:opacity .6s ease}
+
+	/* bead + conectores */
+	#timeline .bead{
+	position:absolute; z-index:2; width:14px; height:14px; border-radius:50%;
+	transform:translate(-50%,-50%);
+	background: radial-gradient(circle at 35% 35%, #fff 0 35%, rgba(255,255,255,.25) 36% 60%, transparent 61%),
+				radial-gradient(circle, #fff6db 0, #f4d17c 55%, #d4a017 100%);
+	box-shadow:0 0 0 3px rgba(255,255,255,.8), 0 4px 16px rgba(212,160,23,.35);
+	}
+	#timeline #timeline-connectors{position:absolute; inset:0; z-index:1; pointer-events:none}
+	#timeline #timeline-connectors path{fill:none; stroke: url(#brandGoldGrad); stroke-width:2; opacity:.8; filter: drop-shadow(0 2px 6px rgba(212,160,23,.25)); stroke-dasharray:var(--L,0) var(--L,0); stroke-dashoffset:var(--L,0)}
+	#timeline #timeline-connectors path.draw{animation: conn-draw .7s cubic-bezier(.2,.9,.2,1) forwards}
+	@keyframes conn-draw{to{stroke-dashoffset:0}}
+
+	/* paneles hermanos */
+	#timeline .panel{
+	position:absolute;
+	top:50%;
+	transform: translateY(-50%);
+	width: min(40vw, 420px);
+	max-width: 420px;
+	}
+
+	/* TEXTO */
+	#timeline .panel.panel--text.card{
+	background: rgba(255,255,255,0.95);
+	border:0; border-radius:16px; padding:14px 16px 16px;
+	box-shadow:0 12px 30px rgba(0,0,0,.08);
+	overflow-wrap:anywhere; word-break:normal;
+	}
+	/* colita del texto */
+	#timeline .panel.panel--text.card::before{
+	content:""; position:absolute; top:50%; width:12px; height:12px;
+	background: linear-gradient(135deg, rgba(255,255,255,.7), rgba(212,160,23,.15));
+	box-shadow: 0 2px 4px rgba(0,0,0,.06);
+	transform: translateY(-50%) rotate(45deg); border-radius: 2px;
+	}
+	#timeline .node[data-side="L"] .panel--text.card::before{ right:-6px; }
+	#timeline .node[data-side="R"] .panel--text.card::before{ left:-6px; }
+
+	/* IMAGEN */
+	#timeline .panel.panel--media{
+	border-radius:14px; overflow:hidden;
+	box-shadow:0 10px 24px rgba(0,0,0,.08);
+	background:#f7f7f7; aspect-ratio:4/3;
+	}
+	#timeline .panel.panel--media img{
+	width:100%; height:100%; display:block; object-fit:cover;
+	transform:scale(1.02); transition:transform .35s ease;
+	}
+	#timeline .node:hover .panel.panel--media img{ transform:scale(1.06); }
+
+	/* colocación respecto a la línea */
+	#timeline .node[data-side="L"] .panel--text { left:0; transform:translate(calc(-100% - var(--gap)), -50%); }
+	#timeline .node[data-side="L"] .panel--media{ left:0; transform:translate(var(--gap), -50%); }
+	#timeline .node[data-side="R"] .panel--text { left:0; transform:translate(var(--gap), -50%); }
+	#timeline .node[data-side="R"] .panel--media{ left:0; transform:translate(calc(-100% - var(--gap)), -50%); }
+
+	/* responsive */
+	@media (max-width:1000px){
+	#timeline .timeline-container{padding:clamp(12px,4vw,28px)}
+	#timeline .path-wrap{height:620px}
+	}
+	@media (max-width:700px){
+	#timeline .panel{ width:min(48vw, 340px); }
+	}
+	@media (max-width:420px){
+	#timeline .path-wrap{height:auto; min-height:460px}
+	}
+
+
+	/* Overlay de bienvenida siempre por encima de todo */
+	#welcome-overlay{ z-index: 11000 !important; }
+
+	/* === Bienvenida responsive === */
+	#welcome-overlay.welcome{
+	position: fixed; inset: 0;
+	display: flex; align-items: center; justify-content: center;
+	text-align: center;
+	min-height: 100dvh;           /* viewport dinámico móvil */
+	padding: calc(env(safe-area-inset-top) + 16px) clamp(12px, 4vw, 24px)
+			calc(env(safe-area-inset-bottom) + 16px);
+	background:
+		linear-gradient(rgba(255,255,255,0.50), rgba(255,255,255,0.50)),
+		url('https://i.pinimg.com/736x/b8/04/67/b80467e5bb96bcc38f2c72a676bf1914.jpg')
+		center / cover no-repeat;
+	z-index: 11000 !important;
+	overflow: auto;               /* si el contenido supera el alto */
+	-webkit-overflow-scrolling: touch;
+	touch-action: pan-y;
+	}
+
+	.welcome__panel{
+	width: min(92vw, 560px);
+	background: rgba(255,255,255,0.78);
+	border: 1px solid rgba(0,0,0,0.06);
+	border-radius: 16px;
+	padding: clamp(16px, 4vw, 28px);
+	box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+	backdrop-filter: blur(6px);
+	}
+
+	#welcome-overlay h2{
+	font-family:'Great Vibes',cursive;
+	color: var(--accent);
+	margin: 0 0 .35em;
+	font-size: clamp(28px, 8vw, 44px);
+	}
+
+	#welcome-overlay p{
+	color: var(--muted);
+	margin: 0 0 1em;
+	line-height: 1.4;
+	font-size: clamp(14px, 3.8vw, 18px);
+	}
+
+	#welcome-overlay .btn-play{
+	background: linear-gradient(135deg,var(--accent),var(--accent-2));
+	color: #fff; border: none;
+	border-radius: 999px;
+	padding: .7em 1.15em;
+	font-weight: 700;
+	font-size: clamp(14px, 4vw, 18px);
+	box-shadow: 0 8px 16px rgba(42,157,91,.14);
+	}
+
+	.welcome__song{
+	font-size: clamp(12px, 3.2vw, 15px);
+	color: var(--muted);
+	margin-top: .9em;
+	opacity: .88;
+	}
+
+	/* Timeline: evitar cortes y mejorar legibilidad en móviles */
+	#timeline{ overflow: hidden; } /* oculta solapes laterales del path en pantallas muy estrechas */
+
+	@media (max-width: 700px){
+	#timeline .node{ width: 90vw; }      /* un poco más ancho en móvil */
+	#timeline .when{ font-size: .92rem; }
+	#timeline .title{ font-size: 1rem; }
+	#timeline .card{ padding: 12px; }
+	}
+
+
+	/* Timeline: evitar cortes de texto y mejorar legibilidad */
+	#timeline .card{
+	overflow-wrap: anywhere;      /* permite cortes limpios */
+	word-break: normal;
+	}
+
+	/* Más aire lateral en pantallas pequeñas */
+	@media (max-width: 700px){
+	#timeline .timeline-container{ padding-inline: clamp(14px, 5vw, 28px); }
+	#timeline .node{ width: 90vw; }
+	}
+
+	/* Ultra estrecho (320–400px): centra y compacta tipografías */
+
+
+	/* Ligero margen superior bajo el encabezado del timeline */
+	#timeline .timeline{ margin-top: clamp(8px, 4vw, 16px); }
+
+	/* Por si alguna sombra se recorta en pantallas mini */
+	#timeline{ overflow: hidden; }
+
+
+	/* === UX extra para la línea de tiempo === */
+	#timeline .bead{
+	position:absolute; z-index:2;
+	width:14px; height:14px; border-radius:50%;
+	transform:translate(-50%,-50%);
+	background: radial-gradient(circle at 35% 35%, #fff 0 35%, rgba(255,255,255,.25) 36% 60%, transparent 61%),
+				radial-gradient(circle, #fff6db 0, #f4d17c 55%, #d4a017 100%);
+	box-shadow: 0 0 0 3px rgba(255,255,255,.8), 0 4px 16px rgba(212,160,23,.35);
+	animation: bead-pulse 2.6s ease-in-out infinite;
+	}
+	@keyframes bead-pulse{
+	0%,100%{transform:translate(-50%,-50%) scale(1)}
+	50%{transform:translate(-50%,-50%) scale(1.08)}
+	}
+
+	/* SVG que dibuja los conectores entre bead y tarjeta */
+	#timeline #timeline-connectors{
+	position:absolute; inset:0; z-index:1; pointer-events:none;
+	}
+	#timeline #timeline-connectors path{
+	fill:none; stroke: url(#brandGoldGrad); stroke-width:2;
+	opacity:.75; filter: drop-shadow(0 2px 6px rgba(212,160,23,.25));
+	transition: stroke-width .18s ease, opacity .18s ease;
+	}
+
+	/* Hover/focus: resalta tarjeta, bead y conector */
+	#timeline .node:hover .card,
+	#timeline .node:focus-within .card{ transform: translateZ(0) translateY(-2px) scale(1.01); box-shadow:0 24px 70px rgba(0,0,0,.12) }
+	#timeline .node:hover ~ #timeline-connectors path[data-hot="1"],
+	#timeline .node:focus-within ~ #timeline-connectors path[data-hot="1"]{
+	stroke-width:3; opacity:.95;
+	}
+
+
+	/* Conector con animación de trazo */
+	#timeline #timeline-connectors path{
+	fill:none; stroke:url(#brandGoldGrad); stroke-width:2;
+	opacity:.8; filter: drop-shadow(0 2px 6px rgba(212,160,23,.25));
+	stroke-dasharray: var(--L, 0) var(--L, 0);
+	stroke-dashoffset: var(--L, 0);
+	}
+	#timeline #timeline-connectors path.draw{
+	animation: conn-draw .7s cubic-bezier(.2,.9,.2,1) forwards;
+	}
+	@keyframes conn-draw{ to{ stroke-dashoffset: 0 } }
+
+
+
+	#timeline .node[data-side="L"] .card::before{ right:-6px; } /* cola a la derecha */
+	#timeline .node[data-side="R"] .card::before{ left:-6px; }  /* cola a la izquierda */
+
+	/* Imagen principal por evento (timeline) */
+
+	#timeline .node:hover .media img{ transform: scale(1.06); }
+
+	@media (min-width: 900px){
+	/* un poquito más panorámica en pantallas grandes */
+	#timeline .card .media{ aspect-ratio: 21 / 9; }
+	}
+
+
+
+
+	/* Móvil: apila (imagen arriba, texto abajo) */
+	@media (max-width:700px){
+	#timeline .card{
+		grid-template-columns: 1fr;
+		grid-template-areas:
+		"media"
+		"text";
+	}
+	}
+
+
+	/* El <li class="node"> solo es el ancla en la línea (¡sin translate!) */
+	#timeline .node{
+	position:absolute;
+	top: var(--y, 0);      /* ya pones top en JS */
+	left: var(--x, 50%);
+	--gap: 18px;
+	transform: none !important;
+	width: auto; max-width: none;
+	}
+
+	/* Aparición solo por opacidad */
+	#timeline .node.reveal{ opacity:0; }
+	#timeline .node.reveal.show{ opacity:1; transition: opacity .6s ease; }
+
+	/* Paneles hermanos enfrentados */
+	#timeline .panel{
+	position:absolute;
+	top:50%;
+	transform: translateY(-50%);
+	width: min(40vw, 420px);
+	max-width: 420px;
+	}
+
+	/* TEXTO a un lado */
+	#timeline .panel.panel--text.card{
+	background: rgba(255,255,255,0.95);
+	border:0; border-radius:16px; padding:14px 16px 16px;
+	box-shadow:0 12px 30px rgba(0,0,0,.08);
+	}
+
+	/* Colita que apunta al bead (según el lado del TEXTO) */
+	#timeline .panel.panel--text.card::before{
+	content:""; position:absolute; top:50%; width:12px; height:12px;
+	background: linear-gradient(135deg, rgba(255,255,255,.7), rgba(212,160,23,.15));
+	box-shadow: 0 2px 4px rgba(0,0,0,.06);
+	transform: translateY(-50%) rotate(45deg); border-radius: 2px;
+	}
+	#timeline .node[data-side="L"] .panel--text.card::before{ right:-6px; }
+	#timeline .node[data-side="R"] .panel--text.card::before{ left:-6px; }
+
+	/* IMAGEN al lado contrario */
+	#timeline .panel.panel--media{
+	border-radius:14px; overflow:hidden;
+	box-shadow:0 10px 24px rgba(0,0,0,.08);
+	background:#f7f7f7; aspect-ratio:4/3;
+	}
+	#timeline .panel.panel--media img{
+	width:100%; height:100%; display:block; object-fit:cover;
+	transform:scale(1.02); transition:transform .35s ease;
+	}
+	#timeline .node:hover .panel.panel--media img{ transform:scale(1.06); }
+
+	/* Posicionamiento relativo al ancla: L = texto izq, imagen der; R = texto der, imagen izq */
+	#timeline .node[data-side="L"] .panel--text { left:0; transform:translate(calc(-100% - var(--gap)), -50%); }
+	#timeline .node[data-side="L"] .panel--media{ left:0; transform:translate(var(--gap), -50%); }
+
+	#timeline .node[data-side="R"] .panel--text { left:0; transform:translate(var(--gap), -50%); }
+	#timeline .node[data-side="R"] .panel--media{ left:0; transform:translate(calc(-100% - var(--gap)), -50%); }
+
+	/* Responsive: paneles un poco más estrechos */
+	@media (max-width:900px){
+	#timeline .panel{ width:min(46vw, 380px); }
+	}
+	@media (max-width:700px){
+	#timeline .panel{ width:min(48vw, 340px); }
+	}
+
+	#timeline .node{
+	position:absolute;
+	top: var(--y, 0);
+	left: var(--x, 50%);
+	--gap: 18px;
+	transform: none !important;
+	width: auto; max-width: none;
+	}
+	#timeline .node.reveal{ opacity:0; }
+	#timeline .node.reveal.show{ opacity:1; transition: opacity .6s ease; }
+
+	#timeline .panel{ position:absolute; top:50%; transform:translateY(-50%); width:min(40vw,420px); max-width:420px; }
+
+	#timeline .panel.panel--text.card{
+	background:rgba(255,255,255,.95); border:0; border-radius:16px; padding:14px 16px 16px;
+	box-shadow:0 12px 30px rgba(0,0,0,.08);
+	}
+	#timeline .panel.panel--text.card::before{
+	content:""; position:absolute; top:50%; width:12px; height:12px;
+	background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(212,160,23,.15));
+	box-shadow:0 2px 4px rgba(0,0,0,.06); transform:translateY(-50%) rotate(45deg); border-radius:2px;
+	}
+	#timeline .panel.panel--media{ border-radius:14px; overflow:hidden; box-shadow:0 10px 24px rgba(0,0,0,.08); background:#f7f7f7; aspect-ratio:4/3; }
+	#timeline .panel.panel--media img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .35s ease; }
+	#timeline .node:hover .panel.panel--media img{ transform:scale(1.06); }
+
+	/* L = texto izq / imagen der — R = texto der / imagen izq */
+	#timeline .node[data-side="L"] .panel--text { left:0; transform:translate(calc(-100% - var(--gap)),-50%); }
+	#timeline .node[data-side="L"] .panel--media{ left:0; transform:translate(var(--gap),-50%); }
+	#timeline .node[data-side="R"] .panel--text { left:0; transform:translate(var(--gap),-50%); }
+	#timeline .node[data-side="R"] .panel--media{ left:0; transform:translate(calc(-100% - var(--gap)),-50%); }
+
+
+	/* Timeline: mostrar imágenes tanto en layout viejo como en paneles hermanos */
+	#timeline .panel.panel--media,
+	#timeline .card .media{
+	display:block;
+	margin:0 0 10px 0;
+	border-radius:12px;
+	overflow:hidden;
+	box-shadow:0 8px 18px rgba(0,0,0,.08);
+	aspect-ratio: 4 / 3;
+	background:#f7f7f7;
+	}
+
+	#timeline .panel.panel--media img,
+	#timeline .card .media img{
+	width:100%; height:100%; display:block; object-fit:cover;
+	transform:scale(1.02);
+	transition:transform .35s ease;
+	}
+	#timeline .node:hover .panel.panel--media img,
+	#timeline .node:hover .media img{ transform:scale(1.06); }
+
+	#timeline .more{ display:none !important; }
+	#timeline .note{
+	max-height:none !important;
+	overflow:visible !important;
+	}
+	#timeline .node[data-collapsible] .note{ max-height:none !important; }
+
+
+	/* ===== THEME: Sunset Rosé (timeline sin verdes) ===== */
+#timeline{
+  --brand:    #ff6ea1;  /* rosa */
+  --brand2:   #ff8a3d;  /* coral */
+  --gold-100: #fff3e8;  /* crema cálida */
+  --gold-300: #ffd36e;  /* champagne */
+  --gold-500: #ffb869;  /* dorado melocotón */
+  --ink:      #1c122b;  /* tinta morada profunda */
+}
+
+/* fondo más cálido */
+#timeline .overlay{
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,.08) 0%,
+    rgba(255,231,223,.22) 40%,
+    rgba(255,245,230,.28) 100%
+  );
+}
+
+/* la línea y el brillo usan un gradiente del propio SVG (lo recoloreamos por JS) */
+#timeline .path{ stroke: url(#brandGoldGrad) !important; }
+#timeline .shimmer{
+  stroke: url(#brandGoldGrad) !important;
+  stroke-width: 9;
+  opacity: .32;
+  filter: url(#tlGlow);
+}
+
+/* cabecera */
+#timeline .names{ color: var(--ink); }
+#timeline .date{
+  color: var(--ink);
+  background: linear-gradient(180deg,#fff,var(--gold-100));
+  border: 1px solid var(--gold-300);
+  box-shadow: 0 6px 18px rgba(255,138,61,.18);
+}
+#timeline .place{ color:#3a2d4f; }
+
+/* perla y conectores con brillo rose-gold */
+#timeline .bead{
+  background:
+    radial-gradient(circle at 35% 35%, #fff 0 35%, rgba(255,255,255,.25) 36% 60%, transparent 61%),
+    radial-gradient(circle, #ffe6f2 0, #ffb2c9 45%, #ff8a3d 80%, #ffd36e 100%);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.85), 0 4px 18px rgba(255,138,61,.35);
+}
+
+/* tarjetas */
+#timeline .panel.panel--text.card{
+  box-shadow: 0 18px 40px rgba(28,18,43,.12);
+}
+#timeline .badge{
+  background: linear-gradient(135deg, rgba(255,110,161,.12), rgba(255,211,110,.12));
+  border: 1px solid rgba(255,138,61,.28);
+  color: var(--ink);
+}
+#timeline .panel.panel--media{ background: #fff3ee; }
+
+/* punto de la hora */
+#timeline .when .dot{
+  display:inline-block; width:6px; height:6px; border-radius:999px;
+  background:#ff6ea1; margin-right:8px;
+  box-shadow:0 0 0 4px rgba(255,110,161,.15);
+}
+
+/* detalle del adorno curvo del header (usa --brand/--gold-*) — ya sin verdes */
+#timeline .flourish{ opacity:.95; }
+
+
+/* === TIPOGRAFÍA — 3 fuentes (Great Vibes / Fraunces / Manrope) === */
 :root{
-	--bg: linear-gradient(180deg,#f3fff6,#f7fff9);
-	--accent:#2a9d5b; /* verde principal */
-	--accent-2:#7ed8a1; /* verde claro */
-	--sunflower:#f6c84c;
-	--sunflower-center:#8a5a28;
-	--muted:#1f4f2e; /* texto/tonalidad oscura */
-	--card-bg:rgba(255,255,255,0.96);
-	--glass:rgba(255,255,255,0.78);
-	font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#fff);color:#221b2b}
-main.reel{min-height:100vh}
-.story{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;position:relative}
-
-/* For the hero (first story) stack content vertically so the names card appears above the details card */
-.story.s1{flex-direction:column;gap:14px}
-.story .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(6px) saturate(0.95);opacity:0.9}
-/* Fallback and prefer local 'fondo.jpg' for the main hero when available */
-.story.s1 .bg{background-image:linear-gradient(rgba(255,255,255,0.02),rgba(255,255,255,0.02)), url("../fondo.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat}
-.story .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.18))}
-.card{position:relative;z-index:3;max-width:920px;width:100%;padding:2rem;border-radius:16px;background:var(--card-bg);box-shadow:0 10px 30px rgba(32,20,60,0.06);}
-.topbar{position:absolute;top:18px;left:18px;display:flex;gap:8px;z-index:6}
-.badge{background:rgba(255,255,255,0.85);padding:.35rem .6rem;border-radius:999px;font-size:.85rem;color:var(--muted);display:inline-flex;align-items:center;gap:.45rem}
-.names{font-family:Fraunces,serif;margin:.1rem 0 0;text-align:center}
-.names.custom-script{font-family:'Great Vibes',cursive;font-size:calc(28px + 3.6vw);line-height:1;margin:.05em 0}
-.subtitle{font-family:Montserrat,sans-serif;color:var(--muted);text-align:center}
-.invite-text{margin-top:10px;text-align:center;color:var(--muted);font-size:1rem;font-weight:600}
-.decor-line{height:2px;width:60px;background:linear-gradient(90deg,var(--sunflower),var(--accent));margin:12px auto;border-radius:4px;opacity:0.95}
-.invite-note{margin-top:8px;text-align:center;color:var(--muted);font-size:0.98rem;max-width:720px;margin-left:auto;margin-right:auto}
-
-/* Ensure words inside the invite lines keep proper spacing when wrapped by JS */
-.invite-text .word, .invite-note .word{display:inline-block;white-space:normal;margin-right:0.28em}
-.invite-text .word:last-child, .invite-note .word:last-child{margin-right:0}
-
-/* Invite-note: polished word-by-word entrance + decorative underline and heart */
-.invite-note{position:relative;overflow:visible}
-.invite-note.invite-animated::after{content:'';display:block;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:6px;margin:10px auto 0;animation:invite-underline 1100ms cubic-bezier(.2,.9,.2,1) forwards}
-.invite-note::before{content:'❤';position:absolute;left:50%;top:-18px;transform:translateX(-50%) scale(.92);font-size:1rem;color:var(--accent);opacity:0;pointer-events:none;animation:heart-pop 900ms cubic-bezier(.2,.9,.2,1) 300ms forwards}
-
-.invite-note .word{display:inline-block;opacity:0;transform:translateY(12px) scale(.996);animation-name:invite-word-pop;animation-duration:760ms;animation-fill-mode:both;animation-timing-function:cubic-bezier(.2,.9,.2,1)}
-.invite-note .word:last-child{margin-right:0}
-
-@keyframes invite-word-pop{0%{opacity:0;transform:translateY(18px) scale(.992)}60%{opacity:0.96;transform:translateY(-4px) scale(1.02)}100%{opacity:1;transform:none}}
-@keyframes invite-underline{0%{width:0}100%{width:60%}}
-@keyframes heart-pop{0%{opacity:0;transform:translateX(-50%) scale(.6)}60%{opacity:1;transform:translateX(-50%) scale(1.06)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
-
-/* Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce){
-	.invite-note.invite-animated::after{animation:none;width:60%}
-	.invite-note::before{animation:none;opacity:1;transform:translateX(-50%) scale(1)}
-	.invite-note .word{animation:none;opacity:1;transform:none}
-}
-.date{color:var(--muted);text-align:center;margin-top:.4rem}
-.countdown{display:flex;flex-direction:row;gap:12px;align-items:center;justify-content:center;margin-top:12px}
-.countdown .dd{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:88px;background:var(--accent);color:#fff;padding:.8rem 1rem;border-radius:12px;text-align:center;box-shadow:0 8px 18px rgba(42,157,91,0.12)}
-.btn{border:1px solid rgba(34,27,43,0.06);background:#fff;padding:.6rem .9rem;border-radius:10px;text-decoration:none;color:inherit;cursor:pointer}
-.btn--ghost{background:transparent}
-.btn--brand{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none}
-
-/* Play button used on the welcome overlay */
-.btn-play{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0.6rem 0.9rem;border-radius:999px;border:none}
-.btn-play .play-icon{width:26px;height:26px;display:block}
-.visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;border:0;padding:0;margin:-1px}
-
-/* RSVP micro-button */
-.link-rsvp{appearance:none;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:.6rem 1rem;border-radius:999px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(34,79,46,0.08);transition:transform .18s cubic-bezier(.2,.9,.2,1),box-shadow .18s,opacity .12s}
-.link-rsvp:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 28px rgba(34,79,46,0.12)}
-.link-rsvp:active{transform:translateY(-1px) scale(.99);box-shadow:0 6px 14px rgba(34,79,46,0.06);opacity:.98}
-.link-rsvp:focus{outline:3px solid rgba(46,160,90,0.16);outline-offset:4px}
-.sidebar{display:none} /* ocultar controles para experiencia más romántica */
-.fab{display:none}
-.footer{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.95rem}
-/* Make the footer on screen 2 (Detalles) white for better contrast against the photo background */
-.story.s2 .footer{color:#ffffff;text-shadow:0 1px 3px rgba(0,0,0,0.45)}
-.disc{position:absolute;left:18px;bottom:18px;width:72px;height:72px;border-radius:999px;background:radial-gradient(circle at 30% 30%,#fff,#d8c8ff);box-shadow:inset 0 -6px 18px rgba(0,0,0,0.03)}
-/* Removed right-side image decorations to keep UI clean */
-
-/* Background: soft layered gradients + subtle moving wave */
-html,body{height:100%;margin:0;background:var(--bg);color:#221b2b}
-main.reel{background: radial-gradient(ellipse at 10% 10%, rgba(46,160,90,0.04) 0%, transparent 20%), linear-gradient(180deg, rgba(42,157,91,0.02), rgba(126,216,161,0.01));}
-
-/* animated decorative waves */
-.overlay::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.02));mix-blend-mode:soft-light;pointer-events:none}
-
-/* Petals container (animated via JS) */
-#petals{position:absolute;left:0;right:0;bottom:0;top:0;pointer-events:none;overflow:hidden;z-index:2}
-.petal{position:absolute;width:28px;height:28px;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.0) 60%), linear-gradient(180deg,#c8f7d8,#7ed8a1);border-radius:14px;opacity:0.95;transform-origin:center;filter:drop-shadow(0 6px 12px rgba(32,80,40,0.06));animation:petal-fall linear infinite}
-.flower{animation:petal-fall linear infinite;transform-origin:center;filter:drop-shadow(0 6px 18px rgba(32,80,40,0.06));}
-/* ensure svg shapes can use CSS variables for fill */
-.flower circle, .flower ellipse, .flower path{vector-effect:non-scaling-stroke}
-/* Micro-animations and utility classes */
-.fade-up{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.2,1)}
-.fade-up.is-visible{opacity:1;transform:none}
-.hover-lift{transition:transform .18s cubic-bezier(.2,.9,.2,1),box-shadow .18s}
-.hover-lift:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(31,122,72,0.12)}
-
-/* Diary (timeline) styles */
-.diary{display:flex;flex-direction:column;gap:18px;margin-top:18px}
-.diary-entry{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.96));box-shadow:0 8px 22px rgba(18,28,20,0.03);border:1px solid rgba(34,27,43,0.03)}
-.diary-entry:focus{outline:3px solid rgba(46,160,90,0.08);outline-offset:4px}
-.entry-date{min-width:120px;color:var(--muted);font-weight:700;font-size:.95rem}
-.entry-content h3{margin:0 0 6px 0;font-size:1.05rem}
-.entry-content p{margin:0;color:#374a3a}
-
-/* Timeline accent line on larger screens */
-@media(min-width:720px){
-	.diary{position:relative;padding-left:36px}
-	.diary::before{content:"";position:absolute;left:18px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent-2));opacity:0.12;border-radius:2px}
-	.diary-entry{padding-left:18px}
-	.entry-date{min-width:100px;text-align:right;margin-right:18px}
+  --font-title: "Great Vibes", cursive;           /* Nombres / H1 hero */
+  --font-sub:   "Fraunces", serif;                /* Subtítulos, fechas, headings, badges */
+  --font-body:  "Manrope", system-ui, Segoe UI, Roboto, Arial, sans-serif; /* texto corrido */
 }
 
-/* Newspaper / periódico look */
-.diary-entry{font-family:Fraunces, Georgia, 'Times New Roman', serif;border-radius:6px;padding:18px}
-.entry-date{font-family:Fraunces, Georgia, 'Times New Roman', serif;color:#222;letter-spacing:0.6px;font-size:0.95rem}
-.entry-content h3{font-family:Fraunces,serif;font-weight:700;color:#111;margin-bottom:6px}
-.entry-content p{color:#2f3b33;line-height:1.45}
-.diary-entry:nth-child(odd){background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98));border-left:4px solid rgba(34,27,43,0.03)}
-.diary-entry:nth-child(even){background:linear-gradient(180deg,rgba(250,250,250,0.98),rgba(245,245,245,0.98));border-left:4px solid rgba(34,27,43,0.02)}
-
-/* Prominent date badge for mobile & desktop */
-.entry-date{background:transparent;padding:4px 6px;border-radius:6px}
-.diary-entry .entry-date::after{content:"";display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;margin-left:10px;vertical-align:middle;opacity:0.9}
-
-/* Entrance: subtle horizontal offset + paper tilt for the newspaper feel */
-.diary-entry.fade-up{opacity:0;transform:translateY(10px) translateX(-10px) rotate(-0.4deg);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.9,.2,1)}
-.diary-entry.fade-up.is-visible{opacity:1;transform:none}
-
-/* Slight typographic tuning */
-.diary{max-width:920px;margin-left:auto;margin-right:auto}
-
-@media(max-width:720px){
-	.entry-date{min-width:92px;text-align:left;margin-right:10px}
-	.diary::before{display:none}
+/* Base */
+html, body{
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* entry icon */
-.entry-icon{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;background:rgba(46,160,90,0.06);margin-right:10px;flex:0 0 34px}
-.entry-icon svg{display:block}
-
-/* small paper tilt when revealed */
-.diary-entry.is-visible{box-shadow:0 18px 40px rgba(18,28,20,0.06);transform:none}
-.diary-entry.is-visible .entry-icon{transform:translateY(-2px)}
-
-/* Hero background blur & overlay */
-.story .bg{transition:filter .9s ease,transform .9s ease,opacity .6s}
-.story.hero-loaded .bg{filter:blur(4px) saturate(1.05) contrast(1.02);transform:scale(1.02)}
-.story .bg{filter:blur(8px) saturate(0.95);transform:scale(1.03);opacity:1}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(247,255,246,0.22), rgba(255,255,255,0.06));pointer-events:none}
-
-/* ring photo (anillos) overlay with gentle opacity animation */
-.ring-photo{position:absolute;right:18px;top:18px;width:140px;height:140px;border-radius:10px;background-image:url('../anillos.jpg');background-size:cover;background-position:center;opacity:0;transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.12);transition:opacity .9s ease,transform .6s cubic-bezier(.2,.9,.2,1);z-index:4}
-.story.hero-loaded .ring-photo{opacity:0.96;transform:none}
-
-/* Make the heading use the script font and scale nicely */
-.names{font-family:'Great Vibes',cursive;font-size:clamp(36px,6vw,84px);letter-spacing:0.5px;color:var(--muted);}
-.names .amp{font-family:Fraunces,serif;font-weight:700;margin:0 .15em}
-
-/* Separate names card above the main card */
-.names-card{position:relative;z-index:6;margin:0 auto 12px;max-width:760px;background:var(--card-bg);padding:10px 18px;border-radius:14px;box-shadow:0 12px 30px rgba(18,28,20,0.04);text-align:center}
-.names-card .names{margin:0;font-size:clamp(36px,5.6vw,64px);line-height:1}
-
-/* Wedding rings positioning and animation */
-.wedding-rings{position:absolute;left:50%;bottom:18px;width:160px;height:160px;z-index:6;pointer-events:none;opacity:0;transform:translateX(-50%) translateY(8px) scale(.98);transition:opacity .9s ease,transform .9s ease}
-.wedding-rings-svg{width:100%;height:100%;display:block}
-.wedding-rings .ring{transform-origin:60px 60px}
-.wedding-rings .ring-1{animation: ring-rotate 9s linear infinite}
-.wedding-rings .ring-2{animation: ring-rotate 6.4s linear reverse infinite}
-.wedding-rings .sparkle{opacity:0;transform-origin:center;animation: sparkle 2.8s ease-in-out infinite}
-
-@keyframes sparkle{0%{opacity:0;transform:scale(.6) translateY(2px)}40%{opacity:1;transform:scale(1.08) translateY(-2px)}100%{opacity:0;transform:scale(.8) translateY(0)}}
-
-/* Activate rings when hero is loaded */
-.story.hero-loaded .wedding-rings{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
-
-/* Initial blank entrance: start with white page and hide elements */
-.body-init{background:#ffffff !important}
-.body-init .reel, .body-init .story{background:#ffffff !important}
-.body-init .card,
-.body-init .wedding-rings,
-.body-init .ring-photo,
-.body-init .subtitle,
-.body-init .names,
-.body-init .countdown,
-.body-init .link-rsvp{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.2,1)}
-
-/* reveal class used by JS to show items in sequence */
-.reveal{opacity:1!important;transform:none!important}
-.countdown .dd{transition:opacity .5s ease, transform .5s ease}
-
-/* Adjust size on small screens so rings remain visible but unobtrusive */
-@media (max-width:520px){
-	.wedding-rings{width:110px;height:110px;bottom:14px}
-}
-@keyframes petal-fall{
-	0%{transform:translateY(-10vh) rotate(0deg) translateX(0);opacity:0}
-	10%{opacity:1}
-	50%{transform:translateY(40vh) rotate(180deg) translateX(6vw)}
-	100%{transform:translateY(110vh) rotate(360deg) translateX(-3vw);opacity:0.9}
+/* Títulos principales (nombres y H1/H2 protagónicos) */
+.names,
+h1.title,
+.hero-title{
+  font-family: var(--font-title);
+  letter-spacing: .2px;
 }
 
-/* Rings animation keyframes and styles */
-@keyframes ring-rotate{
-	0%{transform:rotate(0) scale(1)}
-	50%{transform:rotate(180deg) scale(1.02)}
-	100%{transform:rotate(360deg) scale(1)}
-}
-@keyframes ring-bob{
-	0%{transform:translateY(0)}
-	50%{transform:translateY(6px)}
-	100%{transform:translateY(0)}
-}
-.ring-svg{width:100%;height:100%;display:block}
-.ring{transform-origin:60px 60px;opacity:0.95;animation: ring-rotate 8s linear infinite, ring-bob 3.6s ease-in-out infinite}
-.ring.small{animation-duration:5.2s,3.6s;opacity:0.95}
-
-/* Text animation */
-@keyframes text-fade-up{0%{opacity:0;transform:translateY(18px) scale(.992)}60%{opacity:0.9;transform:translateY(6px) scale(.998)}100%{opacity:1;transform:none}}
-.names.animated{animation:text-fade-up 2.2s cubic-bezier(.2,.9,.2,1) both}
-
-/* Word-level stagger animation (slower for readability) */
-.word{display:inline-block;opacity:0;transform:translateY(12px);animation:text-fade-up 2s cubic-bezier(.2,.9,.2,1) both}
-.subtitle .word{font-weight:600;color:var(--muted)}
-.names .word{font-family:'Great Vibes',cursive;letter-spacing:0.4px;white-space:normal;display:inline-block;margin-right:0.28em;/* keep words separated */font-variant-ligatures:none;}
-.names .word:last-child{margin-right:0}
-.date .word, #date-text .word{font-size:0.98rem;color:var(--muted)}
-
-/* Subtitle: stronger spacing + distinct pop animation */
-.wedding-rings .ring-1{animation: ring-rotate 14s linear infinite}
-.wedding-rings .ring-2{animation: ring-rotate 10s linear reverse infinite}
-.wedding-rings .sparkle{opacity:0;transform-origin:center;animation: sparkle 4.2s ease-in-out infinite}
-@keyframes subtitle-pop{0%{opacity:0;transform:translateY(10px) scale(.98)}60%{opacity:1;transform:translateY(-4px) scale(1.04)}100%{opacity:1;transform:none}}
-.subtitle{font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif;font-weight:600;letter-spacing:0.2px}
-.subtitle .word{display:inline-block;margin-right:0.32em;white-space:normal;font-variant-ligatures:none;animation-name:subtitle-pop;animation-duration:2s;animation-fill-mode:both}
-.subtitle .word:last-child{margin-right:0}
-
-/* Card item staggered animation */
-.card .card-item{opacity:0;transform:translateY(12px) scale(.996);display:block}
-.card .card-item.animate{animation:card-pop 1.6s cubic-bezier(.2,.9,.2,1) both}
-@keyframes card-pop{0%{opacity:0;transform:translateY(14px) scale(.996)}60%{opacity:0.92;transform:translateY(6px) scale(1.006)}100%{opacity:1;transform:none}}
-
-/* fine-grain interactive states for card controls */
-.card .actions{transition:transform .22s,opacity .18s}
-.card .actions .btn{transition:transform .18s,box-shadow .18s}
-.card .link-rsvp{transition:transform .18s,box-shadow .18s,opacity .12s}
-.card .link-rsvp:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 18px 38px rgba(34,79,46,0.12)}
-.card .link-rsvp:focus{outline:3px solid rgba(46,160,90,0.12);outline-offset:4px}
-
-/* Slight delay for children when reduced motion is requested */
-@media (prefers-reduced-motion: reduce){
-	.card .card-item{transition:none;animation:none;opacity:1;transform:none}
+/* Subtítulos / headings intermedios / fechas / badges */
+h2, h3,
+.subtitle,
+.title,
+.when,
+.badge,
+.card .meta,
+.date{
+  font-family: var(--font-sub);
 }
 
-/* Countdown: horizontal green pill blocks (restored visual) */
-.countdown{width:100%;max-width:720px;margin:0 auto;display:flex;gap:14px;justify-content:center;align-items:center}
-.countdown .dd{background:var(--card-bg);color:var(--muted);padding:.9rem 1.1rem;border-radius:14px;text-align:center;display:flex;flex-direction:column;align-items:center;min-width:110px;box-shadow:0 10px 30px rgba(18,28,20,0.04)}
-.countdown .dd strong{display:inline-block;background:var(--accent);color:#fff;padding:.6rem 1.1rem;border-radius:10px;font-size:1.8rem;line-height:1;font-weight:800;box-shadow:0 8px 22px rgba(42,157,91,0.12)}
-.countdown .dd span{font-size:.95rem;color:var(--muted);margin-top:8px}
-
-/* Force horizontal layout for the countdown on all viewports (override accidental column rules) */
-.countdown{display:flex !important;flex-direction:row !important;flex-wrap:nowrap !important;align-items:center;justify-content:center;gap:14px}
-.countdown .dd{flex:0 0 auto}
-
-/* Slightly smaller on narrow screens to avoid overflow */
-@media (max-width:420px){
-	/* keep pills horizontal but smaller and allow wrapping to multiple rows if needed */
-	.countdown{gap:10px;justify-content:center}
-	.countdown .dd{width:auto;max-width:140px;min-width:64px;padding:.6rem .8rem}
-	.countdown .dd strong{font-size:1.4rem;padding:.45rem .8rem}
+/* Texto de párrafos y UI */
+p, .invite-text, .invite-note, .note,
+label, input, textarea, button,
+.entry-content p, .rsvp-panel, .gallery .caption,
+.footer, .welcome__panel p,
+.countdown .unit span{
+  font-family: var(--font-body);
 }
 
-@media (max-width:360px){
-	/* very small phones: reduce pill density and allow wrapping (still row-based) */
-	.countdown{gap:8px}
-	.countdown .dd{min-width:56px;max-width:110px;padding:.45rem .6rem}
-	.countdown .dd strong{font-size:1.1rem;padding:.35rem .6rem}
-	.countdown .dd span{font-size:0.85rem}
+/* Ajustes finos */
+.subtitle{ font-weight:700; letter-spacing:.2px; }
+.card .note{ line-height:1.55; }
+.names .amp{ font-family: var(--font-sub); font-weight:700; }
+
+/* Diario / timeline: mantiene Fraunces en titulares, Manrope en cuerpo */
+.entry-content h3{ font-family: var(--font-sub); font-weight:700; }
+.entry-date{ font-family: var(--font-sub); }
+.entry-content p{ font-family: var(--font-body); }
+
+/* Contador: números con Fraunces para carácter */
+.countdown .dd strong{ font-family: var(--font-sub); font-weight:800; }
+
+/* Bienvenida */
+#welcome-overlay h2{ font-family: var(--font-title); }
+#welcome-overlay p, .welcome__song{ font-family: var(--font-body); }
+
+/* Botones */
+.btn, .link-rsvp{ font-family: var(--font-sub); font-weight:700; }
+
+/* Asegura que cualquier resto de Montserrat quede sin efecto */
+.subtitle, .names-card .names{
+  font-variation-settings: normal;
 }
 
-/* hide ring photo on small screens to keep layout clean */
-@media (max-width:520px){
-	.ring-photo{display:none}
-}
-/* Gallery */
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.gallery-item{position:relative;border-radius:10px;overflow:hidden;background:#fff}
-.gallery-item img{width:100%;height:100%;object-fit:cover;display:block}
-.caption{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,0.45);color:#fff;padding:6px 8px;border-radius:8px;font-size:.9rem}
-.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:9999}
-.lightbox[aria-hidden="false"]{display:flex}
-.lightbox-img{max-width:92vw;max-height:82vh;border-radius:8px}
-.lightbox-close{position:fixed;right:20px;top:18px;background:transparent;border:0;color:#fff;font-size:1.6rem;cursor:pointer}
-/* RSVP modal */
-.rsvp-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:10000;padding:1rem}
-.rsvp-modal[aria-hidden="false"]{display:flex}
-.rsvp-panel{background:#fff;padding:1rem;border-radius:12px;max-width:420px;width:100%}
-.rsvp-panel input,.rsvp-panel textarea{width:100%;padding:.5rem;border-radius:8px;border:1px solid #eee;margin-top:6px}
-.rsvp-panel label{display:block;margin-top:8px;font-size:.95rem;color:var(--muted)}
-.rsvp-close{position:absolute;right:18px;top:12px;background:#fff;border:0;border-radius:6px;padding:.3rem .5rem;cursor:pointer}
-/* Responsive tweaks */
-@media (max-width:720px){
-	.card{padding:1.2rem;border-radius:12px}
-	/* decor removed for cleaner mobile view */
-	.topbar{display:none}
-}
-
-/* Ensure background covers safe areas on modern phones and remains sharp */
-@media (max-width:420px){
-	.story .bg{background-position:top center;filter:blur(6px) saturate(0.98)}
-	.card{padding:1rem;margin:0 0.6rem}
-}
-
-/* Mobile title fixes: avoid 'remontada' (overlap) and preserve layout while animating words */
-@media (max-width:520px){
-	.names{font-size:clamp(28px,8vw,44px);line-height:1.05;margin-top:0.05rem;margin-bottom:0.2rem;word-break:break-word;}
-	.names .word{display:inline-block;vertical-align:middle;white-space:normal}
-	.card{padding-bottom:2.4rem}
-	/* ensure countdown doesn't overlap title */
-	.countdown{margin-top:8px}
-}
 

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Línea de tiempo — Estilo TikTok + Glass</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Fraunces:wght@600;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    /*
+      =============================
+      TIMELINE COMBINADA (LISTA PARA PEGAR)
+      - Estilos base tipo TikTok/glass inspirados en tu segundo código
+      - Línea de tiempo animada y responsiva de tu primer código
+      -----------------------------
+      Cómo integrarla en tu proyecto:
+      1) Si ya tienes el layout .reel y .story del código TikTok, pega SOLO el <section id="timeline"> completo dentro de tu <main class="reel">.
+      2) Mantén el <style> de esta sección para que funcione aislada (no colisiona con el resto).
+      3) Si usas INVITE.backgrounds en tu app, el JS intentará leerlo para el fondo. Si no, usa el fondo por defecto.
+    */
+
+    :root{
+      /* tokens del estilo TikTok */
+      --ink:#f8f7ff; --muted:#cfc7ff; --brand:#b589ff; --brand2:#ffb3c1;
+      --panel:rgba(0,0,0,.35); --card:rgba(255,255,255,.10);
+      /* acento dorado de la línea */
+      --gold-100:#fff6db; --gold-300:#f4d17c; --gold-500:#d4a017; --ring: rgba(212,160,23,.20);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:#0d0b12; color:var(--ink);}
+
+    /* contenedor tipo TikTok */
+    .reel{height:100dvh; overflow-y:auto; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch}
+    section.story{position:relative; height:100dvh; width:100%; scroll-snap-align:start; display:grid; place-items:center; padding:20px; isolation:isolate}
+    .bg{position:absolute; inset:0; background-position:center; background-size:cover; z-index:-2; transform:scale(1.02); filter:saturate(1.05) contrast(1.02)}
+    .overlay{position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(13,11,18,.25) 0%, rgba(13,11,18,.55) 55%, rgba(13,11,18,.88) 100%), radial-gradient(60% 60% at 50% 20%, rgba(181,137,255,.25), transparent 60%)}
+
+    /* ==== TIMELINE (namespaced) ==== */
+    #timeline .timeline-container *{box-sizing:border-box}
+    #timeline .timeline-container{position:relative; max-width:1100px; margin-inline:auto; padding:clamp(12px, 3vw, 36px); z-index:2}
+    #timeline header{display:grid; gap:8px; place-items:center; text-align:center}
+    #timeline .names{font-family:'Great Vibes', cursive; font-size:clamp(36px, 8vw, 88px); line-height:1; color:#efe9ff; text-shadow:0 2px 0 rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.45)}
+    #timeline .flourish{width:180px; height:26px; opacity:.95; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+    #timeline .date{font-weight:700; letter-spacing:.3px; color:#2b2342; background:linear-gradient(180deg, #fff, var(--gold-100)); border:1px solid var(--gold-300); padding:6px 10px; border-radius:999px; box-shadow:0 6px 18px var(--ring)}
+    #timeline .place{font-weight:500; color:var(--muted); font-size:0.95rem}
+
+    /* Path */
+    #timeline .timeline{margin-top:20px; position:relative; z-index:2}
+    #timeline .timeline h2{font-family:Fraunces, serif; font-size:clamp(18px,3.5vw,30px); margin:0 0 8px; color:#f3ecff}
+    #timeline .path-wrap{position:relative; width:100%; height:760px; min-height:420px}
+    #timeline .path-wrap svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible}
+    #timeline .path{fill:none; stroke:url(#brandGoldGrad); stroke-width:6; stroke-linecap:round; filter:url(#glow)}
+    #timeline .path[data-length]{stroke-dasharray: var(--dash, 1000) var(--dash-gap, 1000); stroke-dashoffset: var(--dash, 1000); animation: drawLine 2.6s ease-out forwards, breathe 8s ease-in-out infinite 2.6s}
+    #timeline .shimmer{fill:none; stroke:rgba(255,255,255,.9); stroke-width:2.5; stroke-linecap:round; mix-blend-mode:screen; stroke-dasharray: 12 14; animation: shimmer 2.8s linear infinite; opacity:.7}
+    #timeline .glint{fill:#fff; filter: drop-shadow(0 0 6px var(--gold-500)) drop-shadow(0 0 12px #fff)}
+
+    @keyframes drawLine{from{stroke-dashoffset: var(--dash)} to{stroke-dashoffset: 0}}
+    @keyframes shimmer{to{stroke-dashoffset: -260}}
+    @keyframes breathe{0%,100%{transform:none}50%{transform:translateY(-1.5px)}}
+
+    /* Nodos */
+    #timeline .nodes{list-style:none; margin:0; padding:0}
+    #timeline .node{position:absolute; transform:translate(-50%, -50%) scale(.98); width:min(78vw, 440px); max-width:440px}
+    #timeline .card{position:relative; background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.08)); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:14px 16px 16px; box-shadow:0 20px 60px rgba(0,0,0,.35), 0 2px 0 rgba(255,255,255,.06) inset; backdrop-filter:blur(8px)}
+    #timeline .card::after{content:""; position:absolute; inset:0; border-radius:18px; pointer-events:none; background:linear-gradient(180deg, rgba(255,255,255,.35), transparent 40%, rgba(212,160,23,.12)); opacity:.45}
+
+    #timeline .badge{position:absolute; top:-14px; left:-14px; width:40px; height:40px; display:grid; place-items:center; font-size:20px; border-radius:50%;
+      background:linear-gradient(135deg,var(--brand),var(--brand2)); color:#2b2342; border:1px solid rgba(255,255,255,.35); box-shadow:0 8px 18px rgba(0,0,0,.35)}
+    #timeline .when{display:flex; align-items:center; gap:8px; font-weight:800; color:#efe9ff; font-size:0.95rem}
+    #timeline .dot{width:12px; height:12px; border-radius:50%; background:radial-gradient(12px 12px at 30% 30%, var(--gold-500), var(--gold-300)); box-shadow:0 0 0 3px rgba(13,11,18,.9), 0 0 0 5px rgba(255,255,255,.15)}
+    #timeline .title{margin:8px 0 4px; font-family:Fraunces, serif; font-size:clamp(16px,2.5vw,22px); color:#f3ecff}
+    #timeline .meta{color:#dbd3ff; font-size:13px}
+    #timeline .note{margin-top:8px; font-size:13px; color:#efe9ff}
+
+    @media (prefers-reduced-motion: no-preference){
+      #timeline .reveal{opacity:0; transform:translate(-50%, calc(-50% + 10px)) scale(.98); filter:saturate(.9)}
+      #timeline .reveal.show{opacity:1; transform:translate(-50%, -50%) scale(1); filter:none; transition:opacity .6s ease, transform .6s ease, filter .6s ease}
+      #timeline .node .badge{animation:pulse 2.2s ease-in-out infinite}
+      @keyframes pulse{0%,100%{transform:translateZ(0) scale(1)}50%{transform:translateZ(0) scale(1.06)}}
+    }
+
+    /* Luciérnagas en modo oscuro */
+    #timeline .fireflies{position:absolute; inset:0; pointer-events:none; z-index:1}
+    #timeline .firefly{position:absolute; width:6px; height:6px; border-radius:50%; background: radial-gradient(circle, #fff 0 40%, rgba(255,255,255,.2) 60%); box-shadow:0 0 12px #fff, 0 0 24px rgba(181,137,255,.9); animation: drift var(--dur, 14s) linear infinite, flicker 2.6s ease-in-out infinite}
+    @keyframes drift{to{transform:translate(var(--dx, 0), var(--dy, 0))}}
+    @keyframes flicker{0%,100%{opacity:.2}60%{opacity:1}}
+
+    /* Decorativos: se ocultan en móviles para limpiar */
+    #timeline .decor{position:absolute; inset:0; pointer-events:none; z-index:0}
+    #timeline .botanical{position:absolute; opacity:.35; filter:blur(.3px) saturate(1.05)}
+    #timeline .botanical--tl{top:0; left:0; width:min(40vw, 520px)}
+    #timeline .botanical--br{right:0; bottom:0; width:min(44vw, 560px)}
+
+    /* Responsive */
+    @media (max-width: 1000px){
+      #timeline .timeline-container{padding:clamp(12px, 4vw, 28px)}
+      #timeline .path-wrap{height:620px}
+      #timeline .names{font-size:clamp(32px,7.5vw,72px)}
+      #timeline .botanical--tl, #timeline .botanical--br{display:none}
+      #timeline .fireflies{display:none}
+    }
+    @media (max-width: 700px){
+      #timeline .path-wrap{height:520px}
+      #timeline .card{padding:12px}
+      #timeline .badge{width:36px;height:36px;font-size:18px;top:-12px;left:-12px}
+      #timeline .node{width:86vw}
+      #timeline .title{font-size:1rem}
+      #timeline .when{font-size:0.9rem}
+    }
+    @media (max-width: 420px){
+      #timeline .path-wrap{height:460px}
+      #timeline .names{font-size:clamp(28px,9vw,44px)}
+      #timeline .card{padding:10px}
+      #timeline .title{font-size:0.98rem}
+      #timeline .node{transform:translate(-50%, -50%) scale(1); left:50% !important}
+    }
+
+    @media print{
+      body{background:#fff; color:#000}
+      #timeline .path{stroke:#000; filter:none}
+      #timeline .shimmer, #timeline .fireflies, #timeline .decor, #timeline .bg, #timeline .overlay{display:none}
+      #timeline .path-wrap{height:auto}
+      #timeline .node{position:static; transform:none; width:100%; margin:10px 0}
+    }
+    /* ==== Overrides de responsividad específicos para la sección de timeline ==== */
+  #timeline.story{ height:auto; min-height:100svh; align-content:start; padding-block:clamp(18px,4vw,32px) clamp(28px,6vw,48px) }
+  .reel{ min-height:100svh }
+  /* Centrar tarjetas en viewport medianos/pequeños para evitar desbordes laterales */
+  @media (max-width: 820px){ #timeline .node{ left:50% !important; transform:translate(-50%, -50%) } }
+</style>
+</head>
+<body>
+  <main class="reel">
+    <!-- ========================= PANTALLA 3 (LÍNEA DE TIEMPO) ========================= -->
+    <section id="timeline" class="story s4" role="region" aria-label="Línea de tiempo" tabindex="0">
+      <div class="bg" id="timeline-bg"></div>
+      <div class="overlay"></div>
+
+      <div class="timeline-container" id="timeline-container">
+        <header>
+          <div class="names" aria-label="Daniel y Ana">Daniel &amp; Ana</div>
+          <svg class="flourish" viewBox="0 0 200 24" aria-hidden="true" focusable="false">
+            <path d="M2 12 C 34 2, 66 2, 98 12 S 162 22, 198 12" fill="none" stroke="url(#fGrad)" stroke-width="1.8" stroke-linecap="round" />
+            <defs>
+              <linearGradient id="fGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--brand)"/>
+                <stop offset="60%" stop-color="var(--gold-300)"/>
+                <stop offset="100%" stop-color="var(--gold-500)"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="date" aria-label="8 de noviembre de 2025">8 de noviembre de 2025</div>
+          <div class="place">Iglesia Inmaculada Concepción de Suba, Bogotá</div>
+        </header>
+
+        <div class="decor" aria-hidden="true">
+          <!-- Puedes sustituir por SVGs botánicos propios -->
+          <svg class="botanical botanical--tl" viewBox="0 0 600 600"><circle cx="120" cy="120" r="120" fill="rgba(255,255,255,.05)"/></svg>
+          <svg class="botanical botanical--br" viewBox="0 0 700 700"><circle cx="560" cy="560" r="120" fill="rgba(255,255,255,.05)"/></svg>
+        </div>
+
+        <div class="fireflies" id="timeline-fireflies" aria-hidden="true"></div>
+
+        <section class="timeline" aria-labelledby="tl-title">
+          <h2 id="tl-title">Línea de tiempo</h2>
+          <div class="path-wrap" id="timeline-pathWrap">
+            <svg id="timeline-tl-svg" role="img" aria-label="Línea del tiempo">
+              <defs>
+                <linearGradient id="brandGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="var(--brand)"/>
+                  <stop offset="50%" stop-color="var(--brand2)"/>
+                  <stop offset="100%" stop-color="var(--gold-500)"/>
+                </linearGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <path id="timeline-tl-path" class="path" d="M 0 0 C 200 80, 60 180, 320 260 S 140 420, 480 520"/>
+              <path id="timeline-tl-shimmer" class="shimmer" d="M 0 0 C 200 80, 60 180, 320 260 S 140 420, 480 520"/>
+              <circle id="timeline-glint" class="glint" r="4.5" cx="0" cy="0"></circle>
+            </svg>
+            <ol class="nodes" id="timeline-nodes"></ol>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      // ====== Datos del timeline ======
+      const data = {
+        couple: 'Daniel & Ana',
+        date: '8 de noviembre de 2025',
+        place: 'Iglesia Inmaculada Concepción de Suba, Bogotá',
+        bgFallback: 'https://images.unsplash.com/photo-1497302347632-904729bc24aa?q=80&w=1600&auto=format&fit=crop',
+        events: [
+          { time: '17:00', title: 'Ceremonia', meta: 'Iglesia Inmaculada Concepción de Suba', note: 'Llegar 15 minutos antes para ubicarte con calma.' },
+          { time: '19:00', title: 'Cóctel de bienvenida', meta: 'Recepción', note: 'Brindis, fotos y música en vivo.' },
+          { time: '—',     title: 'Baile y celebración', meta: 'Salón principal', note: 'A continuación del cóctel. ¡Prepárate para bailar!' },
+          { time: '00:00', title: '¡Despedida de los novios!', meta: 'Salida especial', note: 'Luces, abrazos y buenos deseos.' }
+        ]
+      };
+
+      // Fondo: usa INVITE.backgrounds[1] si existe; si no, usa bgFallback
+      const bg = (window.INVITE && Array.isArray(INVITE.backgrounds) && INVITE.backgrounds[1]) || data.bgFallback;
+      document.getElementById('timeline-bg').style.backgroundImage = `url('${bg}')`;
+
+      // Cabecera
+      const container = document.getElementById('timeline-container');
+      container.querySelector('.names').textContent = data.couple;
+      container.querySelector('.date').textContent = data.date;
+      container.querySelector('.place').textContent = data.place;
+
+      // Elementos del path
+      const $wrap   = container.querySelector('#timeline-pathWrap');
+      const $path   = container.querySelector('#timeline-tl-path');
+      const $shimmer= container.querySelector('#timeline-tl-shimmer');
+      const $glint  = container.querySelector('#timeline-glint');
+      const $nodes  = container.querySelector('#timeline-nodes');
+
+      function makePath(width, height){
+        const w = width, h = height;
+        const x1 = 24,    y1 = 40;
+        const x2 = w*0.35, y2 = h*0.18;
+        const x3 = w*0.16, y3 = h*0.38;
+        const x4 = w*0.62, y4 = h*0.52;
+        const x5 = w*0.30, y5 = h*0.72;
+        const x6 = w*0.94, y6 = h*0.90;
+        return `M ${x1} ${y1} C ${x2} ${y2}, ${x3} ${y3}, ${x4} ${y4} S ${x5} ${y5}, ${x6} ${y6}`;
+      }
+
+      function iconFor(title){
+        const t = title.toLowerCase();
+        if(t.includes('ceremonia')) return '💍';
+        if(t.includes('cóctel')||t.includes('coctel')) return '🍸';
+        if(t.includes('baile')||t.includes('celebración')) return '🎶';
+        if(t.includes('despedida')) return '✨';
+        return '🌸';
+      }
+
+      function layout(){
+        const H = Math.max(700, 260 + data.events.length * 190);
+        $wrap.style.height = H + 'px';
+        const d = makePath($wrap.clientWidth, H);
+        $path.setAttribute('d', d);
+        $shimmer.setAttribute('d', d);
+
+        const L = $path.getTotalLength();
+        $path.style.setProperty('--dash', L);
+        $path.setAttribute('data-length', L);
+
+        $nodes.innerHTML = '';
+        const margin = 0.06;
+        data.events.forEach((ev, i)=>{
+          const t = margin + (i/(data.events.length-1 || 1))*(1 - margin*2);
+          const p = $path.getPointAtLength(L * t);
+          const li = document.createElement('li');
+          li.className = 'node reveal';
+          li.style.top  = p.y + 'px';
+          // iniciar centrado para evitar parpadeo
+          li.style.left = '50%';
+          li.innerHTML = `
+            <article class=\"card\">
+              <div class=\"badge\" aria-hidden=\"true\">${iconFor(ev.title)}</div>
+              <div class=\"when\"><span class=\"dot\" aria-hidden=\"true\"></span><span>${ev.time}${ev.time !== '—' ? ' h' : ''}</span></div>
+              <h3 class=\"title\">${ev.title}</h3>
+              ${ev.meta ? `<div class=\"meta\">${ev.meta}</div>` : ''}
+              ${ev.note ? `<p class=\"note\">${ev.note}</p>` : ''}
+            </article>`;
+          $nodes.appendChild(li);
+          // clamp horizontal: evita que la card se salga por los costados en pantallas estrechas
+          const w = li.offsetWidth || 360; // ancho efectivo de la tarjeta
+          const half = w/2;
+          const safeX = Math.min(Math.max(p.x, half + 12), $wrap.clientWidth - half - 12);
+          li.style.left = safeX + 'px';
+        });
+
+        if ('IntersectionObserver' in window){
+          const io = new IntersectionObserver(es=>{ for(const e of es) if(e.isIntersecting) e.target.classList.add('show'); }, {threshold:.15});
+          container.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+        } else {
+          container.querySelectorAll('.reveal').forEach(el=>el.classList.add('show'));
+        }
+
+        let t0 = null; const loopDur = 6000;
+        function loop(ts){ if(!t0) t0 = ts; const k = ((ts - t0) % loopDur) / loopDur; const Lnow = L * k; const p = $path.getPointAtLength(Lnow); $glint.setAttribute('cx', p.x); $glint.setAttribute('cy', p.y); requestAnimationFrame(loop); }
+        requestAnimationFrame(loop);
+      }
+
+      // Luciérnagas
+      const $flies = document.getElementById('timeline-fireflies');
+      function spawnFireflies(n=18){
+        $flies.innerHTML = '';
+        for(let i=0;i<n;i++){
+          const s = document.createElement('span');
+          s.className='firefly';
+          s.style.left = Math.random()*100 + 'vw';
+          s.style.top  = Math.random()*100 + 'vh';
+          const dx = (Math.random()*40 - 20) + 'vw'; s.style.setProperty('--dx', dx);
+          const dy = (20 + Math.random()*40) + 'vh'; s.style.setProperty('--dy', dy);
+          s.style.setProperty('--dur', (12 + Math.random()*10).toFixed(2) + 's');
+          s.style.animationDelay = (Math.random()*5).toFixed(2) + 's';
+          $flies.appendChild(s);
+        }
+      }
+
+      window.addEventListener('resize', ()=>{ layout(); spawnFireflies(); });
+      document.addEventListener('DOMContentLoaded', ()=>{ layout(); spawnFireflies(); });
+      if (document.readyState === 'complete' || document.readyState === 'interactive') { layout(); spawnFireflies(); }
+    })();
+  </script>
+</body>
+</html>
