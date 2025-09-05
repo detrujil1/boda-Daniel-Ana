@@ -48,12 +48,22 @@
 			animateWords('.names');
 			animateWords('#date-text');
 			// animate the invitation lines word-by-word (invite-note after invite-text completes)
-			const inviteCount = animateWords('.invite-text', 600) || 0;
-			setTimeout(() => {
-				// animate invite-note with a slightly faster cadence for readability
-				const noteWords = animateWords('.invite-note', 380) || 0;
-				const noteEl = document.querySelector('.invite-note'); if (noteEl) noteEl.classList.add('invite-animated');
-			}, (inviteCount * 600) + 300);
+			const inviteTextEl = document.querySelector('.invite-text');
+			if (inviteTextEl) {
+				// Start invite-text animation
+				const textWordCount = animateWords('.invite-text', 400);
+				const totalTextTime = textWordCount * 400 + 400; // Total time for text animation
+				
+				// Wait for invite-text to finish before starting invite-note
+				setTimeout(() => {
+					// animate invite-note after invite-text finishes
+					animateWords('.invite-note', 400); // Use same timing as invite-text
+					const noteEl = document.querySelector('.invite-note'); 
+					if (noteEl) {
+						setTimeout(() => noteEl.classList.add('invite-animated'), 500);
+					}
+				}, totalTextTime + 500); // Add small delay between texts
+			}
 			const title = hero.querySelector('.names'); title?.classList.add('animated');
 			try { spawnRings(); } catch (e) { }
 			const card = hero.querySelector('.card'); if (card) { card.classList.add('fade-up'); setTimeout(() => card.classList.add('is-visible'), 80); }
@@ -355,11 +365,23 @@ function stagedReveal() {
 		// ensure words are wrapped
 		animateWords('.subtitle'); animateWords('.names'); animateWords('#date-text');
 		// invite lines (slower for readability) with cascade; invite-note gets a slightly faster cadence
-		const ic = animateWords('.invite-text', 600) || 0;
-		setTimeout(() => {
-			const noteCount = animateWords('.invite-note', 380) || 0;
-			const noteEl = document.querySelector('.invite-note'); if (noteEl) noteEl.classList.add('invite-animated');
-		}, (ic * 600) + 300);
+		const inviteTextEl = document.querySelector('.invite-text');
+		if (inviteTextEl) {
+			// Start invite-text animation
+			animateWords('.invite-text', 400);
+			
+			// Wait for invite-text to finish before starting invite-note
+			inviteTextEl.addEventListener('words:done', () => {
+				setTimeout(() => {
+					// animate invite-note after invite-text finishes
+					animateWords('.invite-note', 400); // Use same timing as invite-text
+					const noteEl = document.querySelector('.invite-note'); 
+					if (noteEl) {
+						setTimeout(() => noteEl.classList.add('invite-animated'), 500);
+					}
+				}, 500); // Small delay between texts
+			});
+		}
 		// sequence timings
 		// sequence timings (much slower for visibility)
 		const delays = [3200, 6200, 9200, 12200, 15200];
@@ -410,6 +432,7 @@ function animateWords(selector, perWordDelay = 400) {
 			const span = document.createElement('span');
 			span.className = 'word';
 			span.textContent = w + (i < words.length - 1 ? ' ' : '');
+			span.style.animation = `invite-word-pop 400ms cubic-bezier(.2,.9,.2,1) both`;
 			span.style.animationDelay = (i * perWordDelay) + 'ms';
 			// if this is the last word, listen for animationend to emit a custom event
 			if (i === words.length - 1) {
@@ -420,6 +443,7 @@ function animateWords(selector, perWordDelay = 400) {
 			el.appendChild(span);
 		});
 		el.dataset.animated = '1';
+		el.classList.add('ready');
 		return words.length;
 	} catch (e) { console.warn(e) }
 	return 0;
@@ -610,7 +634,7 @@ const data = {
   place: 'Iglesia Inmaculada Concepción de Suba, Bogotá',
   bgFallback: 'https://images.unsplash.com/photo-1497302347632-904729bc24aa?q=80&w=1600&auto=format&fit=crop',
   events: [
-	{ time: '17:00', title: 'Ceremonia',              meta: 'Iglesia Inmaculada Concepción de Suba', note: 'Llegar 15 minutos antes para ubicarte con calma.', img: 'img/ceremonia.png' },
+	{ time: '17:00', title: 'Ceremonia', note: 'Llegar 15 minutos antes para ubicarte con calma.', img: 'img/ceremonia.png' },
 	{ time: '19:00', title: 'Cóctel de bienvenida',   meta: 'Recepción',                              note: 'Brindis, fotos y música en vivo.',               img: 'img/coctel.png' },
 	{ time: '—',    title: 'Baile y celebración',     meta: 'Salón principal',                       note: 'A continuación del cóctel. ¡Prepárate para bailar!', img: 'img/baile.png' },
 	{ time: '00:00', title: '¡Despedida de los novios!', meta: 'Salida especial',                    note: 'Luces, abrazos y buenos deseos.',               img: 'img/despedida.png' }
@@ -642,7 +666,7 @@ const data = {
 function makePath(width, height){
   // Línea recta vertical justo en el centro
   const x = Math.round(width / 2);
-  const top = 28, bottom = 28;
+  const top = 50, bottom = 50;
   return `M ${x} ${top} L ${x} ${height - bottom}`;
 }
 
@@ -696,18 +720,22 @@ function layout(pass = 0){
 
     const badgeIcon = (typeof iconFor === 'function') ? iconFor(ev.title) : '📌';
 
+    const smallClass = (ev.title === 'Cóctel de bienvenida') ? ' small-panel' : '';
+
     const textHTML = `
-      <article class="panel panel--text card">
-        <div class="badge" aria-hidden="true">${badgeIcon}</div>
+      <article class="panel panel--text card${smallClass}">
         <div class="when"><span class="dot" aria-hidden="true"></span><span>${ev.time}${ev.time && ev.time !== '—' ? ' h' : ''}</span></div>
         <h3 class="title">${ev.title || ''}</h3>
         ${ev.meta ? `<div class="meta">${ev.meta}</div>` : ``}
         ${ev.note ? `<p class="note">${ev.note}</p>` : ``}
+        ${ev.title === 'Ceremonia' ? `<button class="btn-waze" onclick="window.open('https://waze.com/ul?q=Iglesia%20Inmaculada%20Concepción%20de%20Suba%20Bogotá', '_blank')">📍 Cómo llegar</button>` : ''}
       </article>`;
 
     const mediaSrc = ev.img || ev.media;
+const smallMediaClass = (ev.title.includes('Cóctel') || ev.title.includes('Baile')) ? ' small-media' : '';
+const coctelClass = ev.title.includes('Cóctel') ? ' coctel-media' : '';
 const mediaHTML = mediaSrc
-  ? `<figure class="panel panel--media">
+  ? `<figure class="panel panel--media${smallMediaClass}${coctelClass}">
        <div class="ph">
          <img src="${mediaSrc}" alt="${ev.mediaAlt || ev.title || 'Foto'}" loading="lazy">
        </div>
