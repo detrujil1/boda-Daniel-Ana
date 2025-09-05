@@ -4,9 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configuración
     const CONFIG = {
         COUPLE: "Daniel & Ana",
-        WHATSAPP_PHONE: "573000000000", // sin +, con indicativo país
-        RSVP_DEADLINE: "15 de noviembre",
-        DISPLAY_PHONE: "+57 300 000 0000"
+        WHATSAPP_PHONE: "573192672199", // sin +, con indicativo país
+        RSVP_DEADLINE: "20 de octubre del 2025",
     };
 
     // Inicializar página

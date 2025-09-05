@@ -328,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (bgs[0]) { const el = document.getElementById('bg1'); if (el) el.style.backgroundImage = `url('${bgs[0]}')`; }
 				if (bgs[1]) { const el = document.getElementById('bg2'); if (el) el.style.backgroundImage = `url('${bgs[1]}')`; }
 				if (bgs[2]) { const el = document.getElementById('bg3'); if (el) el.style.backgroundImage = `url('${bgs[2]}')`; }
+				if (bgs[3]) { const el = document.getElementById('bg4'); if (el) el.style.backgroundImage = `url('${bgs[3]}')`; }
 			}
 		} catch (e) {/* ignore */ }
 		if (bg && src) {

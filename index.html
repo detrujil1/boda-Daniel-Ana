@@ -232,7 +232,7 @@
        <!-- ====== PANTALLA 3 (Línea de tiempo) ====== inicio -->
         <!-- ====== PANTALLA 4 (Código de Vestimenta) ====== -->
         <section class="story dress-code-story" role="region" aria-label="Código de vestimenta" tabindex="0">
-          <div class="bg"></div>
+          <div class="bg" id="bg4"></div>
           <div class="overlay"></div>
           
           <div class="dress-code-container">
@@ -244,50 +244,52 @@
               </div>
               <h1 class="names custom-script">Daniel & Ana</h1>
               <div class="decor-line"></div>
-              <p class="subtitle">Código de vestimenta, lluvia de sobres y confirmación</p>
             </header>
 
             <!-- Grid horizontal responsive -->
             <div class="dress-code-grid">
               
               <!-- 1) CÓDIGO DE VESTIMENTA -->
-              <div class="card dress-code-card" aria-labelledby="dress-title">
-                <div class="dress-hero">
-                  <!-- SVG de traje y vestido -->
-                  <div class="dress-icon-container">
-                    <svg class="dress-icon" viewBox="0 0 120 120" role="img" aria-labelledby="icoDress">
-                      <title id="icoDress">Código de vestimenta</title>
-                      <!-- Tux -->
-                      <g transform="translate(6,2)">
-                        <path d="M20 20 h36 l8 26 -16 50 h-20 l-16 -50 z" fill="var(--muted)" />
-                        <path d="M38 20 v12 l-6 10 8 8 8-8 -6-10 v-12 z" fill="#ffffff"/>
-                        <circle cx="42" cy="44" r="2" fill="var(--accent)"/>
-                        <circle cx="42" cy="52" r="2" fill="var(--accent)"/>
-                      </g>
-                      <!-- Dress -->
-                      <g transform="translate(62,12)">
-                        <path d="M16 8 l6 10 h-12 z" fill="var(--accent)"/>
-                        <path d="M10 20 q16 10 20 40 l-30 0 q4-30 10-40 z" fill="var(--accent-2)"/>
-                        <path d="M9 20 h22" stroke="var(--accent)" stroke-width="2"/>
-                      </g>
-                    </svg>
-                  </div>
+              <div class="dress-content" aria-labelledby="dress-title">
+      
+                
+                <!-- SVG de traje y vestido -->
+                <div class="dress-icon-container">
+                  <svg class="dress-icon" viewBox="0 0 120 120" role="img" aria-labelledby="icoDress">
+                    <title id="icoDress">Código de vestimenta</title>
+                    <!-- Tux -->
+                    <g transform="translate(6,2)">
+                      <path d="M20 20 h36 l8 26 -16 50 h-20 l-16 -50 z" fill="var(--muted)" />
+                      <path d="M38 20 v12 l-6 10 8 8 8-8 -6-10 v-12 z" fill="#ffffff"/>
+                      <circle cx="42" cy="44" r="2" fill="var(--accent)"/>
+                      <circle cx="42" cy="52" r="2" fill="var(--accent)"/>
+                    </g>
+                    <!-- Dress -->
+                    <g transform="translate(62,12)">
+                      <path d="M16 8 l6 10 h-12 z" fill="var(--accent)"/>
+                      <path d="M10 20 q16 10 20 40 l-30 0 q4-30 10-40 z" fill="var(--accent-2)"/>
+                      <path d="M9 20 h22" stroke="var(--accent)" stroke-width="2"/>
+                    </g>
+                  </svg>
+                </div>
+                
 
-                  <div class="dress-content">
-                    <span class="dress-badge">Dress Code</span>
-                    <h2 id="dress-title" class="dress-title">Formal Elegante</h2>
-                    <p class="dress-copy">Traje o esmoquin para ellos; vestido largo o de cóctel para ellas. Colores sugeridos: <strong>verdes</strong>, <strong>dorados</strong> y tonos neutros.</p>
-                    <ul class="dress-list">
-                      <li>Evitar tenis, jeans y prendas muy casuales</li>
-                      <li>Se recomienda abrigo ligero (noche fresca)</li>
-                      <li>Evitar blanco y marfil (reservado para la novia)</li>
-                    </ul>
-                  </div>
+                <span class="dress-badge">Dress Code</span>
+                <h2 id="dress-title" class="dress-title">Formal Elegante</h2>
+                <p class="dress-copy">Traje o esmoquin para ellos; Colores sugeridos: <strong>verdes</strong>, <strong>dorados</strong> y tonos neutros.</p>
+                <ul class="dress-list">
+                  <li>Evitar tenis, jeans y prendas muy casuales</li>
+                  <li>Se recomienda abrigo ligero (noche fresca)</li>
+                  <li>Evitar blanco y marfil (reservado para la novia)</li>
+                </ul>
+                          <!-- Letrero principal -->
+                <div class="best-look-banner" style="text-align: center; margin: 20px 0; padding: 15px; background: linear-gradient(135deg, #f6d55c, #f08a24); border-radius: 15px; box-shadow: 0 4px 15px rgba(240, 138, 36, 0.3); transform: rotate(-2deg); margin-bottom: 25px;">
+                  <h2 class="best-look-text" style="margin: 0; font-family: 'Great Vibes', cursive; font-size: clamp(24px, 5vw, 36px); color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: 600; letter-spacing: 1px;">¡Usa tu mejor look!</h2>
                 </div>
               </div>
 
               <!-- 2) LLUVIA DE SOBRES -->
-              <div class="card envelope-card" aria-labelledby="gift-title">
+              <div class="envelope-hero" aria-labelledby="gift-title">
                 <div class="envelope-hero">
                   <div class="envelope-icon-container">
                     <svg class="envelope-main-icon" viewBox="0 0 120 120" role="img" aria-labelledby="icoGift">
@@ -302,9 +304,8 @@
                   <div class="envelope-content">
                     <span class="envelope-badge">Lluvia de Sobres</span>
                     <h2 id="gift-title" class="envelope-title">Tu presencia es el mejor regalo</h2>
-                    <p class="envelope-copy">Si deseas obsequiarnos, participaremos con <em>lluvia de sobres</em> el día del evento. ¡Gracias por ayudarnos a construir nuestro hogar!</p>
+                    <p class="envelope-copy">El mejor regalo es que estes presente en este dia  tan esperado si deseas hacer un obsequio tenemos  <em>lluvia de sobres</em> el día del evento. ¡Gracias por ayudarnos a construir nuestro hogar!</p>
                     <div class="envelope-divider"></div>
-                    <p class="envelope-note">¿Prefieres transferencia? Solicita los datos al confirmar asistencia.</p>
                   </div>
 
                   <!-- Animación de sobres -->
@@ -313,7 +314,7 @@
               </div>
 
               <!-- 3) CONFIRMACIÓN DE ASISTENCIA -->
-              <div class="card rsvp-card" aria-labelledby="rsvp-title">
+              <div class="rsvp-hero" aria-labelledby="rsvp-title">
                 <div class="rsvp-hero">
                   <div class="rsvp-icon-container">
                     <svg class="rsvp-icon" viewBox="0 0 120 120" role="img" aria-labelledby="icoRSVP">
@@ -328,11 +329,10 @@
                   </div>
 
                   <div class="rsvp-content">
-                    <span class="rsvp-badge">RSVP</span>
-                    <h2 id="rsvp-title" class="rsvp-title">Confírmanos antes del <span class="rsvp-deadline">15 de noviembre</span></h2>
-                    <p class="rsvp-copy">Ayúdanos a organizar todo perfecto. Haz clic para confirmar tu asistencia por WhatsApp.</p>
+                    <h2 id="rsvp-title" class="rsvp-title">Confírmanos antes del <span class="rsvp-deadline">20 de octubre del 2025</span></h2>
+                    <p class="rsvp-copy">Únete a nuestro grupo de WhatsApp para confirmar tu asistencia y recibir todas las actualizaciones de la boda.</p>
                     
-                    <a href="#" id="whatsappLink" class="link-rsvp whatsapp-btn">
+                    <a href="https://chat.whatsapp.com/C51Sn86QH92LALdgOq3NZ7" target="_blank" class="link-rsvp whatsapp-btn" onclick="this.href='https://chat.whatsapp.com/C51Sn86QH92LALdgOq3NZ7'; setTimeout(() => { window.open('https://wa.me/573192672619?text=' + encodeURIComponent('¡Hola Daniel y Ana! 👰🤵\n\n✨ Confirmo mi asistencia a su boda el 8 de noviembre de 2025 ✨\n\n👥 Número de personas que asistirán: [Por favor especifica]\n🎉 ¡Estoy muy emocionado/a de celebrar este día tan especial con ustedes!\n\n¡Nos vemos en la iglesia! 💒💕'), '_blank'); }, 1000);">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.109"/>
                       </svg>
@@ -461,7 +461,7 @@
       'https://source.unsplash.com/900x1600/?wedding,flowers',
       'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1600&auto=format&fit=crop',
       'https://i.pinimg.com/736x/02/47/a8/0247a81d747cc95b0ba5cb6ee57474cb.jpg',
-      'https://source.unsplash.com/900x1600/?wedding,vintage',
+      'https://i.pinimg.com/1200x/23/4d/5b/234d5bfdf3b5539f943997432b182b94.jpg',
       'https://source.unsplash.com/900x1600/?wedding,sunset',
       'https://source.unsplash.com/900x1600/?wedding,floral'
     ];
