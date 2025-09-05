@@ -663,11 +663,31 @@ const data = {
 	const nodes = container.querySelector('#timeline-nodes');
 
 
+// NUEVA FUNCIÓN: Solo controla la línea animada (la que pasa por los corazones)
+function makeAnimatedLine(width, height) {
+  const x = Math.round(width / 2); // Centro horizontal
+  
+  // CONTROLES ÚNICOS para la línea animada
+  const lineStartY = 300;           // ← INICIO de la línea animada
+  const lineEndY = height + 250;    // ← FIN de la línea animada
+
+  // Crear línea simple desde inicio hasta fin
+  return `M ${x} ${lineStartY} L ${x} ${lineEndY}`;
+}
+
 function makePath(width, height){
-  // Línea recta vertical justo en el centro
-  const x = Math.round(width / 2);
-  const top = 50, bottom = 50;
-  return `M ${x} ${top} L ${x} ${height - bottom}`;
+  const startY = 20;        // ← Posición Y de inicio para eventos
+  const endY = height - 20; // ← Posición Y de fin para eventos
+  const x = Math.round(width / 2); // Centro horizontal
+  
+  const N = data.events.length || 1;
+  let pathCommands = [];
+  
+  // Crear línea para posicionar eventos (separada de la línea animada)
+  pathCommands.push(`M ${x} ${startY}`);  // Mover al inicio de eventos
+  pathCommands.push(`L ${x} ${endY}`);    // Línea hasta el final de eventos
+  
+  return pathCommands.join(' ');
 }
 
 function iconFor(title=''){
@@ -688,14 +708,22 @@ function layout(pass = 0){
   let H = Math.max(560, Math.round(200 + (data.events.length - 1) * perEvent));
   wrap.style.height = H + 'px';
 
-  // Trazo vertical centrado
-  const d = makePath(wrap.clientWidth, H);
-  path.setAttribute('d', d);
-  shimmer?.setAttribute('d', d);
+  // Trazo para la línea animada (path y shimmer)
+  const animatedLineD = makeAnimatedLine(wrap.clientWidth, H);
+  path.setAttribute('d', animatedLineD);
+  shimmer?.setAttribute('d', animatedLineD);
+  
+  // Trazo para posicionar eventos (invisible, solo para cálculos)
+  const eventsLineD = makePath(wrap.clientWidth, H);
+  const eventsPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  eventsPath.setAttribute('d', eventsLineD);
 
   const L = path.getTotalLength();
   path.style.setProperty('--dash', L);
   path.setAttribute('data-length', L);
+  
+  // Longitud para posicionar eventos
+  const eventsL = eventsPath.getTotalLength();
 
   // Limpiar y pintar nodos
   wrap.querySelectorAll('.bead').forEach(b => b.remove());
@@ -707,7 +735,7 @@ function layout(pass = 0){
   for (let i = 0; i < N; i++){
     const ev = data.events[i];
     const t  = margin + (i / (N - 1 || 1)) * (1 - margin * 2);
-    const pt = path.getPointAtLength(L * t);
+    const pt = eventsPath.getPointAtLength(eventsL * t);  // Usar el path de eventos
 
     const li = document.createElement('li');
     li.className = 'node reveal';
@@ -723,13 +751,13 @@ function layout(pass = 0){
     const smallClass = (ev.title === 'Cóctel de bienvenida') ? ' small-panel' : '';
 
     const textHTML = `
-      <article class="panel panel--text card${smallClass}">
+      <div class="panel panel--text-only${smallClass}">
         <div class="when"><span class="dot" aria-hidden="true"></span><span>${ev.time}${ev.time && ev.time !== '—' ? ' h' : ''}</span></div>
         <h3 class="title">${ev.title || ''}</h3>
         ${ev.meta ? `<div class="meta">${ev.meta}</div>` : ``}
         ${ev.note ? `<p class="note">${ev.note}</p>` : ``}
         ${ev.title === 'Ceremonia' ? `<button class="btn-waze" onclick="window.open('https://waze.com/ul?q=Iglesia%20Inmaculada%20Concepción%20de%20Suba%20Bogotá', '_blank')">📍 Cómo llegar</button>` : ''}
-      </article>`;
+      </div>`;
 
     const mediaSrc = ev.img || ev.media;
 const smallMediaClass = (ev.title.includes('Cóctel') || ev.title.includes('Baile')) ? ' small-media' : '';

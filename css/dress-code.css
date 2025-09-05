@@ -1,0 +1,549 @@
+/* Estilos para la página de código de vestimenta - coherente con el codebase principal */
+
+/* Variables específicas que extienden las del tema principal */
+.dress-code-page {
+  --dress-accent: var(--accent);
+  --dress-accent-2: var(--accent-2);
+  --dress-sunflower: var(--sunflower);
+  --dress-muted: var(--muted);
+  --dress-card: var(--card-bg);
+}
+
+/* Página principal de dress code */
+.dress-code-story {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.dress-code-story .bg {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px) saturate(1.1);
+  opacity: 0.95;
+}
+
+.dress-code-story .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.15));
+}
+
+.dress-code-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.dress-code-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dress-code-header .badge {
+  background: rgba(255,255,255,0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: var(--dress-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.dress-code-header .names {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--dress-accent);
+  margin: 0.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.dress-code-header .subtitle {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--dress-muted);
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Grid horizontal responsive */
+.dress-code-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+  margin-bottom: 3rem;
+}
+
+/* Vista horizontal para tablets y desktop */
+@media (min-width: 768px) {
+  .dress-code-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .dress-code-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+}
+
+/* Cards base styling usando la estructura del codebase */
+.dress-code-grid .card {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  padding: 2.5rem;
+  border-radius: 20px;
+  background: var(--dress-card);
+  box-shadow: 0 15px 35px rgba(42, 157, 91, 0.12);
+  border: 1px solid rgba(42, 157, 91, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.dress-code-grid .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(42, 157, 91, 0.2);
+  border-color: var(--dress-accent);
+}
+
+.dress-code-grid .card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--dress-accent), var(--dress-sunflower), var(--dress-accent-2));
+  opacity: 0.6;
+}
+
+/* Código de Vestimenta */
+.dress-hero {
+  text-align: center;
+}
+
+.dress-icon-container {
+  margin-bottom: 2rem;
+}
+
+.dress-icon {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(3px 3px 10px rgba(0,0,0,0.15));
+  transition: transform 0.3s ease;
+}
+
+.dress-code-card:hover .dress-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.dress-badge {
+  background: rgba(42, 157, 91, 0.1);
+  color: var(--dress-accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.dress-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.8rem;
+  color: var(--dress-accent);
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.dress-copy {
+  color: var(--dress-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.dress-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.dress-list li {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(42, 157, 91, 0.1);
+  color: var(--dress-muted);
+  font-weight: 500;
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.dress-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--dress-accent);
+  font-weight: bold;
+}
+
+.dress-list li:last-child {
+  border-bottom: none;
+}
+
+/* Lluvia de Sobres */
+.envelope-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.envelope-hero {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.envelope-icon-container {
+  margin-bottom: 2rem;
+}
+
+.envelope-main-icon {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(3px 3px 10px rgba(0,0,0,0.15));
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.envelope-badge {
+  background: rgba(246, 200, 76, 0.15);
+  color: var(--dress-sunflower);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.envelope-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.8rem;
+  color: var(--dress-accent);
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.envelope-copy {
+  color: var(--dress-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.envelope-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(42, 157, 91, 0.2), transparent);
+  margin: 1.5rem 0;
+}
+
+.envelope-note {
+  font-size: 0.9rem;
+  color: var(--dress-muted);
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Animación de sobres mejorada */
+.envelope-rain {
+  position: absolute;
+  inset: -40px -20px auto auto;
+  height: 120%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.envelope-falling {
+  position: absolute;
+  top: -40px;
+  animation: envelope-drop linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes envelope-drop {
+  0% {
+    transform: translateY(-40px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(calc(100vh + 40px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* RSVP */
+.rsvp-hero {
+  text-align: center;
+}
+
+.rsvp-icon-container {
+  margin-bottom: 2rem;
+}
+
+.rsvp-icon {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(3px 3px 10px rgba(0,0,0,0.15));
+  transition: transform 0.3s ease;
+}
+
+.rsvp-card:hover .rsvp-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.rsvp-badge {
+  background: rgba(47, 111, 108, 0.1);
+  color: var(--dress-accent);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.rsvp-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.8rem;
+  color: var(--dress-accent);
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+.rsvp-deadline {
+  color: var(--dress-sunflower);
+  font-weight: 700;
+}
+
+.rsvp-copy {
+  color: var(--dress-muted);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+/* WhatsApp button usando estilos del codebase */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: white;
+  text-decoration: none;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+  border: none;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+  background: linear-gradient(135deg, #20b954, #0f7a6f);
+}
+
+.whatsapp-btn:active {
+  transform: translateY(-1px) scale(0.99);
+  box-shadow: 0 6px 14px rgba(37, 211, 102, 0.3);
+}
+
+.rsvp-contact {
+  font-size: 0.9rem;
+  color: var(--dress-muted);
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Navegación */
+.dress-code-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.dress-code-nav .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+/* Responsive - Mobile First */
+@media (max-width: 767px) {
+  .dress-code-story {
+    padding: 1rem;
+  }
+  
+  .dress-code-header {
+    margin-bottom: 2rem;
+  }
+  
+  .dress-code-grid .card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .dress-icon, .envelope-main-icon, .rsvp-icon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .dress-title, .envelope-title, .rsvp-title {
+    font-size: 1.5rem;
+  }
+  
+  .whatsapp-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 1.2rem 1.5rem;
+  }
+  
+  .dress-code-nav {
+    gap: 0.5rem;
+  }
+  
+  .dress-code-nav .btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+    padding: 0.8rem 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Tablet landscape y desktop pequeño */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .dress-code-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  /* En tablet, RSVP ocupa ancho completo */
+  .rsvp-card {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Desktop grande */
+@media (min-width: 1200px) {
+  .dress-code-story {
+    padding: 3rem;
+  }
+  
+  .dress-code-header {
+    margin-bottom: 4rem;
+  }
+  
+  .dress-icon, .envelope-main-icon, .rsvp-icon {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Optimización para landscape en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+  .dress-code-story {
+    min-height: auto;
+    padding: 1rem;
+  }
+  
+  .dress-code-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .dress-code-header .names {
+    font-size: 2rem;
+  }
+  
+  .dress-code-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .dress-code-grid .card {
+    padding: 1.5rem;
+  }
+  
+  .dress-icon, .envelope-main-icon, .rsvp-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .dress-title, .envelope-title, .rsvp-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dress-copy, .envelope-copy, .rsvp-copy {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Animaciones de entrada */
+.dress-code-grid .card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dress-code-grid .card.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}

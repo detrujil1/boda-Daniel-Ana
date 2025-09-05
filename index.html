@@ -11,6 +11,7 @@
   <meta name="theme-color" content="#fffaf2">
   <link rel="icon" href="videoframe_11125.png" type="image/png">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/dress-code.css">
   <!-- Estilos críticos pequeños para accesibilidad/skip-link -->
   <style>
     .skip-link {
@@ -228,8 +229,126 @@
     </section>
 
 
+       <!-- ====== PANTALLA 3 (Línea de tiempo) ====== inicio -->
+        <!-- ====== PANTALLA 4 (Código de Vestimenta) ====== -->
+        <section class="story dress-code-story" role="region" aria-label="Código de vestimenta" tabindex="0">
+          <div class="bg"></div>
+          <div class="overlay"></div>
+          
+          <div class="dress-code-container">
+            <!-- Header -->
+            <header class="dress-code-header">
+              <div class="badge">
+                <span>💒</span>
+                Detalles importantes
+              </div>
+              <h1 class="names custom-script">Daniel & Ana</h1>
+              <div class="decor-line"></div>
+              <p class="subtitle">Código de vestimenta, lluvia de sobres y confirmación</p>
+            </header>
 
-    <!-- ====== PANTALLA 4 (Galería de Recuerdos) ====== -->
+            <!-- Grid horizontal responsive -->
+            <div class="dress-code-grid">
+              
+              <!-- 1) CÓDIGO DE VESTIMENTA -->
+              <div class="card dress-code-card" aria-labelledby="dress-title">
+                <div class="dress-hero">
+                  <!-- SVG de traje y vestido -->
+                  <div class="dress-icon-container">
+                    <svg class="dress-icon" viewBox="0 0 120 120" role="img" aria-labelledby="icoDress">
+                      <title id="icoDress">Código de vestimenta</title>
+                      <!-- Tux -->
+                      <g transform="translate(6,2)">
+                        <path d="M20 20 h36 l8 26 -16 50 h-20 l-16 -50 z" fill="var(--muted)" />
+                        <path d="M38 20 v12 l-6 10 8 8 8-8 -6-10 v-12 z" fill="#ffffff"/>
+                        <circle cx="42" cy="44" r="2" fill="var(--accent)"/>
+                        <circle cx="42" cy="52" r="2" fill="var(--accent)"/>
+                      </g>
+                      <!-- Dress -->
+                      <g transform="translate(62,12)">
+                        <path d="M16 8 l6 10 h-12 z" fill="var(--accent)"/>
+                        <path d="M10 20 q16 10 20 40 l-30 0 q4-30 10-40 z" fill="var(--accent-2)"/>
+                        <path d="M9 20 h22" stroke="var(--accent)" stroke-width="2"/>
+                      </g>
+                    </svg>
+                  </div>
+
+                  <div class="dress-content">
+                    <span class="dress-badge">Dress Code</span>
+                    <h2 id="dress-title" class="dress-title">Formal Elegante</h2>
+                    <p class="dress-copy">Traje o esmoquin para ellos; vestido largo o de cóctel para ellas. Colores sugeridos: <strong>verdes</strong>, <strong>dorados</strong> y tonos neutros.</p>
+                    <ul class="dress-list">
+                      <li>Evitar tenis, jeans y prendas muy casuales</li>
+                      <li>Se recomienda abrigo ligero (noche fresca)</li>
+                      <li>Evitar blanco y marfil (reservado para la novia)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2) LLUVIA DE SOBRES -->
+              <div class="card envelope-card" aria-labelledby="gift-title">
+                <div class="envelope-hero">
+                  <div class="envelope-icon-container">
+                    <svg class="envelope-main-icon" viewBox="0 0 120 120" role="img" aria-labelledby="icoGift">
+                      <title id="icoGift">Lluvia de sobres</title>
+                      <rect x="20" y="42" width="80" height="54" rx="8" fill="var(--sunflower)"/>
+                      <path d="M20 50 l40 28 40-28" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M20 42 l40 28 40-28" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+                      <circle cx="60" cy="65" r="4" fill="var(--accent)" opacity="0.7"/>
+                    </svg>
+                  </div>
+
+                  <div class="envelope-content">
+                    <span class="envelope-badge">Lluvia de Sobres</span>
+                    <h2 id="gift-title" class="envelope-title">Tu presencia es el mejor regalo</h2>
+                    <p class="envelope-copy">Si deseas obsequiarnos, participaremos con <em>lluvia de sobres</em> el día del evento. ¡Gracias por ayudarnos a construir nuestro hogar!</p>
+                    <div class="envelope-divider"></div>
+                    <p class="envelope-note">¿Prefieres transferencia? Solicita los datos al confirmar asistencia.</p>
+                  </div>
+
+                  <!-- Animación de sobres -->
+                  <div class="envelope-rain" aria-hidden="true"></div>
+                </div>
+              </div>
+
+              <!-- 3) CONFIRMACIÓN DE ASISTENCIA -->
+              <div class="card rsvp-card" aria-labelledby="rsvp-title">
+                <div class="rsvp-hero">
+                  <div class="rsvp-icon-container">
+                    <svg class="rsvp-icon" viewBox="0 0 120 120" role="img" aria-labelledby="icoRSVP">
+                      <title id="icoRSVP">Confirmación de asistencia</title>
+                      <rect x="18" y="28" width="84" height="64" rx="10" fill="var(--accent)"/>
+                      <rect x="18" y="40" width="84" height="10" fill="var(--muted)"/>
+                      <circle cx="40" cy="72" r="10" fill="#fff"/>
+                      <path d="M36 72 l3 4 6-8" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                      <rect x="42" y="24" width="8" height="12" rx="4" fill="#fff"/>
+                      <rect x="70" y="24" width="8" height="12" rx="4" fill="#fff"/>
+                    </svg>
+                  </div>
+
+                  <div class="rsvp-content">
+                    <span class="rsvp-badge">RSVP</span>
+                    <h2 id="rsvp-title" class="rsvp-title">Confírmanos antes del <span class="rsvp-deadline">15 de noviembre</span></h2>
+                    <p class="rsvp-copy">Ayúdanos a organizar todo perfecto. Haz clic para confirmar tu asistencia por WhatsApp.</p>
+                    
+                    <a href="#" id="whatsappLink" class="link-rsvp whatsapp-btn">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.109"/>
+                      </svg>
+                      Confirmar por WhatsApp
+                    </a>
+
+                    <p class="rsvp-contact">Teléfono: <span id="phoneDisplay">+57 319267219</span></p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+        <!-- ====== PANTALLA 4 (Línea de tiempo) ====== fin -->
+
+
+    <!-- ====== PANTALLA 5 (Galería de Recuerdos) ====== -->
     <section class="story s3" role="region" aria-label="Galería de recuerdos" tabindex="0">
       <div class="bg" id="bg-sunflowers"></div>
       <div class="overlay"></div>
@@ -305,14 +424,13 @@
     </section>
   </main>
 
-  <!-- Audio controlado por los botones -->
+
 
   <!-- Audio controlado por los botones -->
   <audio id="bg-music" preload="auto" loop>
     <source src="il divo hasta mi final VIDEO OFICIAL HD - Machisga.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Pantalla de bienvenida para reproducir la música -->
   <!-- Pantalla de bienvenida para reproducir la música -->
   <div id="welcome-overlay" class="welcome">
     <div class="welcome__panel">
@@ -349,6 +467,7 @@
     ];
   </script>
   <script src="js/app.js" defer></script>
+  <script src="js/dress-code.js" defer></script>
 </body>
 
 </html>
