@@ -758,7 +758,7 @@ function layout(pass = 0){
         ${ev.meta ? `<div class="meta">${ev.meta}</div>` : ``}
         ${ev.note ? `<p class="note">${ev.note}</p>` : ``}
         ${ev.title === 'Ceremonia' ? `<button class="btn-waze" onclick="window.open('https://waze.com/ul?q=Iglesia%20Inmaculada%20Concepción%20de%20Suba%20Bogotá', '_blank')">📍 Cómo llegar</button>` : ''}
-        ${ev.title === 'Cóctel de bienvenida' ? `<button class="btn-waze" onclick="window.open('https://waze.com/ul?q=Calle%20146c%20%2392-10%2C%20Bogotá%2C%20Colombia', '_blank')">📍 Cómo llegar</button>` : ''}
+        ${ev.title === 'Cóctel de bienvenida' ? `<button class="btn-waze" onclick="window.open('https://maps.google.com/maps?q=Calle+146c+%2392-10,+Bogotá,+Colombia', '_blank')">📍 Cómo llegar</button>` : ''}
       </div>`;
 
     const mediaSrc = ev.img || ev.media;
