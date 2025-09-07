@@ -547,7 +547,7 @@ function generateStoryPNG() {
 
 	const labelsFull = ["DÍAS", "HORAS", "MINUTOS", "SEGUNDOS"];
 	const labelsShort = ["DÍAS", "HORAS", "MIN", "SEG"];
-	const labelsMini = ["D", "H", "MIN", "SEG"];
+	const labelsMini = ["DÍAS", "HORAS", "MIN", "SEG"];
 
 	function setLabels(arr) {
 		const spans = cd.querySelectorAll('.unit span');
@@ -636,7 +636,7 @@ const data = {
   bgFallback: 'https://images.unsplash.com/photo-1497302347632-904729bc24aa?q=80&w=1600&auto=format&fit=crop',
   events: [
 	{ time: '17:00', title: 'Ceremonia', note: 'Llegar 15 minutos antes para ubicarte con calma.', img: 'img/ceremonia.png' },
-	{ time: '19:00', title: 'Cóctel de bienvenida',   meta: 'Recepción',                              note: 'Brindis, fotos y música en vivo.',               img: 'img/coctel.png' },
+	{ time: '19:00', title: 'Recepción',   meta: 'Cóctel de bienvenida',                              note: 'Brindis, fotos y música en vivo.',               img: 'img/coctel.png' },
 	{ time: '—',    title: 'Baile y celebración',     meta: 'Salón principal',                       note: 'A continuación del cóctel. ¡Prepárate para bailar!', img: 'img/baile.png' },
 	{ time: '00:00', title: '¡Despedida de los novios!', meta: 'Salida especial',                    note: 'Luces, abrazos y buenos deseos.',               img: 'img/despedida.png' }
   ]
@@ -758,12 +758,12 @@ function layout(pass = 0){
         ${ev.meta ? `<div class="meta">${ev.meta}</div>` : ``}
         ${ev.note ? `<p class="note">${ev.note}</p>` : ``}
         ${ev.title === 'Ceremonia' ? `<button class="btn-waze" onclick="window.open('https://waze.com/ul?q=Iglesia%20Inmaculada%20Concepción%20de%20Suba%20Bogotá', '_blank')">📍 Cómo llegar</button>` : ''}
-        ${ev.title === 'Cóctel de bienvenida' ? `<button class="btn-waze" onclick="window.open('https://maps.google.com/maps?q=Calle+146c+%2392-10,+Bogotá,+Colombia', '_blank')">📍 Cómo llegar</button>` : ''}
+        ${ev.title === 'Recepción' ? `<button class="btn-waze" onclick="window.open('https://maps.google.com/maps?q=Calle+146c+%2392-10,+Bogotá,+Colombia', '_blank')">📍 Cómo llegar</button>` : ''}
       </div>`;
 
     const mediaSrc = ev.img || ev.media;
 const smallMediaClass = (ev.title.includes('Cóctel') || ev.title.includes('Baile')) ? ' small-media' : '';
-const coctelClass = ev.title.includes('Cóctel') ? ' coctel-media' : '';
+const coctelClass = (ev.meta && ev.meta.includes('Cóctel')) || (ev.img && ev.img.includes('coctel')) ? ' coctel-media' : '';
 const mediaHTML = mediaSrc
   ? `<figure class="panel panel--media${smallMediaClass}${coctelClass}">
        <div class="ph">
