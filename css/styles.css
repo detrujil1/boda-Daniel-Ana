@@ -87,6 +87,253 @@
 	.footer{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.95rem}
 	/* Make the footer on screen 2 (Detalles) white for better contrast against the photo background */
 	.story.s2 .footer{color:#ffffff;text-shadow:0 1px 3px rgba(0,0,0,0.45)}
+
+	/* ====== ESTILOS PARA PANTALLAS INTERMEDIAS ====== */
+	.story.intermedia {
+		position: relative;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		padding-top: calc(15vh + 3cm);
+		min-height: 100vh;
+		overflow: hidden;
+		width: 100%;
+	}
+
+	.intermedia-bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		z-index: 0;
+	}
+
+	.intermedia-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		filter: brightness(1.3) contrast(1.15) saturate(1.1);
+		transition: transform 0.5s ease, filter 0.3s ease;
+		display: block;
+		max-width: 100%;
+		border: none;
+		outline: none;
+	}
+
+	.story.intermedia:hover .intermedia-img {
+		transform: scale(1.03);
+		filter: brightness(1.4) contrast(1.2) saturate(1.2);
+	}
+
+	.intermedia-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			135deg,
+			rgba(0,0,0,0.08) 0%,
+			rgba(0,0,0,0.02) 50%,
+			rgba(0,0,0,0.12) 100%
+		);
+		z-index: 1;
+	}
+
+	.intermedia-content {
+		position: relative;
+		z-index: 2;
+		text-align: center;
+		color: white;
+		padding: 2rem;
+		max-width: 90%;
+		width: 100%;
+		margin: 0 auto;
+		box-sizing: border-box;
+	}
+
+	.intermedia-text {
+		font-family: 'Great Vibes', cursive;
+		font-size: clamp(2rem, 8vw, 4.5rem);
+		font-weight: 400;
+		color: #ffffff;
+		text-shadow: 
+			3px 3px 6px rgba(0,0,0,0.9),
+			0 0 15px rgba(0,0,0,0.7),
+			0 0 30px rgba(0,0,0,0.5),
+			-1px -1px 0 rgba(0,0,0,0.8),
+			1px -1px 0 rgba(0,0,0,0.8),
+			-1px 1px 0 rgba(0,0,0,0.8),
+			1px 1px 0 rgba(0,0,0,0.8);
+		margin-bottom: 1rem;
+		opacity: 0;
+		transform: translateY(30px);
+		animation: fadeInUp 1s ease 0.5s forwards;
+		line-height: 1.2;
+		word-wrap: break-word;
+	}
+
+	.story.intermedia .footer {
+		color: #ffffff;
+		text-shadow: 
+			0 1px 3px rgba(0,0,0,0.9),
+			0 0 8px rgba(0,0,0,0.7),
+			0 0 15px rgba(0,0,0,0.5);
+		z-index: 2;
+		font-size: clamp(0.8rem, 2.5vw, 1rem);
+		padding: 0 1rem;
+		text-align: center;
+	}
+
+	@keyframes fadeInUp {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Responsive mejorado para pantallas intermedias */
+	@media (max-width: 768px) {
+		.story.intermedia {
+			align-items: flex-start;
+			padding-top: calc(12vh + 2.5cm);
+		}
+		
+		.intermedia-content {
+			padding: 1.5rem 1rem;
+			max-width: 95%;
+		}
+		
+		.intermedia-text {
+			font-size: clamp(1.8rem, 7vw, 3.5rem);
+			margin-bottom: 0.8rem;
+		}
+
+		.intermedia-overlay {
+			background: linear-gradient(
+				135deg,
+				rgba(0,0,0,0.1) 0%,
+				rgba(0,0,0,0.03) 50%,
+				rgba(0,0,0,0.15) 100%
+			);
+		}
+
+		.intermedia-bg {
+			width: 100%;
+			height: 100vh;
+			overflow: hidden;
+		}
+
+		.intermedia-img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center center;
+			filter: brightness(1.25) contrast(1.1) saturate(1.05);
+		}
+	}
+
+	@media (max-width: 480px) {
+		.story.intermedia {
+			align-items: flex-start;
+			padding-top: calc(10vh + 2cm);
+			min-height: 100vh;
+			min-height: 100dvh; /* Mejor soporte móvil */
+		}
+
+		.intermedia-content {
+			padding: 1rem 0.5rem;
+			max-width: 98%;
+		}
+		
+		.intermedia-text {
+			font-size: clamp(1.5rem, 6vw, 2.8rem);
+			margin-bottom: 0.5rem;
+			line-height: 1.1;
+		}
+
+		.intermedia-bg {
+			width: 100%;
+			height: 100vh;
+			height: 100dvh;
+			overflow: hidden;
+		}
+
+		.intermedia-img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center center;
+			filter: brightness(1.3) contrast(1.15) saturate(1.1);
+			min-height: 100vh;
+			min-height: 100dvh;
+		}
+
+		.story.intermedia:hover .intermedia-img {
+			transform: scale(1.02);
+			filter: brightness(1.35) contrast(1.2) saturate(1.15);
+		}
+
+		.story.intermedia .footer {
+			font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+			padding: 0 0.5rem;
+			bottom: 15px;
+		}
+	}
+
+	@media (max-width: 360px) {
+		.intermedia-text {
+			font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+		}
+
+		.intermedia-img {
+			object-fit: cover;
+			object-position: center center;
+			filter: brightness(1.35) contrast(1.2) saturate(1.1);
+		}
+
+		.story.intermedia .footer {
+			font-size: clamp(0.65rem, 2vw, 0.75rem);
+		}
+	}
+
+	/* Mejoras para dispositivos con pantallas muy altas */
+	@media (min-height: 800px) and (max-width: 480px) {
+		.story.intermedia {
+			justify-content: center;
+		}
+		
+		.intermedia-content {
+			margin-top: -10vh;
+		}
+
+		.intermedia-img {
+			object-fit: cover;
+			object-position: center center;
+		}
+	}
+
+	/* Orientación landscape en móviles */
+	@media (max-height: 500px) and (orientation: landscape) {
+		.story.intermedia {
+			min-height: 100vh;
+		}
+
+		.intermedia-bg, .intermedia-img {
+			height: 100vh;
+		}
+
+		.intermedia-text {
+			font-size: clamp(1.2rem, 4vw, 2rem);
+		}
+
+		.intermedia-content {
+			padding: 0.5rem;
+		}
+	}
 	.disc{position:absolute;left:18px;bottom:18px;width:72px;height:72px;border-radius:999px;background:radial-gradient(circle at 30% 30%,#fff,#d8c8ff);box-shadow:inset 0 -6px 18px rgba(0,0,0,0.03)}
 	/* Removed right-side image decorations to keep UI clean */
 
