@@ -630,7 +630,7 @@ function generateStoryPNG() {
 	if (!sec) return;
 
 const data = {
-  couple: 'Daniel & Ana',
+  couple: 'Daniel & Ana Milena',
   date: '8 de noviembre de 2025',
   place: 'Iglesia Inmaculada Concepción de Suba, Bogotá',
   bgFallback: 'https://images.unsplash.com/photo-1497302347632-904729bc24aa?q=80&w=1600&auto=format&fit=crop',
